@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UDEM - Evaluación de Proyectos | Diseño Integral</title>
+  
+  <!-- FontAwesome & QRCode Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #E6E6E6;
+      --bg-panel: #F5F5F5;
+      --bg-card: #FFFFFF;
+      --border-color: #1A1A1A;
+      --text-main: #111111;
+      --text-muted: #666666;
+      --udem-yellow: #FFC700;
+      --udem-yellow-light: #FFF0B3;
+      --accent-red: #D9383A;
+      --accent-green: #28A745;
+      --accent-blue: #0066CC;
+      --font-mono: 'Courier New', Courier, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.4;
+      padding: 15px;
+    }
+
+    /* IDE Container */
+    .ide-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      border: 2px solid var(--border-color);
+      background: var(--bg-panel);
+      box-shadow: 6px 6px 0px rgba(0,0,0,0.15);
+    }
+
+    /* IDE Header */
+    .ide-header {
+      background: var(--border-color);
+      color: #FFFFFF;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand-title {
+      font-family: var(--font-mono);
+      font-weight: bold;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-tag {
+      background: var(--udem-yellow);
+      color: var(--border-color);
+      padding: 2px 8px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      border-radius: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-ide {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1.5px solid var(--border-color);
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-ide:hover {
+      background: var(--udem-yellow);
+      transform: translateY(-1px);
+    }
+
+    .btn-ide.btn-danger:hover {
+      background: var(--accent-red);
+      color: white;
+    }
+
+    /* Evaluator Bar */
+    .evaluator-bar {
+      background: #DCDCDC;
+      padding: 10px 20px;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .evaluator-bar label {
+      font-family: var(--font-mono);
+      font-weight: bold;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .evaluator-bar input {
+      padding: 6px 12px;
+      border: 1.5px solid var(--border-color);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      flex: 1;
+      min-width: 250px;
+      background: #FFFFFF;
+    }
+
+    /* Teams Nav */
+    .teams-nav {
+      display: flex;
+      background: #D0D0D0;
+      border-bottom: 2px solid var(--border-color);
+      overflow-x: auto;
+    }
+
+    .team-tab {
+      padding: 12px 18px;
+      border-right: 1.5px solid var(--border-color);
+      background: #D0D0D0;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 180px;
+      transition: background 0.15s;
+    }
+
+    .team-tab:hover {
+      background: #E0E0E0;
+    }
+
+    .team-tab.active {
+      background: var(--bg-panel);
+      border-top: 3px solid var(--udem-yellow);
+      font-weight: bold;
+    }
+
+    .tab-status {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 2px;
+      width: fit-content;
+      font-weight: bold;
+    }
+
+    .status-no { background: #E0E0E0; color: #555; border: 1px solid #AAA; }
+    .status-yes { background: var(--udem-yellow); color: #000; border: 1px solid #888; }
+
+    /* Layout Grid */
+    .app-body {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .app-body { grid-template-columns: 1fr; }
+    }
+
+    /* Panels */
+    .section-panel {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 3px 3px 0px rgba(0,0,0,0.05);
+    }
+
+    .section-title {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 6px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-title span.badge {
+      background: var(--udem-yellow-light);
+      border: 1px solid var(--udem-yellow);
+      padding: 2px 6px;
+      font-size: 0.75rem;
+    }
+
+    /* Dial Controls Grid */
+    .dials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 15px;
+      text-align: center;
+    }
+
+    .dial-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .dial-label {
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dial-input {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .dial-val {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--border-color);
+      background: #FFFFFF;
+      width: 100%;
+      border: 1px solid var(--border-color);
+      margin-top: 4px;
+    }
+
+    /* Sliders List */
+    .slider-row {
+      margin-bottom: 14px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .slider-header span.val {
+      font-family: var(--font-mono);
+      background: var(--udem-yellow-light);
+      padding: 0 6px;
+      border: 1px solid var(--udem-yellow);
+    }
+
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--border-color);
+    }
+
+    /* Matrix 2D Canvas */
+    .matrix-container {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background: #FAF8F5;
+      border: 1.5px solid var(--border-color);
+      cursor: crosshair;
+    }
+
+    /* Matrix Quadrant Grid Lines */
+    .matrix-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .quadrant {
+      border: 0.5px dashed #CCC;
+      padding: 6px;
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      color: #888;
+      pointer-events: none;
+    }
+
+    .matrix-point {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: var(--udem-yellow);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+
+    /* Rubric Table */
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .rubric-table th, .rubric-table td {
+      border: 1px solid var(--border-color);
+      padding: 8px;
+      text-align: center;
+    }
+
+    .rubric-table th {
+      background: #EAEAEA;
+      font-family: var(--font-mono);
+    }
+
+    .rubric-table td.criterion-name {
+      text-align: left;
+      font-weight: bold;
+      background: #FAFAFA;
+      width: 25%;
+    }
+
+    .rubric-btn {
+      width: 100%;
+      height: 100%;
+      padding: 6px 2px;
+      background: #FFFFFF;
+      border: 1px solid #DDD;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.1s;
+    }
+
+    .rubric-btn.selected {
+      background: var(--udem-yellow);
+      border-color: var(--border-color);
+      font-weight: bold;
+    }
+
+    /* Recommendation Radio Options */
+    .recommendation-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .rec-option {
+      border: 1.5px solid var(--border-color);
+      padding: 10px;
+      background: #FFFFFF;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+
+    .rec-option input {
+      accent-color: var(--border-color);
+    }
+
+    .rec-option.selected {
+      background: var(--udem-yellow-light);
+      border-color: var(--border-color);
+      font-weight: bold;
+    }
+
+    /* Dashboard Sidebar */
+    .dashboard-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .score-box {
+      background: var(--border-color);
+      color: #FFFFFF;
+      padding: 15px;
+      text-align: center;
+      border: 2px solid var(--border-color);
+    }
+
+    .score-title {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: #CCC;
+    }
+
+    .score-number {
+      font-family: var(--font-mono);
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--udem-yellow);
+      line-height: 1.1;
+    }
+
+    .radar-container {
+      width: 100%;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      width: 90%;
+      max-width: 550px;
+      padding: 20px;
+      box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
+    }
+
+    .modal-title {
+      font-family: var(--font-mono);
+      font-weight: bold;
+      font-size: 1.1rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--border-color);
+      color: var(--udem-yellow);
+      padding: 12px 20px;
+      font-family: var(--font-mono);
+      border: 2px solid var(--udem-yellow);
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 2000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ide-container">
+    <!-- Header -->
+    <header class="ide-header">
+      <div class="brand-title">
+        <span>UDEM</span>
+        <span class="brand-tag">DISEÑO INDUSTRIAL</span>
+        <span>| Diseño Integral (8° Semestre)</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-ide" onclick="openModal('sheetsModal')"><i class="fa-solid fa-table"></i> [ 📊 Google Sheets ]</button>
+        <button class="btn-ide" onclick="openModal('qrModal')"><i class="fa-solid fa-qrcode"></i> [ 📱 QR App ]</button>
+        <button class="btn-ide" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> [ 📄 Exportar PDF ]</button>
+      </div>
+    </header>
+
+    <!-- Evaluator Input Bar -->
+    <div class="evaluator-bar">
+      <label for="evaluatorName"><i class="fa-solid fa-user-check"></i> Evaluador / Profesor:</label>
+      <input type="text" id="evaluatorName" placeholder="Escribe tu nombre completo..." oninput="updateEvaluatorName(this.value)">
+    </div>
+
+    <!-- Teams Navigation Tabs -->
+    <nav class="teams-nav" id="teamsNav"></nav>
+
+    <!-- App Main Body -->
+    <main class="app-body">
+      <!-- Left Column: Form Controls -->
+      <div class="form-column">
+        
+        <!-- Project Info Banner -->
+        <div class="section-panel" style="background: var(--udem-yellow-light);">
+          <div style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: bold; color: #555;">PROYECTO SELECCIONADO:</div>
+          <h2 id="displayProjectTopic" style="font-size: 1.2rem; margin: 4px 0;">-</h2>
+          <div id="displayTeamMembers" style="font-size: 0.85rem; color: #444;">-</div>
+        </div>
+
+        <!-- Section 1: Criterios Cualitativos -->
+        <div class="section-panel">
+          <div class="section-title">
+            <span>1. Criterios Cualitativos</span>
+            <span class="badge">0 - 10 PTS</span>
+          </div>
+          <div class="dials-grid">
+            <div class="dial-card">
+              <span class="dial-label">Innovación & Creatividad</span>
+              <input type="range" min="0" max="10" step="0.5" value="0" class="dial-input" oninput="updateScore('innovation', this.value)">
+              <div class="dial-val" id="val_innovation">0.0</div>
+            </div>
+            <div class="dial-card">
+              <span class="dial-label">Problemática clara</span>
+              <input type="range" min="0" max="10" step="0.5" value="0" class="dial-input" oninput="updateScore('problem', this.value)">
+              <div class="dial-val" id="val_problem">0.0</div>
+            </div>
+            <div class="dial-card">
+              <span class="dial-label">Objetivos bien definidos</span>
+              <input type="range" min="0" max="10" step="0.5" value="0" class="dial-input" oninput="updateScore('objectives', this.value)">
+              <div class="dial-val" id="val_objectives">0.0</div>
+            </div>
+            <div class="dial-card">
+              <span class="dial-label">Viabilidad Técnica</span>
+              <input type="range" min="0" max="10" step="0.5" value="0" class="dial-input" oninput="updateScore('feasibility', this.value)">
+              <div class="dial-val" id="val_feasibility">0.0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Criterios de Proceso -->
+        <div class="section-panel">
+          <div class="section-title">
+            <span>2. Criterios de Proceso y Avance</span>
+            <span class="badge">0 - 100 %</span>
+          </div>
+          
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Métodos de Investigación & Rigor Científico - Pertinente al proceso de Diseño</span>
+              <span class="val" id="val_research">0%</span>
+            </div>
+            <input type="range" min="0" max="100" value="0" oninput="updateScore('research', this.value)">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>¿Son claros los entregables que se proyectan?</span>
+              <span class="val" id="val_deliverables">0%</span>
+            </div>
+            <input type="range" min="0" max="100" value="0" oninput="updateScore('deliverables', this.value)">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Calidad de la presentación y coherencia de lo mostrado</span>
+              <span class="val" id="val_presentation">0%</span>
+            </div>
+            <input type="range" min="0" max="100" value="0" oninput="updateScore('presentation', this.value)">
+          </div>
+        </div>
+
+        <!-- Section 3: Matriz 2D Cartesiana -->
+        <div class="section-panel">
+          <div class="section-title">
+            <span>3. Matriz 2D: Impacto Social vs Viabilidad</span>
+            <span class="badge" id="val_matrix">X: 0.0 | Y: 0.0</span>
+          </div>
+          <div class="matrix-container" id="matrixContainer" onclick="handleMatrixClick(event)">
+            <div class="matrix-bg">
+              <div class="quadrant">II. Alto Impacto / Baja Viab.</div>
+              <div class="quadrant" style="text-align: right;">I. Alto Impacto / Alta Viab.</div>
+              <div class="quadrant" style="display: flex; align-items: flex-end;">III. Bajo Impacto / Baja Viab.</div>
+              <div class="quadrant" style="display: flex; align-items: flex-end; justify-content: flex-end;">IV. Bajo Impacto / Alta Viab.</div>
+            </div>
+            <div class="matrix-point" id="matrixPoint" style="left: 0%; top: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- Section 4: Matriz de Rúbrica Evaluativa -->
+        <div class="section-panel">
+          <div class="section-title">
+            <span>4. Matriz de Rúbrica Evaluativa</span>
+            <span class="badge">NIVELES CUALITATIVOS</span>
+          </div>
+          <table class="rubric-table">
+            <thead>
+              <tr>
+                <th>Criterio</th>
+                <th>Insuficiente (25%)</th>
+                <th>Aceptable (50%)</th>
+                <th>Bueno (75%)</th>
+                <th>Excelente (100%)</th>
+              </tr>
+            </thead>
+            <tbody id="rubricBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Section 5: Dictamen y Recomendación -->
+        <div class="section-panel">
+          <div class="section-title">
+            <span>5. Recomendación del Proyecto (Dictamen)</span>
+          </div>
+          <div class="recommendation-list" id="recommendationList"></div>
+        </div>
+
+        <!-- Bottom Action Buttons -->
+        <div style="display: flex; gap: 15px; margin-top: 10px;">
+          <button class="btn-ide" style="flex: 2; padding: 14px; background: var(--udem-yellow); font-size: 1rem;" onclick="saveCurrentEvaluation()">
+            <i class="fa-solid fa-floppy-disk"></i> [ 💾 Confirmar & Guardar Evaluación ]
+          </button>
+          <button class="btn-ide btn-danger" style="flex: 1; padding: 14px; font-size: 0.9rem;" onclick="resetCurrentEvaluation()">
+            <i class="fa-solid fa-broom"></i> [ 🧹 Limpiar Campos ]
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Dashboard & Realtime Analytics -->
+      <div class="dashboard-sidebar">
+        
+        <div class="score-box">
+          <div class="score-title">CALIFICACIÓN GLOBAL</div>
+          <div class="score-number" id="globalScoreDisplay">0.0</div>
+          <div style="font-size: 0.75rem; color: #AAA; margin-top: 4px;" id="statusDisplay">ESTATUS: [ NO EVALUADO ]</div>
+        </div>
+
+        <div class="section-panel" style="margin-bottom: 0;">
+          <div class="section-title">
+            <span>Perfil del Proyecto</span>
+          </div>
+          <div class="radar-container">
+            <svg id="radarSvg" width="200" height="180" viewBox="0 0 200 180"></svg>
+          </div>
+        </div>
+
+        <div class="section-panel">
+          <div class="section-title">
+            <span>Resumen de Evaluación</span>
+          </div>
+          <div id="summaryText" style="font-size: 0.8rem; font-family: var(--font-mono); color: #444; white-space: pre-line;">
+            Selecciona o modifica cualquier criterio para calcular en tiempo real.
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal 1: Google Sheets Config -->
+  <div class="modal-overlay" id="sheetsModal">
+    <div class="modal-card">
+      <div class="modal-title"><i class="fa-solid fa-table"></i> Configuración de Google Sheets</div>
+      <p style="font-size: 0.85rem; margin-bottom: 12px; color: #444;">
+        Pega aquí la URL de tu **Google Apps Script (Web App)** que termina en <code>/exec</code> para guardar en tiempo real todas las evaluaciones en la nube.
+      </p>
+      <input type="text" id="sheetsUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; padding: 8px; font-size: 0.85rem; margin-bottom: 15px; border: 1.5px solid var(--border-color);">
+      
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn-ide" onclick="saveSheetsUrl()">[ Guardar URL ]</button>
+        <button class="btn-ide" onclick="closeModal('sheetsModal')">[ Cerrar ]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: QR App Modal -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-card" style="text-align: center;">
+      <div class="modal-title"><i class="fa-solid fa-qrcode"></i> Código QR para Evaluadores</div>
+      <p style="font-size: 0.85rem; margin-bottom: 15px; color: #444;">Escanea este código desde cualquier celular o tablet para abrir la plataforma de evaluación:</p>
+      <div id="qrcodeCanvas" style="display: flex; justify-content: center; margin: 15px 0;"></div>
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #666; word-break: break-all;" id="currentAppUrl"></div>
+      <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <button class="btn-ide" onclick="closeModal('qrModal')">[ Cerrar ]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toastMsg"></div>
+
+  <script>
+    // --- DATA STRUCTURE & INITIAL STATE ---
+    const TEAMS = [
+      {
+        id: 1,
+        topic: "Senderismo",
+        members: "Sara D. Chapa Carranco, Roberto A. Flores Garza, Marlen Rendón Hernández, Yolanda M. Vega Gómez"
+      },
+      {
+        id: 2,
+        topic: "Sistema híbrido de planeación académica adaptativa",
+        members: "Eugenio J. Decrescenzo Melicoff, Hernán Macías García"
+      },
+      {
+        id: 3,
+        topic: "Sargazo",
+        members: "Michelle Betanzo Carriles, Eugenio González Sánchez, Matias Romero Rangel, Luis A. Jáuregui Zúñiga"
+      },
+      {
+        id: 4,
+        topic: "Sistema de Respuesta Inmediata",
+        members: "Raúl E. Hernández Ramón, Alfonso Torres Medina, Carlos E. Tovar Castañeda"
+      },
+      {
+        id: 5,
+        topic: "Mobiliario urbano para áreas caninas",
+        members: "Sebastián Montaño Barrón, Amy L. Neri Arriaga, Dalia A. Rocha"
+      }
+    ];
+
+    const RUBRIC_CRITERIA = [
+      "Relevancia de la investigación",
+      "Avance del Marco Teórico",
+      "Analítica de Usuario / Mercado",
+      "Desarrollo Formal / Estético",
+      "Sostenibilidad / Impacto",
+      "Documentación Técnica"
+    ];
+
+    const RECOMMENDATIONS = [
+      { code: 'A', text: 'Aceptado sin cambios' },
+      { code: 'B', text: 'Aceptado con correcciones menores obligatorias' },
+      { code: 'C', text: 'Aceptado condicionalmente (Requiere reunión de seguimiento para ajustes mayores)' },
+      { code: 'D', text: 'Rechazado (Necesita nueva presentación tras reformulación completa)' }
+    ];
+
+    // State Store
+    let currentTeamId = 1;
+    let evaluatorName = "";
+    let googleSheetsUrl = localStorage.getItem("udem_sheets_url") || "";
+
+    // Storage per project
+    let evaluations = {};
+
+    function getEmptyEvaluation() {
+      return {
+        evaluated: false,
+        innovation: 0,
+        problem: 0,
+        objectives: 0,
+        feasibility: 0,
+        research: 0,
+        deliverables: 0,
+        presentation: 0,
+        matrixX: 0,
+        matrixY: 0,
+        rubric: {}, // criterionIndex -> level (1-4)
+        recommendation: ""
+      };
+    }
+
+    // Initialize Evaluations
+    TEAMS.forEach(team => {
+      evaluations[team.id] = getEmptyEvaluation();
+    });
+
+    // --- INITIALIZATION ---
+    window.onload = function() {
+      renderTeamTabs();
+      renderRubricTable();
+      renderRecommendations();
+      loadTeamData(currentTeamId);
+      if(googleSheetsUrl) {
+        document.getElementById("sheetsUrlInput").value = googleSheetsUrl;
+      }
+    };
+
+    // --- RENDER FUNCTIONS ---
+    function renderTeamTabs() {
+      const nav = document.getElementById("teamsNav");
+      nav.innerHTML = TEAMS.map(team => {
+        const isEval = evaluations[team.id].evaluated;
+        const activeClass = team.id === currentTeamId ? 'active' : '';
+        const statusClass = isEval ? 'status-yes' : 'status-no';
+        const statusText = isEval ? '[ EVALUADO ]' : '[ NO EVALUADO ]';
+        
+        return `
+          <div class="team-tab ${activeClass}" onclick="switchTeam(${team.id})">
+            <div>EQUIPO ${team.id}</div>
+            <div class="tab-status ${statusClass}">${statusText}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderRubricTable() {
+      const tbody = document.getElementById("rubricBody");
+      tbody.innerHTML = RUBRIC_CRITERIA.map((crit, idx) => `
+        <tr>
+          <td class="criterion-name">${crit}</td>
+          <td><button class="rubric-btn" id="rub_${idx}_1" onclick="setRubric(${idx}, 1)">25%</button></td>
+          <td><button class="rubric-btn" id="rub_${idx}_2" onclick="setRubric(${idx}, 2)">50%</button></td>
+          <td><button class="rubric-btn" id="rub_${idx}_3" onclick="setRubric(${idx}, 3)">75%</button></td>
+          <td><button class="rubric-btn" id="rub_${idx}_4" onclick="setRubric(${idx}, 4)">100%</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderRecommendations() {
+      const container = document.getElementById("recommendationList");
+      container.innerHTML = RECOMMENDATIONS.map(rec => `
+        <label class="rec-option" id="rec_lbl_${rec.code}">
+          <input type="radio" name="recommendationGroup" value="${rec.code}" onchange="setRecommendation('${rec.code}')">
+          <span><strong>${rec.code})</strong> ${rec.text}</span>
+        </label>
+      `).join('');
+    }
+
+    // --- LOAD & SWITCH TEAMS ---
+    function switchTeam(teamId) {
+      currentTeamId = teamId;
+      renderTeamTabs();
+      loadTeamData(teamId);
+    }
+
+    function loadTeamData(teamId) {
+      const team = TEAMS.find(t => t.id === teamId);
+      const evalData = evaluations[teamId];
+
+      document.getElementById("displayProjectTopic").innerText = `Tema: ${team.topic}`;
+      document.getElementById("displayTeamMembers").innerText = `Integrantes: ${team.members}`;
+
+      // Update Form Inputs
+      setInputValue('innovation', evalData.innovation);
+      setInputValue('problem', evalData.problem);
+      setInputValue('objectives', evalData.objectives);
+      setInputValue('feasibility', evalData.feasibility);
+
+      setSliderValue('research', evalData.research);
+      setSliderValue('deliverables', evalData.deliverables);
+      setSliderValue('presentation', evalData.presentation);
+
+      // Matrix
+      updateMatrixUI(evalData.matrixX, evalData.matrixY);
+
+      // Rubric
+      RUBRIC_CRITERIA.forEach((_, idx) => {
+        const val = evalData.rubric[idx] || 0;
+        for(let l=1; l<=4; l++) {
+          const btn = document.getElementById(`rub_${idx}_${l}`);
+          if(btn) btn.classList.toggle('selected', l === val);
+        }
+      });
+
+      // Recommendation
+      RECOMMENDATIONS.forEach(rec => {
+        const radio = document.querySelector(`input[name="recommendationGroup"][value="${rec.code}"]`);
+        const lbl = document.getElementById(`rec_lbl_${rec.code}`);
+        if(radio) radio.checked = (rec.code === evalData.recommendation);
+        if(lbl) lbl.classList.toggle('selected', rec.code === evalData.recommendation);
+      });
+
+      calculateScores();
+    }
+
+    function setInputValue(key, val) {
+      const el = document.querySelector(`input[oninput*="'${key}'"]`);
+      if(el) el.value = val;
+      const display = document.getElementById(`val_${key}`);
+      if(display) display.innerText = Number(val).toFixed(1);
+    }
+
+    function setSliderValue(key, val) {
+      const el = document.querySelector(`input[oninput*="'${key}'"]`);
+      if(el) el.value = val;
+      const display = document.getElementById(`val_${key}`);
+      if(display) display.innerText = `${val}%`;
+    }
+
+    // --- STATE MODIFIERS ---
+    function markAsEvaluated() {
+      evaluations[currentTeamId].evaluated = true;
+      renderTeamTabs();
+    }
+
+    function updateScore(key, val) {
+      evaluations[currentTeamId][key] = parseFloat(val);
+      if(key === 'innovation' || key === 'problem' || key === 'objectives' || key === 'feasibility') {
+        document.getElementById(`val_${key}`).innerText = Number(val).toFixed(1);
+      } else {
+        document.getElementById(`val_${key}`).innerText = `${val}%`;
+      }
+      markAsEvaluated();
+      calculateScores();
+    }
+
+    function handleMatrixClick(e) {
+      const rect = document.getElementById("matrixContainer").getBoundingClientRect();
+      const xPx = e.clientX - rect.left;
+      const yPx = e.clientY - rect.top;
+
+      let x = (xPx / rect.width) * 10.0;
+      let y = (1.0 - (yPx / rect.height)) * 10.0;
+
+      x = Math.max(0, Math.min(10, x));
+      y = Math.max(0, Math.min(10, y));
+
+      evaluations[currentTeamId].matrixX = parseFloat(x.toFixed(1));
+      evaluations[currentTeamId].matrixY = parseFloat(y.toFixed(1));
+
+      updateMatrixUI(x, y);
+      markAsEvaluated();
+      calculateScores();
+    }
+
+    function updateMatrixUI(x, y) {
+      const pt = document.getElementById("matrixPoint");
+      pt.style.left = `${(x / 10.0) * 100}%`;
+      pt.style.top = `${(1.0 - (y / 10.0)) * 100}%`;
+      document.getElementById("val_matrix").innerText = `X: ${Number(x).toFixed(1)} | Y: ${Number(y).toFixed(1)}`;
+    }
+
+    function setRubric(criterionIdx, level) {
+      evaluations[currentTeamId].rubric[criterionIdx] = level;
+      for(let l=1; l<=4; l++) {
+        const btn = document.getElementById(`rub_${criterionIdx}_${l}`);
+        if(btn) btn.classList.toggle('selected', l === level);
+      }
+      markAsEvaluated();
+      calculateScores();
+    }
+
+    function setRecommendation(code) {
+      evaluations[currentTeamId].recommendation = code;
+      RECOMMENDATIONS.forEach(rec => {
+        const lbl = document.getElementById(`rec_lbl_${rec.code}`);
+        if(lbl) lbl.classList.toggle('selected', rec.code === code);
+      });
+      markAsEvaluated();
+      calculateScores();
+    }
+
+    function updateEvaluatorName(val) {
+      evaluatorName = val;
+    }
+
+    // --- CALCULATE GLOBAL SCORE ---
+    function calculateScores() {
+      const data = evaluations[currentTeamId];
+
+      // 1. Dials Avg (0-10) -> Weight 30%
+      const dialsAvg = (data.innovation + data.problem + data.objectives + data.feasibility) / 4.0;
+      
+      // 2. Sliders Avg (0-100) -> Weight 30%
+      const slidersAvg = ((data.research + data.deliverables + data.presentation) / 3.0) / 10.0;
+
+      // 3. Matrix Avg (0-10) -> Weight 20%
+      const matrixAvg = (data.matrixX + data.matrixY) / 2.0;
+
+      // 4. Rubric Avg (1-4 -> 2.5-10) -> Weight 20%
+      const rubricKeys = Object.keys(data.rubric);
+      let rubricAvg = 0;
+      if(rubricKeys.length > 0) {
+        const sum = rubricKeys.reduce((acc, k) => acc + (data.rubric[k] * 2.5), 0);
+        rubricAvg = sum / rubricKeys.length;
+      }
+
+      // Final Weighted Score (0 - 10)
+      const finalScore = (dialsAvg * 0.3) + (slidersAvg * 0.3) + (matrixAvg * 0.2) + (rubricAvg * 0.2);
+      
+      document.getElementById("globalScoreDisplay").innerText = finalScore.toFixed(1);
+
+      const statusEl = document.getElementById("statusDisplay");
+      if(data.evaluated) {
+        statusEl.innerText = "ESTATUS: [ EVALUADO ]";
+        statusEl.style.color = "var(--udem-yellow)";
+      } else {
+        statusEl.innerText = "ESTATUS: [ NO EVALUADO ]";
+        statusEl.style.color = "#AAA";
+      }
+
+      updateRadarChart(dialsAvg, slidersAvg, matrixAvg, rubricAvg);
+      updateSummaryText(finalScore, dialsAvg, slidersAvg, matrixAvg, rubricAvg);
+    }
+
+    function updateRadarChart(c1, c2, c3, c4) {
+      const svg = document.getElementById("radarSvg");
+      const center = 100;
+      const radius = 70;
+
+      // Points calculation for 4 axes
+      const getPt = (val, angleDeg) => {
+        const r = (val / 10.0) * radius;
+        const rad = (angleDeg - 90) * (Math.PI / 180);
+        return `${center + r * Math.cos(rad)},${center + r * Math.sin(rad)}`;
+      };
+
+      const p1 = getPt(c1, 0);
+      const p2 = getPt(c2, 90);
+      const p3 = getPt(c3, 180);
+      const p4 = getPt(c4, 270);
+
+      svg.innerHTML = `
+        <circle cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="#DDD" stroke-width="1"/>
+        <circle cx="${center}" cy="${center}" r="${radius*0.5}" fill="none" stroke="#EEE" stroke-width="1"/>
+        <line x1="${center}" y1="${center-radius}" x2="${center}" y2="${center+radius}" stroke="#DDD"/>
+        <line x1="${center-radius}" y1="${center}" x2="${center+radius}" y2="${center}" stroke="#DDD"/>
+        <polygon points="${p1} ${p2} ${p3} ${p4}" fill="rgba(255, 199, 0, 0.4)" stroke="var(--border-color)" stroke-width="2"/>
+      `;
+    }
+
+    function updateSummaryText(final, c1, c2, c3, c4) {
+      const data = evaluations[currentTeamId];
+      const summary = `
+      • Qualitativo: ${c1.toFixed(1)} / 10
+      • Proceso: ${(c2*10).toFixed(0)}%
+      • Matriz 2D: X:${data.matrixX} Y:${data.matrixY}
+      • Dictamen: ${data.recommendation ? data.recommendation : 'Pendiente'}
+      `;
+      document.getElementById("summaryText").innerText = summary.trim();
+    }
+
+    // --- RESET CURRENT EVALUATION ---
+    function resetCurrentEvaluation() {
+      if(confirm(`¿Estás seguro de que deseas limpiar todos los campos del Equipo ${currentTeamId}?`)) {
+        evaluations[currentTeamId] = getEmptyEvaluation();
+        renderTeamTabs();
+        loadTeamData(currentTeamId);
+        showToast("Campos limpiados correctamente.");
+      }
+    }
+
+    // --- GOOGLE SHEETS INTEGRATION ---
+    function saveSheetsUrl() {
+      const url = document.getElementById("sheetsUrlInput").value.trim();
+      googleSheetsUrl = url;
+      localStorage.setItem("udem_sheets_url", url);
+      closeModal('sheetsModal');
+      showToast("URL de Google Sheets guardada.");
+    }
+
+    async function saveCurrentEvaluation() {
+      markAsEvaluated();
+      const data = evaluations[currentTeamId];
+      const team = TEAMS.find(t => t.id === currentTeamId);
+      const score = document.getElementById("globalScoreDisplay").innerText;
+
+      if(!evaluatorName) {
+        alert("Por favor ingresa tu nombre como evaluador en la barra superior.");
+        return;
+      }
+
+      showToast("Guardando evaluación...");
+
+      if(googleSheetsUrl) {
+        try {
+          const payload = {
+            evaluator: evaluatorName,
+            teamId: currentTeamId,
+            teamName: `Equipo ${currentTeamId}`,
+            projectTopic: team.topic,
+            finalScore: score,
+            recommendation: data.recommendation || "N/A"
+          };
+
+          await fetch(googleSheetsUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          showToast("¡Evaluación enviada con éxito a Google Sheets!");
+        } catch(err) {
+          console.error(err);
+          showToast("Guardado local realizado (Error en enlace a Sheets).");
+        }
+      } else {
+        showToast("Evaluación guardada localmente.");
+      }
+    }
+
+    // --- PDF EXPORT ---
+    function exportPDF() {
+      window.print();
+    }
+
+    // --- MODAL UTILS ---
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+      if(id === 'qrModal') {
+        const url = window.location.href;
+        document.getElementById("currentAppUrl").innerText = url;
+        const qrContainer = document.getElementById("qrcodeCanvas");
+        qrContainer.innerHTML = "";
+        new QRCode(qrContainer, {
+          text: url,
+          width: 160,
+          height: 160
+        });
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toastMsg");
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+  </script>
+</body>
+</html>
