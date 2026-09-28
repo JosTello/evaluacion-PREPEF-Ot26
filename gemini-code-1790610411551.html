@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UDEM Evaluation Canvas - Edición Final Integrada</title>
+  <style>
+    :root {
+      --udem-yellow: #FFD100;
+      --udem-black: #111111;
+      --udem-gray-dark: #1E1E1E;
+      --udem-gray-card: #282828;
+      --udem-gray-border: #3D3D3D;
+      --udem-gray-text: #AAAAAA;
+      --udem-white: #FFFFFF;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--udem-black);
+      color: var(--udem-white);
+      font-family: var(--font-family);
+      padding: 24px;
+      line-height: 1.5;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--udem-yellow);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo {
+      background-color: var(--udem-yellow);
+      color: var(--udem-black);
+      font-weight: 900;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .brand-title { font-size: 1.4rem; font-weight: 700; color: var(--udem-white); }
+
+    .evaluator-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--udem-gray-dark);
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--udem-gray-border);
+    }
+    .evaluator-box input {
+      background: transparent;
+      border: none;
+      color: var(--udem-yellow);
+      font-size: 1rem;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .team-selector-bar {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+
+    .team-btn {
+      background: var(--udem-gray-dark);
+      border: 1px solid var(--udem-gray-border);
+      color: var(--udem-white);
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .team-btn:hover { border-color: var(--udem-yellow); }
+    .team-btn.active {
+      background: var(--udem-yellow);
+      color: var(--udem-black);
+      border-color: var(--udem-yellow);
+    }
+    .team-btn .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #555;
+    }
+    .team-btn.evaluated .status-dot { background: #00FF66; }
+
+    .project-header-card {
+      background: var(--udem-gray-dark);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--udem-gray-border);
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .project-info h2 { font-size: 1.3rem; color: var(--udem-yellow); margin-bottom: 4px; }
+    .project-info p { color: var(--udem-gray-text); font-size: 0.95rem; }
+
+    .score-badge {
+      text-align: right;
+      background: var(--udem-black);
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: 1px solid var(--udem-gray-border);
+    }
+    .score-badge .number { font-size: 2.2rem; font-weight: 800; color: var(--udem-yellow); }
+    .score-badge .label { font-size: 0.75rem; text-transform: uppercase; color: var(--udem-gray-text); }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--udem-gray-dark);
+      border: 1px solid var(--udem-gray-border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--udem-yellow);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .knobs-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .dial-card {
+      background: var(--udem-gray-card);
+      border: 1px solid var(--udem-gray-border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .dial-svg { width: 90px; height: 90px; cursor: pointer; }
+    .dial-label { font-size: 0.85rem; font-weight: 600; margin-top: 6px; }
+    .dial-input {
+      width: 60px;
+      background: var(--udem-black);
+      border: 1px solid var(--udem-gray-border);
+      color: var(--udem-yellow);
+      text-align: center;
+      font-weight: bold;
+      border-radius: 4px;
+      margin-top: 4px;
+      padding: 2px;
+    }
+
+    .slider-group { margin-bottom: 16px; }
+    .slider-header { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px; }
+    .slider-header span:last-child { color: var(--udem-yellow); font-weight: bold; }
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--udem-yellow);
+      background: var(--udem-gray-border);
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .matrix-box {
+      width: 100%;
+      height: 220px;
+      background: var(--udem-gray-card);
+      border: 1px solid var(--udem-gray-border);
+      border-radius: 8px;
+      position: relative;
+      cursor: crosshair;
+    }
+    .matrix-axis-x, .matrix-axis-y {
+      position: absolute;
+      background: #444;
+    }
+    .matrix-axis-x { top: 50%; left: 0; right: 0; height: 1px; }
+    .matrix-axis-y { left: 50%; top: 0; bottom: 0; width: 1px; }
+    .matrix-point {
+      width: 16px;
+      height: 16px;
+      background: var(--udem-yellow);
+      border: 2px solid var(--udem-black);
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      box-shadow: 0 0 10px rgba(255,209,0,0.8);
+    }
+    .matrix-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--udem-gray-text);
+    }
+
+    .full-width-card { margin-bottom: 24px; }
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .rubric-table th, .rubric-table td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--udem-gray-border);
+    }
+    .rubric-table th { color: var(--udem-gray-text); font-size: 0.85rem; text-transform: uppercase; }
+    .rubric-btn {
+      width: 100%;
+      padding: 8px;
+      background: var(--udem-gray-card);
+      border: 1px solid var(--udem-gray-border);
+      color: var(--udem-white);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .rubric-btn:hover { border-color: var(--udem-yellow); }
+    .rubric-btn.selected {
+      background: var(--udem-yellow);
+      color: var(--udem-black);
+      font-weight: bold;
+      border-color: var(--udem-yellow);
+    }
+
+    .recommendations-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+    .rec-option {
+      background: var(--udem-gray-card);
+      border: 1px solid var(--udem-gray-border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .rec-option:hover { border-color: var(--udem-yellow); }
+    .rec-option.selected {
+      border-color: var(--udem-yellow);
+      background: rgba(255, 209, 0, 0.1);
+    }
+    .rec-option input[type="radio"] { accent-color: var(--udem-yellow); width: 18px; height: 18px; }
+
+    .action-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .btn-main {
+      background: var(--udem-yellow);
+      color: var(--udem-black);
+      border: none;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.1s, background-color 0.2s;
+    }
+    .btn-main:hover { background: #e6bc00; }
+    .btn-main:active { transform: scale(0.98); }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--udem-white);
+      border: 1px solid var(--udem-gray-border);
+      padding: 14px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn-secondary:hover { border-color: var(--udem-white); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo">UDEM</div>
+      <div class="brand-title">Canvas de Evaluación de Proyectos</div>
+    </div>
+    <div class="evaluator-box">
+      <span>Evaluador:</span>
+      <input type="text" id="evaluatorName" value="Prof. Evaluador" placeholder="Tu Nombre">
+    </div>
+  </header>
+
+  <!-- Selector de Equipos -->
+  <div class="team-selector-bar" id="teamSelector"></div>
+
+  <!-- Tarjeta de Información del Proyecto Activo -->
+  <div class="project-header-card">
+    <div class="project-info">
+      <h2 id="displayProjectTopic">Cargando proyecto...</h2>
+      <p id="displayTeamMembers">Integrantes: -</p>
+    </div>
+    <div class="score-badge">
+      <div class="number" id="globalScoreDisplay">0.0</div>
+      <div class="label">Calificación Global</div>
+    </div>
+  </div>
+
+  <div class="grid-layout">
+    
+    <!-- 1. Criterios Cualitativos (Knobs) -->
+    <div class="card">
+      <div class="card-title">
+        <span>Criterios Cualitativos</span>
+        <span style="font-size:0.8rem; color:var(--udem-gray-text);">30% del total</span>
+      </div>
+      <div class="knobs-container">
+        <div class="dial-card" id="dial_card_innovation">
+          <svg class="dial-svg" viewBox="0 0 100 100" id="svg_innovation">
+            <circle cx="50" cy="50" r="40" stroke="#3D3D3D" stroke-width="8" fill="none"/>
+            <circle id="arc_innovation" cx="50" cy="50" r="40" stroke="#FFD100" stroke-width="8" fill="none" stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"/>
+          </svg>
+          <div class="dial-label">Innovación</div>
+          <input type="number" class="dial-input" id="num_innovation" min="0" max="10" step="0.5" value="0" onchange="updateDialFromInput('innovation', this.value)">
+        </div>
+
+        <div class="dial-card" id="dial_card_problem">
+          <svg class="dial-svg" viewBox="0 0 100 100" id="svg_problem">
+            <circle cx="50" cy="50" r="40" stroke="#3D3D3D" stroke-width="8" fill="none"/>
+            <circle id="arc_problem" cx="50" cy="50" r="40" stroke="#FFD100" stroke-width="8" fill="none" stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"/>
+          </svg>
+          <div class="dial-label">Problemática</div>
+          <input type="number" class="dial-input" id="num_problem" min="0" max="10" step="0.5" value="0" onchange="updateDialFromInput('problem', this.value)">
+        </div>
+
+        <div class="dial-card" id="dial_card_objectives">
+          <svg class="dial-svg" viewBox="0 0 100 100" id="svg_objectives">
+            <circle cx="50" cy="50" r="40" stroke="#3D3D3D" stroke-width="8" fill="none"/>
+            <circle id="arc_objectives" cx="50" cy="50" r="40" stroke="#FFD100" stroke-width="8" fill="none" stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"/>
+          </svg>
+          <div class="dial-label">Objetivos</div>
+          <input type="number" class="dial-input" id="num_objectives" min="0" max="10" step="0.5" value="0" onchange="updateDialFromInput('objectives', this.value)">
+        </div>
+
+        <div class="dial-card" id="dial_card_feasibility">
+          <svg class="dial-svg" viewBox="0 0 100 100" id="svg_feasibility">
+            <circle cx="50" cy="50" r="40" stroke="#3D3D3D" stroke-width="8" fill="none"/>
+            <circle id="arc_feasibility" cx="50" cy="50" r="40" stroke="#FFD100" stroke-width="8" fill="none" stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"/>
+          </svg>
+          <div class="dial-label">Viabilidad</div>
+          <input type="number" class="dial-input" id="num_feasibility" min="0" max="10" step="0.5" value="0" onchange="updateDialFromInput('feasibility', this.value)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Criterios de Proceso (Sliders) -->
+    <div class="card">
+      <div class="card-title">
+        <span>Avance y Proceso</span>
+        <span style="font-size:0.8rem; color:var(--udem-gray-text);">30% del total</span>
+      </div>
+      
+      <div class="slider-group">
+        <div class="slider-header">
+          <span>Investigación Contextual</span>
+          <span id="val_research">0%</span>
+        </div>
+        <input type="range" id="input_research" min="0" max="100" value="0" oninput="updateProcessScore('research', this.value)">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span>Entregables y Prototipado</span>
+          <span id="val_deliverables">0%</span>
+        </div>
+        <input type="range" id="input_deliverables" min="0" max="100" value="0" oninput="updateProcessScore('deliverables', this.value)">
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-header">
+          <span>Presentación y Pitch</span>
+          <span id="val_presentation">0%</span>
+        </div>
+        <input type="range" id="input_presentation" min="0" max="100" value="0" oninput="updateProcessScore('presentation', this.value)">
+      </div>
+    </div>
+
+    <!-- 3. Matriz 2D Viabilidad vs Impacto -->
+    <div class="card">
+      <div class="card-title">
+        <span>Matriz Viabilidad vs Impacto</span>
+        <span style="font-size:0.8rem; color:var(--udem-gray-text);">20% del total</span>
+      </div>
+      <div class="matrix-box" id="matrixBox" onclick="handleMatrixClick(event)">
+        <div class="matrix-axis-x"></div>
+        <div class="matrix-axis-y"></div>
+        <div class="matrix-point" id="matrixPoint" style="left:50%; top:50%;"></div>
+      </div>
+      <div class="matrix-labels">
+        <span>Viabilidad (X): <strong id="val_matrix_x" style="color:var(--udem-yellow);">5.0</strong></span>
+        <span>Impacto (Y): <strong id="val_matrix_y" style="color:var(--udem-yellow);">5.0</strong></span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 4. Matriz de Rúbrica Evaluativa -->
+  <div class="card full-width-card">
+    <div class="card-title">
+      <span>Niveles Cualitativos de Rúbrica Evaluativa</span>
+      <span style="font-size:0.8rem; color:var(--udem-gray-text);">20% del total</span>
+    </div>
+    <table class="rubric-table">
+      <thead>
+        <tr>
+          <th>Criterio Técnico</th>
+          <th style="width:18%;">Insuficiente (25%)</th>
+          <th style="width:18%;">Aceptable (50%)</th>
+          <th style="width:18%;">Bueno (75%)</th>
+          <th style="width:18%;">Excelente (100%)</th>
+        </tr>
+      </thead>
+      <tbody id="rubricBody">
+        <!-- Renderizado dinámico -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 5. Dictamen / Recomendación -->
+  <div class="card full-width-card">
+    <div class="card-title">
+      <span>Recomendación / Dictamen Final</span>
+    </div>
+    <div class="recommendations-list" id="recommendationList">
+      <!-- Renderizado dinámico -->
+    </div>
+  </div>
+
+  <!-- Barra de Acciones -->
+  <div class="action-bar">
+    <button class="btn-secondary" onclick="exportJSON()">Exportar Resumen local (JSON)</button>
+    <button class="btn-main" onclick="saveCurrentEvaluation()">Guardar y Enviar Evaluación</button>
+  </div>
+
+  <script>
+    // Configuración del Web App Endpoint de Apps Script
+    const googleSheetsUrl = 'https://script.google.com/macros/s/AKfycbz_RELAX_DEPLOYMENT_ID/exec';
+
+    const TEAMS = [
+      { id: 1, topic: "Sistema de Reciclaje Inteligente de Agua", members: "Ana García, Luis Torres" },
+      { id: 2, topic: "Plataforma IoT de Monitoreo Agrícola", members: "Carlos Mendoza, Sofía Rivas" },
+      { id: 3, topic: "Movilidad Eléctrica Urbana Modular", members: "Mariana Hernández, Jorge Gómez" },
+      { id: 4, topic: "Optimización Energética Industrial con IA", members: "Daniela Ruiz, Roberto Sánchez" },
+      { id: 5, topic: "Empaque Biodegradable de Biomateriales", members: "Elena Castro, Mateo López" }
+    ];
+
+    const RUBRIC_CRITERIA = [
+      "Relevancia de la investigación y justificación del problema",
+      "Avance del Marco Teórico y Sustento Metodológico",
+      "Analítica de Usuario, Pruebas de Campo y Mercado",
+      "Desarrollo Formal, Estético y Funcional del Prototipo",
+      "Sostenibilidad, Escalabilidad e Impacto Social",
+      "Documentación Técnica y Claridad en la Entregas"
+    ];
+
+    const RECOMMENDATIONS = [
+      "Aceptado sin cambios",
+      "Aceptado con correcciones menores obligatorias",
+      "Aceptado condicionalmente (Requiere reunión de seguimiento para ajustes mayores)",
+      "Rechazado (Necesita nueva presentación tras reformulación completa)"
+    ];
+
+    let currentTeamId = 1;
+    let evaluations = {};
+
+    function getEmptyEvaluation() {
+      return {
+        innovation: 5.0,
+        problem: 5.0,
+        objectives: 5.0,
+        feasibility: 5.0,
+        research: 50,
+        deliverables: 50,
+        presentation: 50,
+        matrixX: 5.0,
+        matrixY: 5.0,
+        rubric: { 0: 2, 1: 2, 2: 2, 3: 2, 4: 2, 5: 2 },
+        recommendationIndex: 0,
+        recommendationText: RECOMMENDATIONS[0],
+        evaluated: false
+      };
+    }
+
+    // Inicialización del sistema
+    window.onload = function() {
+      TEAMS.forEach(team => {
+        evaluations[team.id] = getEmptyEvaluation();
+      });
+      renderTeamButtons();
+      renderRubricTable();
+      renderRecommendations();
+      selectTeam(1);
+    };
+
+    function renderTeamButtons() {
+      const container = document.getElementById("teamSelector");
+      container.innerHTML = TEAMS.map(team => `
+        <button class="team-btn ${team.id === currentTeamId ? 'active' : ''} ${evaluations[team.id].evaluated ? 'evaluated' : ''}" 
+                id="team_btn_${team.id}" onclick="selectTeam(${team.id})">
+          <span class="status-dot"></span>
+          Equipo ${team.id}
+        </button>
+      `).join('');
+    }
+
+    function selectTeam(id) {
+      currentTeamId = id;
+      renderTeamButtons();
+      const team = TEAMS.find(t => t.id === id);
+      const evalData = evaluations[id];
+
+      document.getElementById("displayProjectTopic").innerText = `Tema: ${team.topic}`;
+      document.getElementById("displayTeamMembers").innerText = `Integrantes: ${team.members}`;
+
+      // Cargar Knobs
+      ['innovation', 'problem', 'objectives', 'feasibility'].forEach(key => {
+        const val = evalData[key];
+        document.getElementById(`num_${key}`).value = val;
+        renderDialSVG(key, val);
+      });
+
+      // Cargar Sliders
+      ['research', 'deliverables', 'presentation'].forEach(key => {
+        const val = evalData[key];
+        document.getElementById(`input_${key}`).value = val;
+        document.getElementById(`val_${key}`).innerText = `${val}%`;
+      });
+
+      // Cargar Matriz 2D
+      updateMatrixUI(evalData.matrixX, evalData.matrixY);
+
+      // Cargar Rúbrica
+      RUBRIC_CRITERIA.forEach((_, idx) => {
+        const val = evalData.rubric[idx] || 1;
+        for(let l=1; l<=4; l++) {
+          const btn = document.getElementById(`rub_${idx}_${l}`);
+          if(btn) btn.classList.toggle('selected', l === val);
+        }
+      });
+
+      // Cargar Recomendaciones
+      const recIdx = evalData.recommendationIndex !== undefined ? evalData.recommendationIndex : 0;
+      setRecommendation(recIdx, false);
+
+      calculateScores();
+    }
+
+    // Manejo de Knobs
+    function updateDialFromInput(key, val) {
+      let num = parseFloat(val);
+      if (isNaN(num)) num = 0;
+      num = Math.max(0, Math.min(10, num));
+      evaluations[currentTeamId][key] = num;
+      renderDialSVG(key, num);
+      markAsEvaluated();
+      calculateScores();
+    }
+
+    function renderDialSVG(key, val) {
+      const circle = document.getElementById(`arc_${key}`);
+      if (!circle) return;
+      const circumference = 2 * Math.PI * 40; // ~251.2
+      const offset = circumference - (val / 10.0) * circumference;
+      circle.style.strokeDashoffset = offset;
+    }
+
+    // Manejo de Sliders
+    function updateProcessScore(key, val) {
+      const num = parseInt(val) || 0;
+      evaluations[currentTeamId][key] = num;
+      document.getElementById(`val_${key}`).innerText = `${num}%`;
+      markAsEvaluated();
+      calculateScores();
+    }
+
+    // Manejo de Matriz 2D
+    function handleMatrixClick(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      let xVal = (clickX / rect.width) * 10.0;
+      let yVal = (1.0 - (clickY / rect.height)) * 10.0;
+
+      xVal = Math.max(0, Math.min(10, Math.round(xVal * 10) / 10));
+      yVal = Math.max(0, Math.min(10, Math.round(yVal * 10) / 10));
+
+      evaluations[currentTeamId].matrixX = xVal;
+      evaluations[currentTeamId].matrixY = yVal;
+
+      updateMatrixUI(xVal, yVal);
+      markAsEvaluated();
+      calculateScores();
+    }
+
+    function updateMatrixUI(x, y) {
+      const point = document.getElementById("matrixPoint");
+      const posX = (x / 10.0) * 100;
+      const posY = (1.0 - (y / 10.0)) * 100;
+
+      point.style.left = `${posX}%`;
+      point.style.top = `${posY}%`;
+
+      document.getElementById("val_matrix_x").innerText = x.toFixed(1);
+      document.getElementById("val_matrix_y").innerText = y.toFixed(1);
+    }
+
+    // Renderizado y Manejo de Rúbrica
+    function renderRubricTable() {
+      const tbody = document.getElementById("rubricBody");
+      tbody.innerHTML = RUBRIC_CRITERIA.map((crit, idx) => `
+        <tr>
+          <td style="font-weight:600; font-size:0.9rem;">${crit}</td>
+          <td><button class="rubric-btn" id="rub_${idx}_1" onclick="setRubric(${idx}, 1)">25%</button></td>
+          <td><button class="rubric-btn" id="rub_${idx}_2" onclick="setRubric(${idx}, 2)">50%</button></td>
+          <td><button class="rubric-btn" id="rub_${idx}_3" onclick="setRubric(${idx}, 3)">75%</button></td>
+          <td><button class="rubric-btn" id="rub_${idx}_4" onclick="setRubric(${idx}, 4)">100%</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function setRubric(criterionIdx, level) {
+      evaluations[currentTeamId].rubric[criterionIdx] = level;
+      for(let l=1; l<=4; l++) {
+        const btn = document.getElementById(`rub_${criterionIdx}_${l}`);
+        if(btn) btn.classList.toggle('selected', l === level);
+      }
+      markAsEvaluated();
+      calculateScores();
+    }
+
+    // Renderizado y Manejo de Recomendación
+    function renderRecommendations() {
+      const container = document.getElementById("recommendationList");
+      container.innerHTML = RECOMMENDATIONS.map((text, idx) => `
+        <label class="rec-option" id="rec_lbl_${idx}">
+          <input type="radio" name="recommendationGroup" value="${idx}" onchange="setRecommendation(${idx}, true)">
+          <span>${text}</span>
+        </label>
+      `).join('');
+    }
+
+    function setRecommendation(idx, triggerCalc = true) {
+      evaluations[currentTeamId].recommendationIndex = idx;
+      evaluations[currentTeamId].recommendationText = RECOMMENDATIONS[idx];
+
+      RECOMMENDATIONS.forEach((_, i) => {
+        const lbl = document.getElementById(`rec_lbl_${i}`);
+        const radio = document.querySelector(`input[name="recommendationGroup"][value="${i}"]`);
+        const isSel = (i === idx);
+        if(lbl) lbl.classList.toggle('selected', isSel);
+        if(radio) radio.checked = isSel;
+      });
+
+      if(triggerCalc) {
+        markAsEvaluated();
+        calculateScores();
+      }
+    }
+
+    function markAsEvaluated() {
+      evaluations[currentTeamId].evaluated = true;
+      renderTeamButtons();
+    }
+
+    // Cálculo Global Ponderado
+    function calculateScores() {
+      const data = evaluations[currentTeamId];
+
+      // 1. Cualitativos (30%): Escala 0-10 -> Convertido a 0-100%
+      const qualAvg = ((data.innovation + data.problem + data.objectives + data.feasibility) / 4.0) * 10;
+
+      // 2. Proceso (30%): Escala 0-100%
+      const procAvg = (data.research + data.deliverables + data.presentation) / 3.0;
+
+      // 3. Matriz (20%): Promedio X e Y (0-10) -> Convertido a 0-100%
+      const matAvg = ((data.matrixX + data.matrixY) / 2.0) * 10;
+
+      // 4. Rúbrica (20%): Niveles 1,2,3,4 -> 25%, 50%, 75%, 100%
+      let rubSum = 0;
+      Object.values(data.rubric).forEach(lvl => {
+        rubSum += (lvl * 25);
+      });
+      const rubAvg = rubSum / 6.0;
+
+      // Ponderación Final (Escala 0.0 - 10.0)
+      const finalScore100 = (qualAvg * 0.30) + (procAvg * 0.30) + (matAvg * 0.20) + (rubAvg * 0.20);
+      const finalScore10 = Math.round((finalScore100 / 10.0) * 10) / 10;
+
+      document.getElementById("globalScoreDisplay").innerText = finalScore10.toFixed(1);
+    }
+
+    // Guardado y Envío con Lectura Instantánea Garantizada
+    async function saveCurrentEvaluation() {
+      markAsEvaluated();
+      const team = TEAMS.find(t => t.id === currentTeamId);
+      const evaluatorName = document.getElementById("evaluatorName").value.trim() || "Anónimo";
+      const score = document.getElementById("globalScoreDisplay").innerText;
+
+      // Lectura en tiempo real del estado de controles
+      const innovVal = parseFloat(document.getElementById("num_innovation").value) || 0;
+      const probVal = parseFloat(document.getElementById("num_problem").value) || 0;
+      const objVal = parseFloat(document.getElementById("num_objectives").value) || 0;
+      const feasVal = parseFloat(document.getElementById("num_feasibility").value) || 0;
+
+      const resVal = parseInt(document.getElementById("input_research").value) || 0;
+      const delVal = parseInt(document.getElementById("input_deliverables").value) || 0;
+      const presVal = parseInt(document.getElementById("input_presentation").value) || 0;
+
+      const checkedRadio = document.querySelector('input[name="recommendationGroup"]:checked');
+      const recIndex = checkedRadio ? parseInt(checkedRadio.value) : evaluations[currentTeamId].recommendationIndex;
+      const recText = RECOMMENDATIONS[recIndex] || "Sin dictamen";
+
+      const data = evaluations[currentTeamId];
+
+      const payload = {
+        timestamp: new Date().toLocaleString('es-MX'),
+        evaluator: evaluatorName,
+        teamId: currentTeamId,
+        teamName: `Equipo ${currentTeamId}`,
+        projectTopic: team.topic,
+        teamMembers: team.members,
+        finalScore: score,
+
+        // Knobs
+        innovation: innovVal,
+        problem: probVal,
+        objectives: objVal,
+        feasibility: feasVal,
+
+        // Sliders
+        research: resVal + "%",
+        deliverables: delVal + "%",
+        presentation: presVal + "%",
+
+        // Matriz
+        matrixX: data.matrixX,
+        matrixY: data.matrixY,
+
+        // Rúbrica Niveles
+        rubric_relevancia: (data.rubric[0] * 25) + "%",
+        rubric_marco_teorico: (data.rubric[1] * 25) + "%",
+        rubric_analitica_usuario: (data.rubric[2] * 25) + "%",
+        rubric_desarrollo_formal: (data.rubric[3] * 25) + "%",
+        rubric_sostenibilidad: (data.rubric[4] * 25) + "%",
+        rubric_documentacion: (data.rubric[5] * 25) + "%",
+
+        // Dictamen
+        recommendationText: recText
+      };
+
+      console.log("Payload a enviar:", payload);
+
+      try {
+        await fetch(googleSheetsUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+        alert(`¡Evaluación del Equipo ${currentTeamId} guardada y enviada con éxito!`);
+      } catch (err) {
+        console.error("Error al enviar:", err);
+        alert("Atención: No se pudo conectar con Google Sheets. Se guardó copia localmente.");
+      }
+    }
+
+    function exportJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(evaluations, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `evaluaciones_udem_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+  </script>
+</body>
+</html>
