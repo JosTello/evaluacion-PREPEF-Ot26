@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDEM - Evaluación de Proyectos | Diseño Integral 8° Semestre</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        idemcanvas: '#e5e5e5',
+                        idempanel: '#ffffff',
+                        idemborder: '#cccccc',
+                        idemborderdark: '#999999',
+                        idemtext: '#111111',
+                        idemsubtext: '#555555',
+                        udemyellow: '#FFC700',
+                        udemyellowhover: '#e6b200',
+                        udemyellowlight: '#fff8db',
+                        idemaccent: '#0284c7',
+                        idemgreen: '#16a34a',
+                        idemred: '#dc2626'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Processing IDE Light Neutral Theme */
+        body {
+            background-color: #e5e5e5;
+            color: #111111;
+            user-select: none;
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .ide-panel {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .ide-panel-header {
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #d1d1d1;
+        }
+
+        .ide-input {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            color: #111111;
+        }
+
+        .ide-input:focus {
+            border-color: #FFC700;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 199, 0, 0.4);
+        }
+
+        /* Rotary Knob Drag Element */
+        .knob-element {
+            touch-action: none;
+            cursor: ns-resize;
+        }
+
+        /* Technical Range Sliders */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #e0e0e0;
+            border-radius: 4px;
+            border: 1px solid #b5b5b5;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 4px;
+            background: #FFC700;
+            border: 1.5px solid #111111;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -7px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #ffe066;
+        }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #dcdcdc;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #aaaaaa;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #888888;
+        }
+
+        /* PRINT MEDIA ENGINE - Consolidates ALL 5 projects into PDF */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                background-image: none !important;
+                font-size: 11px !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            #printConsolidatedReport {
+                display: block !important;
+            }
+            .page-break {
+                page-break-after: always;
+                break-after: page;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans text-slate-900 pb-12">
+
+    <!-- Processing IDE Top Header Bar -->
+    <header class="w-full bg-[#f2f2f2] border-b border-[#cccccc] sticky top-0 z-50 px-4 lg:px-8 py-2.5 no-print shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            
+            <!-- Brand & Institution Info -->
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded bg-udemyellow flex items-center justify-center text-slate-950 font-black font-mono text-xl shadow border border-slate-900">
+                    U
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-mono font-bold text-slate-950 bg-udemyellow px-2 py-0.5 rounded border border-slate-900">UDEM</span>
+                        <h1 class="font-bold text-slate-900 text-sm tracking-tight">
+                            Diseño Industrial <span class="text-slate-600 font-normal">| Evaluación de Anteproyectos</span>
+                        </h1>
+                    </div>
+                    <p class="text-[11px] text-slate-600 font-mono">Materia: <strong class="text-slate-900">Diseño Integral</strong> (8° Semestre)</p>
+                </div>
+            </div>
+
+            <!-- Global Evaluator & Global Export Buttons -->
+            <div class="flex items-center space-x-3 flex-wrap">
+                <!-- Evaluator Input -->
+                <div class="flex items-center gap-2 bg-white px-3 py-1 rounded border border-[#cccccc] shadow-sm">
+                    <label for="evaluatorName" class="text-xs font-mono text-slate-900 font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-user-pen text-amber-600"></i> Evaluador:
+                    </label>
+                    <input type="text" id="evaluatorName" placeholder="Nombre del Profesor / Evaluador" 
+                           class="ide-input text-xs font-mono rounded px-2 py-1 w-52 font-semibold"
+                           oninput="updateEvaluatorName(this.value)">
+                </div>
+
+                <!-- Export All Projects PDF -->
+                <button onclick="triggerPrintAllProjects()" class="bg-udemyellow hover:bg-udemyellowhover text-slate-950 px-3.5 py-1.5 rounded text-xs font-bold font-mono border border-slate-900 transition flex items-center gap-2 shadow-sm cursor-pointer">
+                    <i class="fa-solid fa-file-pdf text-slate-950"></i>
+                    <span>Exportar PDF (Consolidado 5 Equipos)</span>
+                </button>
+
+                <!-- Reset All Evaluations -->
+                <button onclick="resetAllEvaluations()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-3 py-1.5 rounded text-xs font-mono border border-slate-400 transition flex items-center gap-1 cursor-pointer">
+                    <i class="fa-solid fa-rotate-left text-slate-600"></i>
+                    <span>Reiniciar</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- TEAM SELECTOR TABS -->
+    <nav class="w-full bg-[#e0e0e0] border-b border-[#cccccc] px-4 lg:px-8 py-2 no-print">
+        <div class="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto" id="teamsTabContainer">
+            <!-- Tabs injected dynamically via JS -->
+        </div>
+    </nav>
+
+    <!-- MAIN INTERACTIVE LAYOUT -->
+    <main class="max-w-7xl mx-auto w-full px-4 lg:px-8 mt-5 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow no-print">
+
+        <!-- LEFT COLUMN: Evaluation Input Sections (7 cols) -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
+
+            <!-- TEAM HEADER INFO CARD -->
+            <div class="ide-panel rounded p-4 border-l-4 border-l-udemyellow relative bg-white">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2 mb-2">
+                    <div class="flex items-center gap-2">
+                        <span id="teamBadge" class="text-xs font-mono font-bold uppercase text-slate-950 bg-udemyellow px-2.5 py-0.5 rounded border border-slate-900">
+                            EQUIPO 1
+                        </span>
+                        <span id="teamStatusBadge" class="text-xs font-mono font-bold px-2 py-0.5 rounded border bg-slate-200 text-slate-600 border-slate-400">
+                            [ NO EVALUADO ]
+                        </span>
+                    </div>
+                    <span class="text-xs font-mono text-slate-500">Diseño Integral 8° | UDEM</span>
+                </div>
+                <h2 id="projectTopicTitle" class="text-lg font-bold text-slate-900 tracking-tight">Tema: Senderismo</h2>
+                <p id="teamMembersList" class="text-xs text-slate-600 font-sans leading-relaxed mt-1">
+                    <strong>Integrantes:</strong> Sara D. Chapa Carranco, Roberto A. Flores Garza, Marlen Rendón Hernández, Yolanda M. Vega Gómez
+                </p>
+            </div>
+
+            <!-- SECTION 1: CRITERIOS CUALITATIVOS (DIALS / KNOBS 0-10) -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-compass-drafting text-amber-600"></i>
+                        <h3 class="font-bold text-slate-900 text-sm font-mono tracking-wide">1. Criterios Cualitativos</h3>
+                    </div>
+                    <span class="text-[11px] font-mono text-slate-500">Arrastre vertical en diales (0 - 10 pts)</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5" id="qualitativeDialsGrid">
+                    <!-- Dynamic SVG Dials Injected Here -->
+                </div>
+            </div>
+
+            <!-- SECTION 2: CRITERIOS DE PROCESO Y AVANCE (SLIDERS 0%-100%) -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-sky-600"></i>
+                        <h3 class="font-bold text-slate-900 text-sm font-mono tracking-wide">2. Criterios de Proceso y Avance</h3>
+                    </div>
+                    <span class="text-[11px] font-mono text-slate-500">Avance porcentual (0 - 100%)</span>
+                </div>
+
+                <div class="space-y-4" id="processSlidersContainer">
+                    <!-- Dynamic Sliders Injected Here -->
+                </div>
+            </div>
+
+            <!-- SECTION 3: MATRIZ 2D DE POSICIONAMIENTO ESTRATÉGICO (0.0, 0.0) -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-3 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-chart-area text-emerald-600"></i>
+                        <h3 class="font-bold text-slate-900 text-sm font-mono tracking-wide">3. Matriz 2D de Posicionamiento</h3>
+                    </div>
+                    <span class="text-xs font-mono text-slate-950 bg-udemyellow px-2 py-0.5 rounded border border-slate-900 font-bold" id="matrixCoordsLabel">
+                        X: 0.0 | Y: 0.0
+                    </span>
+                </div>
+                <p class="text-xs text-slate-600 mb-3 font-sans">Haz clic o arrastra la retícula para definir Impacto Social (X) vs Viabilidad Técnica (Y).</p>
+
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <!-- Canvas Matrix Interactive Box -->
+                    <div class="relative w-full max-w-[280px] aspect-square rounded bg-[#f0f0f0] border border-[#bbb] p-2 touch-none select-none cursor-crosshair overflow-hidden shadow-inner" id="matrixCanvas">
+                        <!-- Quadrant grid background -->
+                        <div class="absolute inset-0 grid grid-cols-2 grid-rows-2">
+                            <div class="bg-indigo-50 border-r border-b border-slate-300 p-1.5 text-[9px] text-indigo-700 font-mono font-semibold">Alto Impacto / Baja Viab.</div>
+                            <div class="bg-amber-100/70 border-b border-slate-300 p-1.5 text-[9px] text-amber-900 font-mono font-bold text-right">★ SOBRESALIENTE</div>
+                            <div class="bg-slate-200/50 border-r border-slate-300 p-1.5 text-[9px] text-slate-500 font-mono flex items-end">Bajo Impacto / Baja Viab.</div>
+                            <div class="bg-emerald-50 p-1.5 text-[9px] text-emerald-700 font-mono flex items-end justify-end font-semibold">Factible / Bajo Impacto</div>
+                        </div>
+
+                        <!-- Axis Markers -->
+                        <div class="absolute left-1 top-1/2 -translate-y-1/2 text-[9px] font-mono text-slate-600 font-bold rotate-[-90deg] origin-left">
+                            VIABILIDAD TÉCNICA (Y)
+                        </div>
+                        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-mono text-slate-600 font-bold">
+                            IMPACTO SOCIAL / USUARIO (X)
+                        </div>
+
+                        <!-- Draggable Dot Marker -->
+                        <div id="matrixPointer" class="absolute w-6 h-6 -ml-3 -mt-3 rounded-full bg-udemyellow border-2 border-slate-950 shadow-md flex items-center justify-center text-slate-950 text-[10px] font-bold transition-transform">
+                            <i class="fa-solid fa-crosshairs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Quadrant Description Box -->
+                    <div class="flex-1 w-full bg-[#f9f9f9] rounded p-4 border border-[#d5d5d5] flex flex-col justify-between min-h-[220px]">
+                        <div>
+                            <span class="text-[10px] font-mono text-slate-500 uppercase font-bold tracking-wider block mb-1">Diagnóstico Estratégico</span>
+                            <h4 id="quadrantTitle" class="text-sm font-bold text-slate-900 font-mono">Sin Posicionar</h4>
+                            <p id="quadrantDesc" class="text-xs text-slate-700 mt-2 leading-relaxed font-sans">
+                                Seleccione un punto en la retícula 2D para registrar la ponderación de Impacto vs Viabilidad.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-[#e0e0e0] flex justify-between items-center text-xs font-mono">
+                            <span class="text-slate-600 font-medium">Puntaje Matriz:</span>
+                            <span id="matrixScoreContribution" class="font-bold text-slate-900 bg-udemyellow px-2 py-0.5 rounded border border-slate-900">0.0 / 10 pts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: MATRIZ DE RÚBRICA EVALUATIVA COMPLETA (HEATMAP) -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-table-cells text-amber-600"></i>
+                        <h3 class="font-bold text-slate-900 text-sm font-mono tracking-wide">4. Matriz de Rúbrica Evaluativa Completa</h3>
+                    </div>
+                    <span class="text-[11px] font-mono text-slate-500">6 Parámetros (25% - 100%)</span>
+                </div>
+
+                <p class="text-xs text-slate-600 mb-3 font-sans">Seleccione el nivel de desempeño para cada uno de los 6 parámetros del proyecto:</p>
+
+                <div class="space-y-3" id="rubricRowsContainer">
+                    <!-- Dynamic Rubric Rows Injected Here -->
+                </div>
+            </div>
+
+            <!-- SECTION 5: RECOMENDACIÓN DEL PROYECTO (DICTAMEN) -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-gavel text-amber-600"></i>
+                        <h3 class="font-bold text-slate-900 text-sm font-mono tracking-wide">5. Dictamen / Recomendación del Proyecto</h3>
+                    </div>
+                    <span class="text-[11px] font-mono text-slate-500">Selección requerida</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="recommendationOptionsContainer">
+                    <!-- Recommendation Options Injected Here -->
+                </div>
+            </div>
+
+            <!-- SECTION 6: OBSERVACIONES & BOTÓN GUARDAR -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-comment-alt text-slate-700"></i>
+                        <h3 class="font-bold text-slate-900 text-sm font-mono tracking-wide">6. Observaciones & Retroalimentación</h3>
+                    </div>
+                </div>
+
+                <textarea id="projectComments" rows="3" 
+                    class="w-full ide-input rounded p-3 text-xs text-slate-900 placeholder-slate-400 font-sans resize-none"
+                    placeholder="Escriba aquí los comentarios técnicos, fortalezas o correcciones específicas para el equipo..."
+                    oninput="onCommentChange(this.value)"></textarea>
+
+                <div class="mt-4 flex justify-between items-center text-xs">
+                    <span id="autoSaveIndicator" class="text-emerald-700 font-mono text-[11px] font-bold opacity-0 transition-opacity flex items-center gap-1">
+                        <i class="fa-solid fa-check"></i> Evaluación guardada correctamente
+                    </span>
+                    <button onclick="saveCurrentEvaluation()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded text-xs font-mono font-bold transition flex items-center gap-2 shadow-sm cursor-pointer">
+                        <i class="fa-solid fa-floppy-disk text-udemyellow"></i>
+                        <span>Confirmar & Guardar Evaluación</span>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT COLUMN: Realtime Analytics Dashboard (5 cols) -->
+        <section class="lg:col-span-5 flex flex-col gap-6">
+
+            <!-- SCORE RADIAL GAUGE -->
+            <div class="ide-panel rounded p-5 flex flex-col items-center justify-center text-center relative overflow-hidden bg-white border-t-4 border-t-udemyellow">
+                <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-500 mb-1">Calificación Final del Proyecto</span>
+
+                <!-- Circular Radial Gauge -->
+                <div class="relative w-44 h-44 my-2 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                        <circle cx="60" cy="60" r="50" stroke="#e5e5e5" stroke-width="10" fill="transparent" />
+                        <circle id="finalGaugeCircle" cx="60" cy="60" r="50" stroke="#FFC700" stroke-width="10" fill="transparent"
+                                stroke-dasharray="314.15" stroke-dashoffset="314.15" stroke-linecap="round" class="transition-all duration-300 ease-out" />
+                    </svg>
+
+                    <!-- Score Center Text -->
+                    <div class="absolute flex flex-col items-center justify-center">
+                        <span id="globalScoreText" class="text-3xl font-black font-mono text-slate-900 tracking-tight">0.0</span>
+                        <span id="globalScore100Text" class="text-[10px] text-slate-600 font-mono font-bold">0 / 100 pts</span>
+                        <span id="finalBadgeGrade" class="mt-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-600 border border-slate-400">
+                            [ NO EVALUADO ]
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Sub-score breakdowns -->
+                <div class="grid grid-cols-4 gap-1.5 w-full mt-2 pt-3 border-t border-[#e0e0e0] text-xs font-mono">
+                    <div class="bg-[#f5f5f5] p-1.5 rounded border border-[#d5d5d5]">
+                        <span class="text-slate-500 block text-[8px] uppercase font-semibold">Cualitativo</span>
+                        <span id="subQualitativeScore" class="font-bold text-slate-900">0.0</span>
+                    </div>
+                    <div class="bg-[#f5f5f5] p-1.5 rounded border border-[#d5d5d5]">
+                        <span class="text-slate-500 block text-[8px] uppercase font-semibold">Proceso</span>
+                        <span id="subProcessScore" class="font-bold text-sky-700">0.0</span>
+                    </div>
+                    <div class="bg-[#f5f5f5] p-1.5 rounded border border-[#d5d5d5]">
+                        <span class="text-slate-500 block text-[8px] uppercase font-semibold">Matriz 2D</span>
+                        <span id="subMatrixScore" class="font-bold text-amber-700">0.0</span>
+                    </div>
+                    <div class="bg-[#f5f5f5] p-1.5 rounded border border-[#d5d5d5]">
+                        <span class="text-slate-500 block text-[8px] uppercase font-semibold">Rúbrica</span>
+                        <span id="subRubricScore" class="font-bold text-emerald-700">0.0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROCESSING SVG SPIDER RADAR CHART -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-2 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-amber-600"></i>
+                        <h3 class="font-bold text-slate-900 text-sm font-mono tracking-wide">Perfil Multidimensional</h3>
+                    </div>
+                    <span class="text-[10px] font-mono text-slate-500">Vector Processing</span>
+                </div>
+
+                <div class="w-full aspect-square max-w-[300px] mx-auto flex items-center justify-center relative py-1">
+                    <svg id="radarSVG" viewBox="0 0 300 300" class="w-full h-full overflow-visible">
+                        <!-- Dynamic Processing SVG Spider Chart -->
+                    </svg>
+                </div>
+            </div>
+
+            <!-- SUMMARY TABLE (ALL 5 TEAMS) -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-3 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-slate-700"></i>
+                        <h3 class="font-bold text-slate-900 text-sm font-mono tracking-wide">Estatus de 5 Equipos</h3>
+                    </div>
+                    <button onclick="triggerPrintAllProjects()" class="text-[11px] font-mono text-slate-900 font-bold underline hover:text-amber-700 cursor-pointer">
+                        PDF Completo
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead>
+                            <tr class="border-b border-slate-300 text-slate-600 text-[10px] uppercase font-bold">
+                                <th class="pb-2">Equipo</th>
+                                <th class="pb-2">Nota</th>
+                                <th class="pb-2">Dictamen</th>
+                                <th class="pb-2 text-right">Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody" class="divide-y divide-slate-200 text-slate-800">
+                            <!-- Rows injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- CONSOLIDATED PRINT CONTAINER (HIDDEN ON SCREEN) -->
+    <div id="printConsolidatedReport" class="hidden p-8 max-w-5xl mx-auto font-sans text-slate-900 bg-white">
+        <!-- Populated dynamically via JS when Print PDF is triggered -->
+    </div>
+
+
+    <script>
+        /* UDEM TEAMS INITIAL STATE DATA - ALL STARTING AT 0 AND UNINITIALIZED */
+        const INITIAL_UDEM_TEAMS = [
+            {
+                id: "team-1",
+                teamNumber: "Equipo 1",
+                topic: "Senderismo",
+                members: "Sara D. Chapa Carranco, Roberto A. Flores Garza, Marlen Rendón Hernández, Yolanda M. Vega Gómez",
+                evaluated: false,
+                qualitative: { innovation: 0, problemClarity: 0, definedObjectives: 0, effortLevel: 0 },
+                process: { designRelevance: 0, clearDeliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: {
+                    p1_problemDef: 0,
+                    p2_methodology: 0,
+                    p3_theoreticalFramework: 0,
+                    p4_researchRelevance: 0,
+                    p5_deliverablesClarity: 0,
+                    p6_impactFeasibility: 0
+                },
+                recommendation: "",
+                comments: ""
+            },
+            {
+                id: "team-2",
+                teamNumber: "Equipo 2",
+                topic: "Sistema híbrido de planeación académica adaptativa",
+                members: "Eugenio J. Decrescenzo Melicoff, Hernán Macías García",
+                evaluated: false,
+                qualitative: { innovation: 0, problemClarity: 0, definedObjectives: 0, effortLevel: 0 },
+                process: { designRelevance: 0, clearDeliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: {
+                    p1_problemDef: 0,
+                    p2_methodology: 0,
+                    p3_theoreticalFramework: 0,
+                    p4_researchRelevance: 0,
+                    p5_deliverablesClarity: 0,
+                    p6_impactFeasibility: 0
+                },
+                recommendation: "",
+                comments: ""
+            },
+            {
+                id: "team-3",
+                teamNumber: "Equipo 3",
+                topic: "Sargazo",
+                members: "Michelle Betanzo Carriles, Eugenio González Sánchez, Matias Romero Rangel, Luis A. Jáuregui Zúñiga",
+                evaluated: false,
+                qualitative: { innovation: 0, problemClarity: 0, definedObjectives: 0, effortLevel: 0 },
+                process: { designRelevance: 0, clearDeliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: {
+                    p1_problemDef: 0,
+                    p2_methodology: 0,
+                    p3_theoreticalFramework: 0,
+                    p4_researchRelevance: 0,
+                    p5_deliverablesClarity: 0,
+                    p6_impactFeasibility: 0
+                },
+                recommendation: "",
+                comments: ""
+            },
+            {
+                id: "team-4",
+                teamNumber: "Equipo 4",
+                topic: "Sistema de Respuesta Inmediata",
+                members: "Raúl E. Hernández Ramón, Alfonso Torres Medina, Carlos E. Tovar Castañeda",
+                evaluated: false,
+                qualitative: { innovation: 0, problemClarity: 0, definedObjectives: 0, effortLevel: 0 },
+                process: { designRelevance: 0, clearDeliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: {
+                    p1_problemDef: 0,
+                    p2_methodology: 0,
+                    p3_theoreticalFramework: 0,
+                    p4_researchRelevance: 0,
+                    p5_deliverablesClarity: 0,
+                    p6_impactFeasibility: 0
+                },
+                recommendation: "",
+                comments: ""
+            },
+            {
+                id: "team-5",
+                teamNumber: "Equipo 5",
+                topic: "Mobiliario urbano para áreas caninas",
+                members: "Sebastián Montaño Barrón, Amy L. Neri Arriaga, Dalia A. Rocha",
+                evaluated: false,
+                qualitative: { innovation: 0, problemClarity: 0, definedObjectives: 0, effortLevel: 0 },
+                process: { designRelevance: 0, clearDeliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: {
+                    p1_problemDef: 0,
+                    p2_methodology: 0,
+                    p3_theoreticalFramework: 0,
+                    p4_researchRelevance: 0,
+                    p5_deliverablesClarity: 0,
+                    p6_impactFeasibility: 0
+                },
+                recommendation: "",
+                comments: ""
+            }
+        ];
+
+        let state = {
+            teams: JSON.parse(JSON.stringify(INITIAL_UDEM_TEAMS)),
+            currentTeamId: "team-1",
+            evaluatorName: ""
+        };
+
+        function getCurrentTeam() {
+            return state.teams.find(t => t.id === state.currentTeamId) || state.teams[0];
+        }
+
+        function markTeamAsEvaluated(team) {
+            if (!team) team = getCurrentTeam();
+            team.evaluated = true;
+            updateTeamBadgeState();
+            renderTeamTabs();
+            updateSummaryTable();
+        }
+
+        function updateTeamBadgeState() {
+            const team = getCurrentTeam();
+            const badge = document.getElementById('teamStatusBadge');
+            if (team.evaluated) {
+                badge.innerText = "[ EVALUADO ]";
+                badge.className = "text-xs font-mono font-bold px-2 py-0.5 rounded border bg-emerald-100 text-emerald-800 border-emerald-400";
+            } else {
+                badge.innerText = "[ NO EVALUADO ]";
+                badge.className = "text-xs font-mono font-bold px-2 py-0.5 rounded border bg-slate-200 text-slate-600 border-slate-400";
+            }
+        }
+
+        /* 1. CRITERIOS CUALITATIVOS (VISUAL DIALS / KNOBS) */
+        const QUALITATIVE_DEFS = [
+            { key: 'innovation', label: 'Innovación', icon: 'fa-lightbulb' },
+            { key: 'problemClarity', label: 'Problemática clara', icon: 'fa-bullseye' },
+            { key: 'definedObjectives', label: 'Objetivos bien definidos', icon: 'fa-flag-checkered' },
+            { key: 'effortLevel', label: 'Nivel de Esfuerzo', icon: 'fa-dumbbell' }
+        ];
+
+        function renderQualitativeDials() {
+            const container = document.getElementById('qualitativeDialsGrid');
+            const team = getCurrentTeam();
+            container.innerHTML = '';
+
+            QUALITATIVE_DEFS.forEach(def => {
+                const val = team.qualitative[def.key] ?? 0;
+                const maxDash = 169.6;
+                const dashOffset = maxDash - (val / 10) * maxDash;
+
+                const dialEl = document.createElement('div');
+                dialEl.className = 'bg-[#f8f8f8] border border-[#d1d1d1] rounded p-3 flex flex-col items-center justify-between relative knob-element hover:border-amber-500 transition shadow-sm';
+
+                dialEl.innerHTML = `
+                    <div class="text-[11px] font-mono text-slate-800 font-bold text-center flex items-center justify-center gap-1 h-7">
+                        <i class="fa-solid ${def.icon} text-amber-600 text-xs"></i>
+                        <span class="leading-tight">${def.label}</span>
+                    </div>
+
+                    <div class="relative w-18 h-18 my-1 flex items-center justify-center" id="dialSvg_${def.key}">
+                        <svg class="w-16 h-16 transform rotate-[135deg]" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="36" stroke="#e0e0e0" stroke-width="9" fill="transparent" stroke-dasharray="169.6 56.5" stroke-linecap="round" />
+                            <circle cx="50" cy="50" r="36" stroke="#FFC700" stroke-width="9" fill="transparent"
+                                stroke-dasharray="226.2" stroke-dashoffset="${dashOffset + 56.5}" stroke-linecap="round"
+                                class="transition-all duration-75" />
+                        </svg>
+
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none font-mono">
+                            <span class="text-base font-bold text-slate-900 tracking-tight" id="dialVal_${def.key}">${val.toFixed(1)}</span>
+                            <span class="text-[7px] text-slate-500 font-bold uppercase">pts</span>
+                        </div>
+                    </div>
+
+                    <div class="text-[9px] font-mono text-slate-500 flex items-center gap-1 font-medium">
+                        <i class="fa-solid fa-arrows-up-down text-amber-600"></i> Arrastrar
+                    </div>
+                `;
+
+                container.appendChild(dialEl);
+                attachDialDrag(dialEl.querySelector(`#dialSvg_${def.key}`), def.key);
+            });
+        }
+
+        function attachDialDrag(element, key) {
+            let isDragging = false;
+            let startY = 0;
+            let startVal = 0;
+
+            const onStart = (e) => {
+                isDragging = true;
+                startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+                startVal = getCurrentTeam().qualitative[key];
+                document.body.style.cursor = 'ns-resize';
+            };
+
+            const onMove = (e) => {
+                if (!isDragging) return;
+                const currentY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+                const deltaY = startY - currentY;
+                let newVal = startVal + (deltaY * 0.05);
+                newVal = Math.max(0, Math.min(10, newVal));
+
+                const team = getCurrentTeam();
+                team.qualitative[key] = parseFloat(newVal.toFixed(1));
+                markTeamAsEvaluated(team);
+                updateUIRealtime();
+            };
+
+            const onEnd = () => {
+                if (isDragging) {
+                    isDragging = false;
+                    document.body.style.cursor = 'default';
+                }
+            };
+
+            element.addEventListener('mousedown', onStart);
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('mouseup', onEnd);
+
+            element.addEventListener('touchstart', onStart, { passive: true });
+            window.addEventListener('touchmove', onMove, { passive: true });
+            window.addEventListener('touchend', onEnd);
+        }
+
+        /* 2. CRITERIOS DE PROCESO Y AVANCE (SLIDERS) */
+        const PROCESS_DEFS = [
+            { key: 'designRelevance', label: 'Pertinente al proceso de Diseño', icon: 'fa-flask' },
+            { key: 'clearDeliverables', label: '¿Son claros los entregables que se proyectan?', icon: 'fa-box-open' },
+            { key: 'presentationQuality', label: 'Calidad de la presentación y coherencia de lo mostrado', icon: 'fa-chalkboard-user' }
+        ];
+
+        function renderProcessSliders() {
+            const container = document.getElementById('processSlidersContainer');
+            const team = getCurrentTeam();
+            container.innerHTML = '';
+
+            PROCESS_DEFS.forEach(def => {
+                const val = team.process[def.key] ?? 0;
+
+                const row = document.createElement('div');
+                row.className = 'space-y-1.5';
+                row.innerHTML = `
+                    <div class="flex justify-between items-center text-xs font-sans">
+                        <span class="text-slate-800 font-semibold flex items-center gap-2">
+                            <i class="fa-solid ${def.icon} text-sky-600"></i>
+                            ${def.label}
+                        </span>
+                        <span class="font-mono font-bold text-slate-900 bg-[#f0f0f0] px-2 py-0.5 rounded border border-[#cccccc]" id="sliderVal_${def.key}">
+                            ${val}%
+                        </span>
+                    </div>
+                    <input type="range" min="0" max="100" value="${val}"
+                        oninput="onProcessSliderChange('${def.key}', this.value)">
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function onProcessSliderChange(key, val) {
+            const num = parseInt(val, 10);
+            const team = getCurrentTeam();
+            team.process[key] = num;
+            markTeamAsEvaluated(team);
+            document.getElementById(`sliderVal_${key}`).innerText = `${num}%`;
+            updateUIRealtime();
+        }
+
+        /* 3. MATRIZ 2D DE POSICIONAMIENTO ESTRATÉGICO */
+        function initMatrixInteraction() {
+            const canvas = document.getElementById('matrixCanvas');
+            let isDragging = false;
+
+            const updateFromEvent = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+                const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+
+                let relX = (clientX - rect.left) / rect.width;
+                let relY = (clientY - rect.top) / rect.height;
+
+                relX = Math.max(0, Math.min(1, relX));
+                relY = Math.max(0, Math.min(1, relY));
+
+                const scoreX = parseFloat((relX * 10).toFixed(1));
+                const scoreY = parseFloat(((1 - relY) * 10).toFixed(1));
+
+                const team = getCurrentTeam();
+                team.matrix.x = scoreX;
+                team.matrix.y = scoreY;
+
+                markTeamAsEvaluated(team);
+                updateUIRealtime();
+            };
+
+            canvas.addEventListener('mousedown', (e) => { isDragging = true; updateFromEvent(e); });
+            window.addEventListener('mousemove', (e) => { if (isDragging) updateFromEvent(e); });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+
+            canvas.addEventListener('touchstart', (e) => { isDragging = true; updateFromEvent(e); }, { passive: true });
+            window.addEventListener('touchmove', (e) => { if (isDragging) updateFromEvent(e); }, { passive: true });
+            window.addEventListener('touchend', () => { isDragging = false; });
+        }
+
+        function renderMatrixState() {
+            const team = getCurrentTeam();
+            const { x, y } = team.matrix;
+
+            const pointer = document.getElementById('matrixPointer');
+            const coordsLabel = document.getElementById('matrixCoordsLabel');
+            const titleEl = document.getElementById('quadrantTitle');
+            const descEl = document.getElementById('quadrantDesc');
+            const contribEl = document.getElementById('matrixScoreContribution');
+
+            pointer.style.left = `${(x / 10) * 100}%`;
+            pointer.style.top = `${(1 - (y / 10)) * 100}%`;
+
+            coordsLabel.innerText = `Impacto(X): ${x.toFixed(1)} | Viab(Y): ${y.toFixed(1)}`;
+
+            const matrixAvg = ((x + y) / 2).toFixed(1);
+            contribEl.innerText = `${matrixAvg} / 10 pts`;
+
+            if (x === 0 && y === 0) {
+                titleEl.innerText = "Sin Posicionar";
+                titleEl.className = "text-sm font-bold text-slate-500 font-mono";
+                descEl.innerText = "Haga clic o arrastre el indicador en la retícula 2D para evaluar Impacto vs Viabilidad.";
+            } else if (x >= 5 && y >= 5) {
+                titleEl.innerText = "★ Proyecto de Alto Valor Estratégico";
+                titleEl.className = "text-sm font-bold text-slate-900 font-mono";
+                descEl.innerText = "Equilibrio óptimo entre impacto en el usuario y factibilidad técnica / comercial.";
+            } else if (x < 5 && y >= 5) {
+                titleEl.innerText = "🛠️ Solución Viable de Bajo Impacto";
+                titleEl.className = "text-sm font-bold text-emerald-700 font-mono";
+                descEl.innerText = "Factible técnicamente, pero requiere mayor propuesta de valor y profundización en el usuario.";
+            } else if (x >= 5 && y < 5) {
+                titleEl.innerText = "🚀 Visión Conceptual de Alta Ambición";
+                titleEl.className = "text-sm font-bold text-sky-700 font-mono";
+                descEl.innerText = "Elevado valor e impacto, pero se sugiere simplificar procesos para asegurar viabilidad.";
+            } else {
+                titleEl.innerText = "⚠️ Requiere Reformulación";
+                titleEl.className = "text-sm font-bold text-rose-700 font-mono";
+                descEl.innerText = "Se recomienda revisar objetivos y justificación antes del prototipado final.";
+            }
+        }
+
+        /* 4. MATRIZ DE RÚBRICA EVALUATIVA COMPLETA (6 PARÁMETROS) */
+        const RUBRIC_ROWS = [
+            { key: 'p1_problemDef', label: '1. Definición de la Problemática y Oportunidad de Diseño' },
+            { key: 'p2_methodology', label: '2. Pertinencia del Proceso de Investigación y Metodología' },
+            { key: 'p3_theoreticalFramework', label: '3. Avance del Marco Teórico' },
+            { key: 'p4_researchRelevance', label: '4. Relevancia de la Investigación' },
+            { key: 'p5_deliverablesClarity', label: '5. Claridad de los Entregables y Coherencia de la Propuesta' },
+            { key: 'p6_impactFeasibility', label: '6. Impacto Potencial y Viabilidad del Proyecto' }
+        ];
+
+        const RUBRIC_LEVELS = [
+            { level: 1, label: 'Insuficiente', pct: '25%', score: '2.5 pts' },
+            { level: 2, label: 'Aceptable', pct: '50%', score: '5.0 pts' },
+            { level: 3, label: 'Bueno', pct: '75%', score: '7.5 pts' },
+            { level: 4, label: 'Excelente', pct: '100%', score: '10.0 pts' }
+        ];
+
+        function renderRubric() {
+            const container = document.getElementById('rubricRowsContainer');
+            const team = getCurrentTeam();
+            container.innerHTML = '';
+
+            RUBRIC_ROWS.forEach(rowDef => {
+                const currentLevel = team.rubric[rowDef.key] ?? 0;
+
+                const rowEl = document.createElement('div');
+                rowEl.className = 'bg-[#f8f8f8] border border-[#d1d1d1] rounded p-3 flex flex-col lg:flex-row lg:items-center justify-between gap-2.5';
+
+                let btnsHtml = '';
+                RUBRIC_LEVELS.forEach(lvl => {
+                    const isActive = currentLevel === lvl.level;
+                    const activeStyle = isActive 
+                        ? 'bg-udemyellow text-slate-950 border-slate-900 font-bold shadow-sm' 
+                        : 'bg-white text-slate-600 border-slate-300 hover:border-slate-400 hover:bg-slate-50';
+
+                    btnsHtml += `
+                        <button type="button" onclick="setRubricLevel('${rowDef.key}', ${lvl.level})"
+                            class="flex-1 py-1.5 px-1 rounded border text-[10px] font-mono transition flex flex-col items-center justify-center cursor-pointer ${activeStyle}">
+                            <span>${lvl.label} (${lvl.pct})</span>
+                            <span class="text-[8px] opacity-75">${lvl.score}</span>
+                        </button>
+                    `;
+                });
+
+                rowEl.innerHTML = `
+                    <span class="text-xs font-semibold text-slate-800 lg:w-5/12 leading-tight">${rowDef.label}</span>
+                    <div class="grid grid-cols-4 gap-1.5 lg:w-7/12">
+                        ${btnsHtml}
+                    </div>
+                `;
+
+                container.appendChild(rowEl);
+            });
+        }
+
+        function setRubricLevel(rowKey, level) {
+            const team = getCurrentTeam();
+            team.rubric[rowKey] = level;
+            markTeamAsEvaluated(team);
+            renderRubric();
+            updateUIRealtime();
+        }
+
+        /* 5. RECOMENDACIÓN DEL PROYECTO (DICTAMEN) */
+        const RECOMMENDATION_OPTIONS = [
+            { id: 'A', title: 'A) Aceptado sin cambios', desc: 'Aprobación completa' },
+            { id: 'B', title: 'B) Aceptado con correcciones menores obligatorias', desc: 'Ajustes en entrega final' },
+            { id: 'C', title: 'C) Aceptado condicionalmente', desc: 'Requiere sesión de seguimiento' },
+            { id: 'D', title: 'D) Rechazado', desc: 'Requiere reformulación completa' }
+        ];
+
+        function renderRecommendations() {
+            const container = document.getElementById('recommendationOptionsContainer');
+            const team = getCurrentTeam();
+            container.innerHTML = '';
+
+            RECOMMENDATION_OPTIONS.forEach(opt => {
+                const isSelected = team.recommendation === opt.id;
+                const activeStyle = isSelected
+                    ? 'bg-udemyellow text-slate-950 border-slate-900 font-bold shadow-sm'
+                    : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50';
+
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.onclick = () => {
+                    team.recommendation = opt.id;
+                    markTeamAsEvaluated(team);
+                    renderRecommendations();
+                    updateSummaryTable();
+                };
+                card.className = `p-2.5 rounded border text-left text-xs font-mono transition flex items-center justify-between cursor-pointer ${activeStyle}`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="font-bold">${opt.title}</div>
+                        <div class="text-[9px] opacity-80 font-sans">${opt.desc}</div>
+                    </div>
+                    <i class="fa-solid ${isSelected ? 'fa-circle-check text-slate-950' : 'fa-circle text-slate-300'} text-sm"></i>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        /* RADAR SPIDER CHART ENGINE */
+        function renderRadarChart() {
+            const svg = document.getElementById('radarSVG');
+            const team = getCurrentTeam();
+
+            // Calculate level for rubric avg
+            const rubricValues = Object.values(team.rubric);
+            const rubricSelectedCount = rubricValues.filter(v => v > 0).length;
+            const rubricValAvg = rubricSelectedCount > 0 ? (rubricValues.reduce((a,b) => a+b, 0) / (RUBRIC_ROWS.length * 4)) * 10 : 0;
+
+            const axes = [
+                { label: 'Innovación', val: team.qualitative.innovation },
+                { label: 'Problemática', val: team.qualitative.problemClarity },
+                { label: 'Objetivos', val: team.qualitative.definedObjectives },
+                { label: 'Esfuerzo', val: team.qualitative.effortLevel },
+                { label: 'Pertinencia', val: team.process.designRelevance / 10 },
+                { label: 'Entregables', val: team.process.clearDeliverables / 10 },
+                { label: 'Presentación', val: team.process.presentationQuality / 10 },
+                { label: 'Rúbrica Glob.', val: rubricValAvg }
+            ];
+
+            const center = 150;
+            const maxR = 95;
+            const totalAxes = axes.length;
+
+            let html = '';
+
+            // Grid circles
+            [0.25, 0.5, 0.75, 1.0].forEach(level => {
+                let pts = [];
+                for (let i = 0; i < totalAxes; i++) {
+                    const angle = (Math.PI * 2 / totalAxes) * i - Math.PI / 2;
+                    const x = center + Math.cos(angle) * maxR * level;
+                    const y = center + Math.sin(angle) * maxR * level;
+                    pts.push(`${x},${y}`);
+                }
+                html += `<polygon points="${pts.join(' ')}" fill="none" stroke="#d5d5d5" stroke-width="1" />`;
+            });
+
+            let polygonPts = [];
+
+            axes.forEach((axis, i) => {
+                const angle = (Math.PI * 2 / totalAxes) * i - Math.PI / 2;
+                const axisX = center + Math.cos(angle) * maxR;
+                const axisY = center + Math.sin(angle) * maxR;
+
+                html += `<line x1="${center}" y1="${center}" x2="${axisX}" y2="${axisY}" stroke="#cccccc" stroke-width="1" />`;
+
+                const normVal = Math.max(0, Math.min(10, axis.val)) / 10;
+                const dataX = center + Math.cos(angle) * maxR * normVal;
+                const dataY = center + Math.sin(angle) * maxR * normVal;
+                polygonPts.push(`${dataX},${dataY}`);
+
+                const labelX = center + Math.cos(angle) * (maxR + 22);
+                const labelY = center + Math.sin(angle) * (maxR + 12);
+
+                html += `
+                    <text x="${labelX}" y="${labelY}" fill="#444444" font-size="8" font-family="JetBrains Mono" font-weight="600" text-anchor="middle" dominant-baseline="central">
+                        ${axis.label}
+                    </text>
+                `;
+            });
+
+            // Radar Polygon in UDEM Yellow
+            html += `
+                <polygon points="${polygonPts.join(' ')}"
+                    fill="rgba(255, 199, 0, 0.45)"
+                    stroke="#e6b200"
+                    stroke-width="2.5" />
+            `;
+
+            polygonPts.forEach(pt => {
+                const [px, py] = pt.split(',');
+                html += `<circle cx="${px}" cy="${py}" r="3.5" fill="#FFC700" stroke="#111111" stroke-width="1.5" />`;
+            });
+
+            svg.innerHTML = html;
+        }
+
+        /* SCORE COMPUTATION & REALTIME UPDATING */
+        function calculateScoresForTeam(team) {
+            const qualAvg = (team.qualitative.innovation + team.qualitative.problemClarity + team.qualitative.definedObjectives + team.qualitative.effortLevel) / 4;
+            const procAvg = ((team.process.designRelevance + team.process.clearDeliverables + team.process.presentationQuality) / 3) / 10;
+            const matrixAvg = (team.matrix.x + team.matrix.y) / 2;
+
+            // Rubric 6 parameters
+            const rubricVals = Object.values(team.rubric);
+            const rubricSum = rubricVals.reduce((a, b) => a + (b * 2.5), 0); // Level 1=2.5, 2=5.0, 3=7.5, 4=10.0
+            const rubricAvg = rubricSum / RUBRIC_ROWS.length;
+
+            // Global score (Scale 0 to 10)
+            let global = (qualAvg * 0.30) + (procAvg * 0.25) + (matrixAvg * 0.20) + (rubricAvg * 0.25);
+            global = Math.max(0, Math.min(10, global));
+
+            return {
+                global: parseFloat(global.toFixed(1)),
+                global100: Math.round(global * 10),
+                qualAvg: parseFloat(qualAvg.toFixed(1)),
+                procAvg: parseFloat(procAvg.toFixed(1)),
+                matrixAvg: parseFloat(matrixAvg.toFixed(1)),
+                rubricAvg: parseFloat(rubricAvg.toFixed(1))
+            };
+        }
+
+        function updateUIRealtime() {
+            const team = getCurrentTeam();
+
+            QUALITATIVE_DEFS.forEach(def => {
+                const val = team.qualitative[def.key];
+                const valEl = document.getElementById(`dialVal_${def.key}`);
+                if (valEl) valEl.innerText = val.toFixed(1);
+
+                const dialContainer = document.querySelector(`#dialSvg_${def.key}`);
+                if (dialContainer) {
+                    const circle = dialContainer.querySelectorAll('circle')[1];
+                    if (circle) {
+                        const dashOffset = 169.6 - (val / 10) * 169.6;
+                        circle.setAttribute('stroke-dashoffset', dashOffset + 56.5);
+                    }
+                }
+            });
+
+            renderMatrixState();
+            renderRadarChart();
+
+            const scores = calculateScoresForTeam(team);
+            document.getElementById('globalScoreText').innerText = scores.global.toFixed(1);
+            document.getElementById('globalScore100Text').innerText = `${scores.global100} / 100 pts`;
+            document.getElementById('subQualitativeScore').innerText = scores.qualAvg.toFixed(1);
+            document.getElementById('subProcessScore').innerText = scores.procAvg.toFixed(1);
+            document.getElementById('subMatrixScore').innerText = scores.matrixAvg.toFixed(1);
+            document.getElementById('subRubricScore').innerText = scores.rubricAvg.toFixed(1);
+
+            const maxDash = 314.15;
+            const offset = maxDash - (scores.global / 10) * maxDash;
+            document.getElementById('finalGaugeCircle').style.strokeDashoffset = offset;
+
+            const badge = document.getElementById('finalBadgeGrade');
+            if (!team.evaluated && scores.global === 0) {
+                badge.innerText = "[ NO EVALUADO ]";
+                badge.className = "mt-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-600 border border-slate-400";
+            } else if (scores.global >= 9.0) {
+                badge.innerText = "Excelente (A+)";
+                badge.className = "mt-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-udemyellow text-slate-950 border border-slate-900";
+            } else if (scores.global >= 8.0) {
+                badge.innerText = "Sobresaliente (A)";
+                badge.className = "mt-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-udemyellow text-slate-950 border border-slate-900";
+            } else if (scores.global >= 7.0) {
+                badge.innerText = "Aprobado (B)";
+                badge.className = "mt-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-800 border border-sky-400";
+            } else {
+                badge.innerText = "Insuficiente (C)";
+                badge.className = "mt-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-400";
+            }
+
+            updateSummaryTable();
+        }
+
+        function updateSummaryTable() {
+            const tbody = document.getElementById('summaryTableBody');
+            tbody.innerHTML = '';
+
+            state.teams.forEach(t => {
+                const scores = calculateScoresForTeam(t);
+                const isCurrent = t.id === state.currentTeamId;
+                const tr = document.createElement('tr');
+                tr.className = isCurrent ? 'bg-amber-100/80 font-bold text-slate-900' : 'hover:bg-slate-100';
+
+                tr.innerHTML = `
+                    <td class="py-2 cursor-pointer" onclick="switchTeam('${t.id}')">
+                        <div class="text-[11px] text-slate-900 font-bold">${t.teamNumber}</div>
+                        <div class="text-[9px] text-slate-500 font-sans truncate max-w-[120px]">${t.topic}</div>
+                    </td>
+                    <td class="py-2 font-bold text-slate-900">${scores.global.toFixed(1)}</td>
+                    <td class="py-2">
+                        <span class="text-[10px] px-1.5 py-0.5 rounded border border-slate-300 bg-white">
+                            ${t.recommendation ? 'Dictamen ' + t.recommendation : '-'}
+                        </span>
+                    </td>
+                    <td class="py-2 text-right">
+                        <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${t.evaluated ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-slate-200 text-slate-600 border border-slate-300'}">
+                            ${t.evaluated ? 'Evaluado' : 'Pendiente'}
+                        </span>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        /* TEAM TABS AND NAVIGATION */
+        function renderTeamTabs() {
+            const container = document.getElementById('teamsTabContainer');
+            container.innerHTML = '';
+
+            state.teams.forEach(t => {
+                const isActive = t.id === state.currentTeamId;
+                const activeStyle = isActive
+                    ? 'bg-udemyellow text-slate-950 font-bold border-slate-900 shadow-sm'
+                    : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100';
+
+                const btn = document.createElement('button');
+                btn.onclick = () => switchTeam(t.id);
+                btn.className = `px-3 py-1.5 rounded border text-xs font-mono transition flex items-center gap-2 whitespace-nowrap cursor-pointer ${activeStyle}`;
+
+                btn.innerHTML = `
+                    <span>${t.teamNumber}: ${t.topic}</span>
+                    <span class="text-[9px] px-1 py-0.2 rounded font-mono font-bold ${t.evaluated ? 'bg-emerald-200 text-emerald-900' : 'bg-slate-200 text-slate-600'}">
+                        ${t.evaluated ? 'EVALUADO' : 'PENDIENTE'}
+                    </span>
+                `;
+
+                container.appendChild(btn);
+            });
+        }
+
+        function switchTeam(teamId) {
+            state.currentTeamId = teamId;
+            loadCurrentTeamToUI();
+        }
+
+        function loadCurrentTeamToUI() {
+            const team = getCurrentTeam();
+
+            document.getElementById('teamBadge').innerText = team.teamNumber;
+            document.getElementById('projectTopicTitle').innerText = `Tema: ${team.topic}`;
+            document.getElementById('teamMembersList').innerHTML = `<strong>Integrantes:</strong> ${team.members}`;
+            document.getElementById('projectComments').value = team.comments || '';
+
+            updateTeamBadgeState();
+            renderQualitativeDials();
+            renderProcessSliders();
+            renderRubric();
+            renderRecommendations();
+            updateUIRealtime();
+            renderTeamTabs();
+        }
+
+        function onCommentChange(val) {
+            const team = getCurrentTeam();
+            team.comments = val;
+            if (val.trim().length > 0) {
+                markTeamAsEvaluated(team);
+            }
+        }
+
+        function updateEvaluatorName(val) {
+            state.evaluatorName = val;
+        }
+
+        function saveCurrentEvaluation() {
+            const team = getCurrentTeam();
+            team.comments = document.getElementById('projectComments').value;
+            markTeamAsEvaluated(team);
+
+            const indicator = document.getElementById('autoSaveIndicator');
+            indicator.classList.remove('opacity-0');
+            setTimeout(() => {
+                indicator.classList.add('opacity-0');
+            }, 2500);
+        }
+
+        function resetAllEvaluations() {
+            state.teams = JSON.parse(JSON.stringify(INITIAL_UDEM_TEAMS));
+            loadCurrentTeamToUI();
+        }
+
+        /* CONSOLIDATED PDF REPORT GENERATOR FOR ALL 5 TEAMS */
+        function generateConsolidatedPrintReport() {
+            const printContainer = document.getElementById('printConsolidatedReport');
+            const evaluator = state.evaluatorName || "Profesor Evaluador UDEM (No especificado)";
+            const today = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            let html = `
+                <!-- Institutional Header -->
+                <div class="border-b-2 border-slate-900 pb-4 mb-6 flex justify-between items-end">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="bg-slate-900 text-amber-400 font-mono font-bold text-xs px-2 py-0.5 rounded">UDEM</span>
+                            <span class="text-xs font-mono text-slate-600 font-bold">UNIVERSIDAD DE MONTERREY</span>
+                        </div>
+                        <h1 class="text-xl font-bold text-slate-900 font-sans tracking-tight">Reporte Consolidado de Evaluación de Proyectos</h1>
+                        <p class="text-xs text-slate-600 font-mono">Materia: <strong>Diseño Integral</strong> (8° Semestre) | Carrera: <strong>Diseño Industrial</strong></p>
+                    </div>
+                    <div class="text-right text-xs font-mono text-slate-700">
+                        <p><strong>Evaluador:</strong> ${evaluator}</p>
+                        <p><strong>Fecha de Emisión:</strong> ${today}</p>
+                    </div>
+                </div>
+
+                <!-- Global Executive Summary Table -->
+                <div class="mb-8">
+                    <h2 class="text-sm font-bold font-mono text-slate-900 uppercase border-b border-slate-300 pb-1 mb-3">
+                        Resumen Ejecutivo (5 Equipos Registrados)
+                    </h2>
+                    <table class="w-full text-left text-xs font-mono border border-slate-300 divide-y divide-slate-300">
+                        <thead class="bg-slate-100 text-slate-900">
+                            <tr>
+                                <th class="p-2 border-r border-slate-300">Equipo</th>
+                                <th class="p-2 border-r border-slate-300">Tema del Proyecto</th>
+                                <th class="p-2 border-r border-slate-300">Nota (0-10)</th>
+                                <th class="p-2 border-r border-slate-300">Nota (0-100)</th>
+                                <th class="p-2 border-r border-slate-300">Dictamen</th>
+                                <th class="p-2">Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+            `;
+
+            state.teams.forEach(t => {
+                const sc = calculateScoresForTeam(t);
+                const dictLabel = RECOMMENDATION_OPTIONS.find(r => r.id === t.recommendation)?.title || t.recommendation || '-';
+                html += `
+                    <tr>
+                        <td class="p-2 font-bold border-r border-slate-300">${t.teamNumber}</td>
+                        <td class="p-2 border-r border-slate-300">${t.topic}</td>
+                        <td class="p-2 font-bold text-slate-900 border-r border-slate-300">${sc.global.toFixed(1)} / 10</td>
+                        <td class="p-2 font-bold text-slate-900 border-r border-slate-300">${sc.global100} / 100</td>
+                        <td class="p-2 border-r border-slate-300">${dictLabel}</td>
+                        <td class="p-2 font-bold">${t.evaluated ? '[ EVALUADO ]' : '[ PENDIENTE ]'}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="page-break"></div>
+
+                <!-- Detailed Individual Team Evaluation Cards -->
+                <h2 class="text-base font-bold font-mono text-slate-900 uppercase border-b-2 border-slate-900 pb-1 mb-6">
+                    Desglose Detallado por Proyecto
+                </h2>
+            `;
+
+            state.teams.forEach((t, index) => {
+                const sc = calculateScoresForTeam(t);
+                const dictLabel = RECOMMENDATION_OPTIONS.find(r => r.id === t.recommendation)?.title || t.recommendation || 'Sin seleccionar';
+
+                html += `
+                    <div class="border border-slate-300 rounded p-4 mb-6 bg-white shadow-sm">
+                        <!-- Card Header -->
+                        <div class="flex justify-between items-start border-b border-slate-200 pb-2 mb-3">
+                            <div>
+                                <span class="text-xs font-mono font-bold bg-slate-900 text-amber-400 px-2 py-0.5 rounded">${t.teamNumber}</span>
+                                <span class="text-xs font-mono font-bold ml-2 ${t.evaluated ? 'text-emerald-700' : 'text-slate-500'}">
+                                    ${t.evaluated ? '[ EVALUADO ]' : '[ NO EVALUADO ]'}
+                                </span>
+                                <h3 class="text-base font-bold text-slate-900 mt-1">${t.topic}</h3>
+                                <p class="text-xs text-slate-600 font-sans"><strong>Integrantes:</strong> ${t.members}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-2xl font-black font-mono text-slate-900">${sc.global.toFixed(1)}</span>
+                                <span class="text-[9px] font-mono text-slate-500 block uppercase">Nota (${sc.global100} pts)</span>
+                            </div>
+                        </div>
+
+                        <!-- Sub-scores -->
+                        <div class="grid grid-cols-4 gap-2 mb-3 text-xs font-mono bg-slate-50 p-2 rounded border border-slate-200">
+                            <div><strong>Cualitativo:</strong> ${sc.qualAvg.toFixed(1)}</div>
+                            <div><strong>Proceso:</strong> ${sc.procAvg.toFixed(1)}</div>
+                            <div><strong>Matriz 2D:</strong> ${sc.matrixAvg.toFixed(1)}</div>
+                            <div><strong>Rúbrica:</strong> ${sc.rubricAvg.toFixed(1)}</div>
+                        </div>
+
+                        <!-- Specific Items Breakdown -->
+                        <div class="grid grid-cols-2 gap-4 text-xs font-sans mb-3">
+                            <div>
+                                <h4 class="font-bold font-mono text-slate-900 border-b border-slate-200 pb-1 mb-1">Criterios Cualitativos & Proceso</h4>
+                                <ul class="space-y-0.5 text-slate-700">
+                                    <li>• Innovación: <strong>${t.qualitative.innovation.toFixed(1)} pts</strong></li>
+                                    <li>• Problemática clara: <strong>${t.qualitative.problemClarity.toFixed(1)} pts</strong></li>
+                                    <li>• Objetivos bien definidos: <strong>${t.qualitative.definedObjectives.toFixed(1)} pts</strong></li>
+                                    <li>• Nivel de Esfuerzo: <strong>${t.qualitative.effortLevel.toFixed(1)} pts</strong></li>
+                                    <li>• Rigor Científico & Inv: <strong>${t.process.designRelevance}%</strong></li>
+                                    <li>• Claridad Entregables: <strong>${t.process.clearDeliverables}%</strong></li>
+                                    <li>• Calidad Presentación: <strong>${t.process.presentationQuality}%</strong></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold font-mono text-slate-900 border-b border-slate-200 pb-1 mb-1">Rúbrica Evaluativa (6 Parámetros)</h4>
+                                <ul class="space-y-0.5 text-slate-700">
+                                    <li>• 1. Def. Problemática: <strong>${t.rubric.p1_problemDef ? (t.rubric.p1_problemDef * 25) + '%' : 'N/E'}</strong></li>
+                                    <li>• 2. Investigación & Metodología: <strong>${t.rubric.p2_methodology ? (t.rubric.p2_methodology * 25) + '%' : 'N/E'}</strong></li>
+                                    <li>• 3. Avance Marco Teórico: <strong>${t.rubric.p3_theoreticalFramework ? (t.rubric.p3_theoreticalFramework * 25) + '%' : 'N/E'}</strong></li>
+                                    <li>• 4. Relevancia Investigación: <strong>${t.rubric.p4_researchRelevance ? (t.rubric.p4_researchRelevance * 25) + '%' : 'N/E'}</strong></li>
+                                    <li>• 5. Claridad Entregables: <strong>${t.rubric.p5_deliverablesClarity ? (t.rubric.p5_deliverablesClarity * 25) + '%' : 'N/E'}</strong></li>
+                                    <li>• 6. Impacto & Viabilidad: <strong>${t.rubric.p6_impactFeasibility ? (t.rubric.p6_impactFeasibility * 25) + '%' : 'N/E'}</strong></li>
+                                    <li>• Matriz 2D: <strong>X (Impacto): ${t.matrix.x} | Y (Viab): ${t.matrix.y}</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Dictamen & Comments -->
+                        <div class="text-xs border-t border-slate-200 pt-2 mt-2">
+                            <p class="font-mono mb-1"><strong>Dictamen Recomendado:</strong> <span class="bg-amber-100 px-1.5 py-0.5 rounded font-bold">${dictLabel}</span></p>
+                            <p class="text-slate-700 font-sans italic mt-1"><strong>Observaciones:</strong> ${t.comments || 'Sin comentarios registrados.'}</p>
+                        </div>
+                    </div>
+                `;
+
+                if ((index + 1) % 2 === 0 && index < state.teams.length - 1) {
+                    html += `<div class="page-break"></div>`;
+                }
+            });
+
+            printContainer.innerHTML = html;
+        }
+
+        function triggerPrintAllProjects() {
+            generateConsolidatedPrintReport();
+            window.print();
+        }
+
+        window.onload = function() {
+            loadCurrentTeamToUI();
+            initMatrixInteraction();
+        };
+    </script>
+</body>
+</html>
