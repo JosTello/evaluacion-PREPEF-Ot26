@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDEM - Evaluación de Anteproyectos PRE PEF | Diseño Integral</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: JetBrains Mono & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- QRCode.js Library CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        idemcanvas: '#e5e5e5',
+                        idempanel: '#fafafa',
+                        idemborder: '#1a1a1a',
+                        idemborderlight: '#cccccc',
+                        udemyellow: '#FFC700',
+                        udemyellowhover: '#e6b200',
+                        idemdark: '#141414',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Processing IDE Light Neutral Theme Styling */
+        body {
+            background-color: #e5e5e5;
+            color: #1a1a1a;
+            user-select: none;
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .ide-panel {
+            background-color: #fafafa;
+            border: 1.5px solid #1a1a1a;
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        .ide-panel-header {
+            background-color: #ececec;
+            border-bottom: 1.5px solid #1a1a1a;
+        }
+
+        .ide-input {
+            background-color: #ffffff;
+            border: 1.5px solid #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        .ide-input:focus {
+            border-color: #1a1a1a;
+            outline: none;
+            box-shadow: 0 0 0 2px #FFC700;
+        }
+
+        /* Custom Interactive Knob Pointer Drag */
+        .knob-element {
+            touch-action: none;
+            cursor: ns-resize;
+        }
+
+        /* Technical Range Sliders Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #d8d8d8;
+            border-radius: 2px;
+            border: 1.5px solid #1a1a1a;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 2px;
+            background: #FFC700;
+            border: 1.5px solid #1a1a1a;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -7px;
+            box-shadow: 2px 2px 0px #1a1a1a;
+            transition: transform 0.1s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            background: #ffe04d;
+        }
+
+        /* Custom Processing Modal Overlay */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(3px);
+        }
+
+        /* Toast Animation */
+        @keyframes slideInUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-toast {
+            animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* PRINT MEDIA ENGINE - Consolidates ALL 5 projects into PDF */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                background-image: none !important;
+                font-size: 11px !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            #printConsolidatedReport {
+                display: block !important;
+            }
+            .page-break {
+                page-break-after: always;
+                break-after: page;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans text-slate-900 pb-12">
+
+    <header class="w-full bg-[#fafafa] border-b-2 border-slate-900 sticky top-0 z-40 px-4 lg:px-8 py-2.5 no-print shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            
+            <!-- UDEM Institution Header Brand -->
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded bg-udemyellow flex items-center justify-center text-slate-950 font-black font-mono text-xl border-2 border-slate-900 shadow-[2px_2px_0px_#1a1a1a]">
+                    U
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] font-mono font-bold text-slate-950 bg-udemyellow px-2 py-0.5 rounded border border-slate-900">UDEM</span>
+                        <h1 class="font-bold text-slate-900 text-sm tracking-tight">
+                            Diseño Industrial <span class="text-slate-600 font-normal">| Evaluación de Proyectos</span>
+                        </h1>
+                    </div>
+                    <p class="text-[11px] text-slate-600 font-mono">Materia: <strong class="text-slate-900">Diseño Integral</strong> (8° Semestre)</p>
+                </div>
+            </div>
+
+            <!-- Top Action Buttons: QR, Google Sheets, PDF -->
+            <div class="flex items-center space-x-2 flex-wrap">
+                <!-- Team Dropdown Selector -->
+                <div class="flex items-center gap-1.5 bg-white p-1 rounded border-1.5 border-slate-900">
+                    <label for="teamSelect" class="text-xs font-mono text-slate-800 flex items-center gap-1 font-bold pl-1">
+                        <i class="fa-solid fa-users text-slate-900"></i> Equipo:
+                    </label>
+                    <select id="teamSelect" class="ide-input text-slate-900 text-xs font-mono rounded px-2 py-1 cursor-pointer font-bold min-w-[200px]">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <!-- Google Sheets Config Button -->
+                <button onclick="openSheetsModal()" class="bg-white hover:bg-slate-100 text-slate-900 px-3 py-1.5 rounded text-xs font-bold font-mono border-1.5 border-slate-900 shadow-[2px_2px_0px_#1a1a1a] transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-table text-emerald-600"></i>
+                    <span class="hidden sm:inline">📊 Google Sheets</span>
+                </button>
+
+                <!-- QR Code Access Button -->
+                <button onclick="openQrModal()" class="bg-white hover:bg-slate-100 text-slate-900 px-3 py-1.5 rounded text-xs font-bold font-mono border-1.5 border-slate-900 shadow-[2px_2px_0px_#1a1a1a] transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-qrcode text-slate-900"></i>
+                    <span class="hidden sm:inline">📱 QR App</span>
+                </button>
+
+                <!-- PDF All Teams Button -->
+                <button onclick="triggerPrintAllProjects()" class="bg-udemyellow hover:bg-udemyellowhover text-slate-950 px-3.5 py-1.5 rounded text-xs font-bold font-mono border-1.5 border-slate-900 shadow-[2px_2px_0px_#1a1a1a] transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Exportar PDF</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto w-full px-4 lg:px-8 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow no-print">
+
+        <!-- LEFT COLUMN: Input Evaluation Controls (7 cols) -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
+
+            <!-- Evaluator Name & Current Selected Project Info -->
+            <div class="ide-panel rounded p-4 relative bg-white">
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                    
+                    <div class="sm:col-span-7 space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span id="teamBadge" class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-950 bg-udemyellow px-2 py-0.5 rounded border border-slate-900">
+                                EQUIPO 1
+                            </span>
+                            <span id="evaluationStatusBadge" class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-700 bg-slate-200 px-2 py-0.5 rounded border border-slate-400">
+                                NO EVALUADO
+                            </span>
+                        </div>
+                        <h2 id="projectTopicTitle" class="text-base font-bold text-slate-900 tracking-tight font-mono">Tema: Senderismo</h2>
+                        <p id="teamMembersList" class="text-xs text-slate-700 font-sans leading-snug">
+                            Sara D. Chapa Carranco, Roberto A. Flores Garza, Marlen Rendón Hernández, Yolanda M. Vega Gómez
+                        </p>
+                    </div>
+
+                    <!-- Global Evaluator Name Input -->
+                    <div class="sm:col-span-5 bg-[#ececec] p-3 rounded border-1.5 border-slate-900">
+                        <label for="evaluatorName" class="text-[11px] font-mono text-slate-900 font-bold uppercase block mb-1 flex items-center gap-1">
+                            <i class="fa-solid fa-user-pen text-slate-900"></i> Evaluador / Profesor:
+                        </label>
+                        <input type="text" id="evaluatorName" placeholder="Escriba su nombre..." 
+                               class="w-full ide-input rounded px-2.5 py-1.5 text-xs text-slate-900 font-mono font-semibold"
+                               oninput="updateEvaluatorName(this.value)">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-compass-drafting text-slate-900"></i>
+                        <h3 class="font-bold text-slate-900 text-xs font-mono uppercase tracking-wide">1. Criterios Cualitativos</h3>
+                    </div>
+                    <span class="text-[10px] font-mono text-slate-600">Arrastrar Diales (0.0 - 10.0 pts)</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="qualitativeDialsGrid">
+                    <!-- Dynamic Dials Injected Here -->
+                </div>
+            </div>
+
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-slate-900"></i>
+                        <h3 class="font-bold text-slate-900 text-xs font-mono uppercase tracking-wide">2. Criterios de Proceso y Entregables</h3>
+                    </div>
+                    <span class="text-[10px] font-mono text-slate-600">Avance (0% - 100%)</span>
+                </div>
+
+                <div class="space-y-4" id="processSlidersContainer">
+                    <!-- Dynamic Sliders Injected Here -->
+                </div>
+            </div>
+
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-3 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-chart-area text-slate-900"></i>
+                        <h3 class="font-bold text-slate-900 text-xs font-mono uppercase tracking-wide">3. Matriz 2D Cartesiana de Posicionamiento</h3>
+                    </div>
+                    <span class="text-xs font-mono text-slate-950 bg-udemyellow px-2 py-0.5 rounded border border-slate-900 font-bold" id="matrixCoordsLabel">
+                        X: 0.0 | Y: 0.0
+                    </span>
+                </div>
+                <p class="text-xs text-slate-600 mb-3 font-sans">Haz clic o arrastra sobre el plano para evaluar Viabilidad Técnica (Eje X) e Impacto/Innovación (Eje Y).</p>
+
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <!-- Interactive 2D Cartesian Box -->
+                    <div class="relative w-full max-w-[260px] aspect-square rounded bg-[#f0f0f0] border-1.5 border-slate-900 p-2 touch-none select-none cursor-crosshair overflow-hidden shadow-inner" id="matrixCanvas">
+                        <!-- Quadrants grid visual background -->
+                        <div class="absolute inset-0 grid grid-cols-2 grid-rows-2">
+                            <div class="bg-sky-50/60 border-r border-b border-slate-300 p-1.5 text-[8px] text-sky-800 font-mono font-semibold">Alto Impacto / Baja Viab.</div>
+                            <div class="bg-amber-100/80 border-b border-slate-300 p-1.5 text-[8px] text-amber-900 font-mono font-bold text-right">★ SOBRESALIENTE</div>
+                            <div class="bg-slate-200/40 border-r border-slate-300 p-1.5 text-[8px] text-slate-500 font-mono flex items-end">Bajo Impacto / Baja Viab.</div>
+                            <div class="bg-emerald-50/60 p-1.5 text-[8px] text-emerald-800 font-mono flex items-end justify-end font-semibold">Alta Viab. / Bajo Impacto</div>
+                        </div>
+
+                        <!-- Axis Labels -->
+                        <div class="absolute left-1 top-1/2 -translate-y-1/2 text-[8px] font-mono text-slate-700 font-bold rotate-[-90deg] origin-left">
+                            IMPACTO / INNOVACIÓN (Y)
+                        </div>
+                        <div class="absolute bottom-1 left-1/2 -translate-x-1/2 text-[8px] font-mono text-slate-700 font-bold">
+                            VIABILIDAD TÉCNICA (X)
+                        </div>
+
+                        <!-- Pointer Marker -->
+                        <div id="matrixPointer" class="absolute w-6 h-6 -ml-3 -mt-3 rounded-full bg-udemyellow border-2 border-slate-950 shadow-md flex items-center justify-center text-slate-950 text-[9px] font-bold">
+                            <i class="fa-solid fa-crosshairs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Diagnosis Box -->
+                    <div class="flex-1 w-full bg-[#f8f8f8] rounded p-3.5 border-1.5 border-slate-900 flex flex-col justify-between min-h-[210px]">
+                        <div>
+                            <span class="text-[9px] font-mono text-slate-500 uppercase font-bold tracking-wider block mb-1">Diagnóstico Matriz 2D</span>
+                            <h4 id="quadrantTitle" class="text-xs font-bold text-slate-900 font-mono">Sin posicionar (0,0)</h4>
+                            <p id="quadrantDesc" class="text-xs text-slate-700 mt-2 leading-relaxed font-sans">
+                                Arrastre el indicador en la cuadrícula para definir la viabilidad e impacto del proyecto.
+                            </p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-slate-300 flex justify-between items-center text-xs font-mono">
+                            <span class="text-slate-600 font-medium">Puntaje Matriz:</span>
+                            <span id="matrixScoreContribution" class="font-bold text-slate-900 bg-udemyellow px-2 py-0.5 rounded border border-slate-900">0.0 / 10 pts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-table-cells text-slate-900"></i>
+                        <h3 class="font-bold text-slate-900 text-xs font-mono uppercase tracking-wide">4. Matriz de Rúbrica Evaluativa</h3>
+                    </div>
+                    <span class="text-[10px] font-mono text-slate-600">4 Niveles de Criterio</span>
+                </div>
+
+                <div class="space-y-3" id="rubricRowsContainer">
+                    <!-- Dynamic Rubric Rows Injected Here -->
+                </div>
+            </div>
+
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-gavel text-slate-900"></i>
+                        <h3 class="font-bold text-slate-900 text-xs font-mono uppercase tracking-wide">5. Dictamen / Recomendación del Proyecto</h3>
+                    </div>
+                    <span class="text-[10px] font-mono text-slate-600">Obligatorio</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="recommendationOptionsContainer">
+                    <!-- Dynamic Recommendation Options Injected Here -->
+                </div>
+            </div>
+
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-comment-alt text-slate-900"></i>
+                        <h3 class="font-bold text-slate-900 text-xs font-mono uppercase tracking-wide">6. Observaciones & Retroalimentación</h3>
+                    </div>
+                </div>
+
+                <textarea id="projectComments" rows="3" 
+                    class="w-full ide-input rounded p-3 text-xs text-slate-900 font-sans resize-none"
+                    placeholder="Escriba aquí los comentarios de diseño, recomendaciones y sugerencias para la entrega final..."></textarea>
+
+                <div class="mt-4 flex flex-wrap justify-between items-center gap-3">
+                    <div class="flex items-center gap-2">
+                        <span id="cloudStatusTag" class="text-[11px] font-mono text-slate-600 flex items-center gap-1 font-semibold">
+                            <i class="fa-solid fa-cloud text-slate-400"></i> Google Sheets: <span id="cloudSyncText" class="text-amber-700">No configurado</span>
+                        </span>
+                    </div>
+                    <button onclick="saveCurrentEvaluation()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded text-xs font-mono font-bold transition flex items-center gap-2 border-1.5 border-slate-900 shadow-[2px_2px_0px_#FFC700]">
+                        <i class="fa-solid fa-floppy-disk text-udemyellow"></i>
+                        <span>[ 💾 Confirmar & Guardar Evaluación ]</span>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT COLUMN: Realtime Analytics & Global Overview (5 cols) -->
+        <section class="lg:col-span-5 flex flex-col gap-6">
+
+            <!-- FINAL SCORE CARD -->
+            <div class="ide-panel rounded p-5 flex flex-col items-center justify-center text-center relative overflow-hidden bg-white">
+                <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-600 mb-1">Calificación Global del Proyecto</span>
+
+                <!-- Gauge SVG -->
+                <div class="relative w-36 h-36 my-2 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                        <circle cx="60" cy="60" r="50" stroke="#e5e5e5" stroke-width="10" fill="transparent" />
+                        <circle id="finalGaugeCircle" cx="60" cy="60" r="50" stroke="#FFC700" stroke-width="10" fill="transparent"
+                                stroke-dasharray="314.15" stroke-dashoffset="314.15" stroke-linecap="round" class="transition-all duration-300 ease-out" />
+                    </svg>
+
+                    <!-- Score Text Center -->
+                    <div class="absolute flex flex-col items-center justify-center">
+                        <span id="globalScoreText" class="text-3xl font-black font-mono text-slate-900 tracking-tight">0.0</span>
+                        <span class="text-[8px] text-slate-500 font-mono uppercase font-bold">Escala 0 - 10</span>
+                        <span id="finalBadgeGrade" class="mt-1 text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-800 border border-slate-400">
+                            Pendiente
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Score Breakdown Pills -->
+                <div class="grid grid-cols-3 gap-2 w-full mt-2 pt-3 border-t border-slate-300 text-xs font-mono">
+                    <div class="bg-[#f5f5f5] p-2 rounded border border-slate-300">
+                        <span class="text-slate-500 block text-[8px] uppercase font-bold">Cualitativo</span>
+                        <span id="subQualitativeScore" class="font-bold text-slate-900">0.0</span>
+                    </div>
+                    <div class="bg-[#f5f5f5] p-2 rounded border border-slate-300">
+                        <span class="text-slate-500 block text-[8px] uppercase font-bold">Proceso</span>
+                        <span id="subProcessScore" class="font-bold text-slate-900">0.0</span>
+                    </div>
+                    <div class="bg-[#f5f5f5] p-2 rounded border border-slate-300">
+                        <span class="text-slate-500 block text-[8px] uppercase font-bold">Rúbrica</span>
+                        <span id="subRubricScore" class="font-bold text-slate-900">0.0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROCESSING VECTOR RADAR SPIDER CHART -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-2 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-slate-900"></i>
+                        <h3 class="font-bold text-slate-900 text-xs font-mono uppercase tracking-wide">Perfil Vectorial</h3>
+                    </div>
+                    <span class="text-[9px] font-mono text-slate-600">Processing Radar</span>
+                </div>
+
+                <div class="w-full aspect-square max-w-[280px] mx-auto flex items-center justify-center relative py-1">
+                    <svg id="radarSVG" viewBox="0 0 300 300" class="w-full h-full overflow-visible">
+                        <!-- Dynamic SVG Radar Chart -->
+                    </svg>
+                </div>
+            </div>
+
+            <!-- GLOBAL TEAMS OVERVIEW TABLE -->
+            <div class="ide-panel rounded p-5 bg-white">
+                <div class="ide-panel-header -mx-5 -mt-5 p-3 px-5 rounded-t mb-3 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-slate-900"></i>
+                        <h3 class="font-bold text-slate-900 text-xs font-mono uppercase tracking-wide">Estatus (5 Equipos)</h3>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead>
+                            <tr class="border-b-1.5 border-slate-900 text-slate-700 text-[9px] uppercase font-bold">
+                                <th class="pb-2">Equipo</th>
+                                <th class="pb-2">Nota</th>
+                                <th class="pb-2">Dictamen</th>
+                                <th class="pb-2 text-right">Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody" class="divide-y divide-slate-200 text-slate-800">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL: GOOGLE SHEETS CLOUD CONFIGURATION -->
+    <div id="sheetsModal" class="fixed inset-0 z-50 modal-overlay hidden flex items-center justify-center p-4 no-print">
+        <div class="ide-panel bg-white w-full max-w-2xl rounded p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b-1.5 border-slate-900 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-table text-emerald-600 text-lg"></i>
+                    <h3 class="font-bold font-mono text-sm text-slate-900 uppercase">Configuración de Google Sheets (Nube)</h3>
+                </div>
+                <button onclick="closeSheetsModal()" class="text-slate-500 hover:text-slate-900 text-lg font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs text-slate-800 font-sans">
+                <p>Al pegar la URL de tu <strong>Google Apps Script Web App</strong>, las evaluaciones de los profesores se guardarán directamente en tu Google Sheet personal en cuanto den clic en <em>"Confirmar & Guardar Evaluación"</em>.</p>
+
+                <!-- URL Input -->
+                <div class="bg-slate-100 p-3 rounded border-1.5 border-slate-900 space-y-1.5">
+                    <label for="scriptUrlInput" class="font-mono font-bold text-slate-900 block text-[11px]">
+                        URL de la Web App de Google Apps Script:
+                    </label>
+                    <input type="text" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/AKfycbx.../exec"
+                        class="w-full ide-input rounded p-2 text-xs font-mono">
+                    <span id="savedUrlNotice" class="text-[10px] text-emerald-700 font-mono font-bold block"></span>
+                </div>
+
+                <!-- Step by step setup guide -->
+                <div class="border border-slate-300 rounded p-3 bg-slate-50 space-y-2">
+                    <h4 class="font-bold font-mono text-slate-900 text-xs flex items-center gap-1">
+                        <i class="fa-solid fa-list-ol text-slate-900"></i> Instructivo de conexión rápida (3 minutos):
+                    </h4>
+                    <ol class="list-decimal list-inside space-y-1 text-[11px] text-slate-700">
+                        <li>Abre tu **Google Sheet** y ve al menú superior: <strong>Extensiones → Apps Script</strong>.</li>
+                        <li>Borra el código existente y pega el siguiente script:</li>
+                    </ol>
+
+                    <!-- Apps Script Code Box -->
+                    <div class="relative">
+                        <pre class="bg-slate-900 text-amber-300 font-mono text-[10px] p-3 rounded overflow-x-auto select-all leading-relaxed">
+function doPost(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    
+    sheet.appendRow([
+      new Date(),
+      data.evaluator || "Anónimo",
+      data.teamNumber || "",
+      data.topic || "",
+      data.finalScore || 0,
+      data.recommendation || "",
+      data.qualitativeScore || 0,
+      data.processScore || 0,
+      data.rubricScore || 0,
+      data.comments || ""
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</pre>
+                    </div>
+
+                    <ol start="3" class="list-decimal list-inside space-y-1 text-[11px] text-slate-700">
+                        <li>Haz clic en el botón azul <strong>Implementar → Nueva implementación</strong>.</li>
+                        <li>En *Tipo*, elige <strong>Aplicación web</strong>.</li>
+                        <li>En *Quién tiene acceso*, selecciona <strong>Cualquier persona</strong> (*Anyone*).</li>
+                        <li>Haz clic en **Implementar**, autoriza los permisos y **copia la URL de la aplicación web** obtenida para pegarla en el recuadro superior.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2 border-t border-slate-200">
+                <button onclick="saveSheetsUrl()" class="bg-udemyellow hover:bg-udemyellowhover text-slate-950 font-mono font-bold text-xs px-4 py-2 rounded border-1.5 border-slate-900 shadow-[2px_2px_0px_#1a1a1a]">
+                    Guardar URL de Google Sheets
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL: QR CODE ACCESS GENERATOR -->
+    <div id="qrModal" class="fixed inset-0 z-50 modal-overlay hidden flex items-center justify-center p-4 no-print">
+        <div class="ide-panel bg-white w-full max-w-md rounded p-6 shadow-2xl space-y-4 text-center">
+            <div class="flex justify-between items-center border-b-1.5 border-slate-900 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-qrcode text-slate-900 text-lg"></i>
+                    <h3 class="font-bold font-mono text-sm text-slate-900 uppercase">Acceso Móvil Evaluadores</h3>
+                </div>
+                <button onclick="closeQrModal()" class="text-slate-500 hover:text-slate-900 text-lg font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-600 font-sans">
+                Los profesores pueden escanear este código con la cámara de su celular para abrir el formato de evaluación.
+            </p>
+
+            <!-- QR Code Render Canvas/Container -->
+            <div class="flex justify-center my-3">
+                <div id="qrcodeContainer" class="p-3 bg-white border-2 border-slate-900 rounded shadow-sm inline-block"></div>
+            </div>
+
+            <div class="text-[11px] font-mono text-slate-700 bg-slate-100 p-2 rounded border border-slate-300 break-all" id="qrCurrentUrlText">
+                <!-- Current URL string -->
+            </div>
+
+            <div class="flex justify-center gap-2 pt-2">
+                <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white font-mono font-bold text-xs px-4 py-2 rounded border-1.5 border-slate-900 shadow-[2px_2px_0px_#FFC700] flex items-center gap-1.5">
+                    <i class="fa-solid fa-print"></i> Imprimir Ficha QR
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 pointer-events-none"></div>
+
+
+    <!-- CONSOLIDATED PRINTABLE REPORT FOR ALL 5 TEAMS -->
+    <div id="printConsolidatedReport" class="hidden p-8 max-w-5xl mx-auto font-sans text-slate-900 bg-white">
+        <!-- Populated dynamically for print preview -->
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC & STATE ENGINE -->
+    <script>
+        /* INITIAL STATE WITH 5 SPECIFIED UDEM TEAMS (All start at score 0 & "NO EVALUADO") */
+        const INITIAL_TEAMS_DATA = [
+            {
+                id: "team-1",
+                teamNumber: "Equipo 1",
+                topic: "Senderismo",
+                members: "Sara D. Chapa Carranco, Roberto A. Flores Garza, Marlen Rendón Hernández, Yolanda M. Vega Gómez",
+                evaluated: false,
+                qualitative: { problemClarity: 0.0, definedObjectives: 0.0, feasibilityValue: 0.0 },
+                process: { research: 0, deliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: { r1: null, r2: null, r3: null, r4: null, r5: null, r6: null },
+                recommendation: "",
+                comments: ""
+            },
+            {
+                id: "team-2",
+                teamNumber: "Equipo 2",
+                topic: "Sistema híbrido de planeación académica adaptativa",
+                members: "Eugenio J. Decrescenzo Melicoff, Hernán Macías García",
+                evaluated: false,
+                qualitative: { problemClarity: 0.0, definedObjectives: 0.0, feasibilityValue: 0.0 },
+                process: { research: 0, deliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: { r1: null, r2: null, r3: null, r4: null, r5: null, r6: null },
+                recommendation: "",
+                comments: ""
+            },
+            {
+                id: "team-3",
+                teamNumber: "Equipo 3",
+                topic: "Sargazo",
+                members: "Michelle Betanzo Carriles, Eugenio González Sánchez, Matias Romero Rangel, Luis A. Jáuregui Zúñiga",
+                evaluated: false,
+                qualitative: { problemClarity: 0.0, definedObjectives: 0.0, feasibilityValue: 0.0 },
+                process: { research: 0, deliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: { r1: null, r2: null, r3: null, r4: null, r5: null, r6: null },
+                recommendation: "",
+                comments: ""
+            },
+            {
+                id: "team-4",
+                teamNumber: "Equipo 4",
+                topic: "Sistema de Respuesta Inmediata",
+                members: "Raúl E. Hernández Ramón, Alfonso Torres Medina, Carlos E. Tovar Castañeda",
+                evaluated: false,
+                qualitative: { problemClarity: 0.0, definedObjectives: 0.0, feasibilityValue: 0.0 },
+                process: { research: 0, deliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: { r1: null, r2: null, r3: null, r4: null, r5: null, r6: null },
+                recommendation: "",
+                comments: ""
+            },
+            {
+                id: "team-5",
+                teamNumber: "Equipo 5",
+                topic: "Mobiliario urbano para áreas caninas",
+                members: "Sebastián Montaño Barrón, Amy L. Neri Arriaga, Dalia A. Rocha",
+                evaluated: false,
+                qualitative: { problemClarity: 0.0, definedObjectives: 0.0, feasibilityValue: 0.0 },
+                process: { research: 0, deliverables: 0, presentationQuality: 0 },
+                matrix: { x: 0.0, y: 0.0 },
+                rubric: { r1: null, r2: null, r3: null, r4: null, r5: null, r6: null },
+                recommendation: "",
+                comments: ""
+            }
+        ];
+
+        let state = {
+            teams: JSON.parse(JSON.stringify(INITIAL_TEAMS_DATA)),
+            currentTeamId: "team-1",
+            evaluatorName: "",
+            sheetsUrl: localStorage.getItem('udem_google_sheets_url') || ""
+        };
+
+        // Load saved evaluations from localStorage if present
+        const savedData = localStorage.getItem('udem_evaluations_store');
+        if (savedData) {
+            try {
+                const parsed = JSON.parse(savedData);
+                if (Array.isArray(parsed) && parsed.length === 5) {
+                    state.teams = parsed;
+                }
+            } catch(e) { console.error("Error loading localStorage data", e); }
+        }
+
+        function getCurrentTeam() {
+            return state.teams.find(t => t.id === state.currentTeamId) || state.teams[0];
+        }
+
+        /* 1. QUALITATIVE KNOBS / DIALS (0.0 to 10.0) */
+        const QUALITATIVE_DEFS = [
+            { key: 'problemClarity', label: 'Problemática clara', icon: 'fa-bullseye' },
+            { key: 'definedObjectives', label: 'Objetivos bien definidos', icon: 'fa-flag-checkered' },
+            { key: 'feasibilityValue', label: 'Viabilidad & Propuesta de Valor', icon: 'fa-gears' }
+        ];
+
+        function renderQualitativeDials() {
+            const container = document.getElementById('qualitativeDialsGrid');
+            const team = getCurrentTeam();
+            container.innerHTML = '';
+
+            QUALITATIVE_DEFS.forEach(def => {
+                const val = team.qualitative[def.key] ?? 0.0;
+                const maxDash = 169.6;
+                const dashOffset = maxDash - (val / 10) * maxDash;
+
+                const dialEl = document.createElement('div');
+                dialEl.className = 'bg-[#f8f8f8] border-1.5 border-slate-900 rounded p-3 flex flex-col items-center justify-between relative knob-element hover:border-amber-500 transition shadow-sm';
+
+                dialEl.innerHTML = `
+                    <div class="text-[11px] font-mono text-slate-800 font-bold text-center flex items-center justify-center gap-1 h-6">
+                        <i class="fa-solid ${def.icon} text-slate-900 text-xs"></i>
+                        <span class="leading-tight">${def.label}</span>
+                    </div>
+
+                    <div class="relative w-18 h-18 my-2 flex items-center justify-center" id="dialSvg_${def.key}">
+                        <svg class="w-16 h-16 transform rotate-[135deg]" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="36" stroke="#e0e0e0" stroke-width="9" fill="transparent" stroke-dasharray="169.6 56.5" stroke-linecap="round" />
+                            <circle cx="50" cy="50" r="36" stroke="#FFC700" stroke-width="9" fill="transparent"
+                                stroke-dasharray="226.2" stroke-dashoffset="${dashOffset + 56.5}" stroke-linecap="round"
+                                class="transition-all duration-75" />
+                        </svg>
+
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none font-mono">
+                            <span class="text-base font-black text-slate-900 tracking-tight" id="dialVal_${def.key}">${val.toFixed(1)}</span>
+                            <span class="text-[7px] text-slate-500 font-bold uppercase">pts</span>
+                        </div>
+                    </div>
+
+                    <div class="text-[9px] font-mono text-slate-500 flex items-center gap-1 font-semibold">
+                        <i class="fa-solid fa-arrows-up-down text-slate-800"></i> Arrastrar
+                    </div>
+                `;
+
+                container.appendChild(dialEl);
+                attachDialDrag(dialEl.querySelector(`#dialSvg_${def.key}`), def.key);
+            });
+        }
+
+        function attachDialDrag(element, key) {
+            let isDragging = false;
+            let startY = 0;
+            let startVal = 0;
+
+            const onStart = (e) => {
+                isDragging = true;
+                startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+                startVal = getCurrentTeam().qualitative[key];
+                document.body.style.cursor = 'ns-resize';
+            };
+
+            const onMove = (e) => {
+                if (!isDragging) return;
+                const currentY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+                const deltaY = startY - currentY;
+                let newVal = startVal + (deltaY * 0.05);
+                newVal = Math.max(0, Math.min(10, newVal));
+
+                const team = getCurrentTeam();
+                team.qualitative[key] = parseFloat(newVal.toFixed(1));
+                markTeamAsEvaluated();
+                updateUIRealtime();
+            };
+
+            const onEnd = () => {
+                if (isDragging) {
+                    isDragging = false;
+                    document.body.style.cursor = 'default';
+                }
+            };
+
+            element.addEventListener('mousedown', onStart);
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('mouseup', onEnd);
+
+            element.addEventListener('touchstart', onStart, { passive: true });
+            window.addEventListener('touchmove', onMove, { passive: true });
+            window.addEventListener('touchend', onEnd);
+        }
+
+        /* 2. PROCESS SLIDERS (0% to 100%) */
+        const PROCESS_DEFS = [
+            { key: 'research', label: 'Métodos de Investigación & Rigor Científico - Pertinente al proceso de Diseño', icon: 'fa-flask' },
+            { key: 'deliverables', label: '¿Son claros los entregables que se proyectan?', icon: 'fa-box-open' },
+            { key: 'presentationQuality', label: 'Calidad de la presentación y coherencia de lo mostrado', icon: 'fa-chalkboard-user' }
+        ];
+
+        function renderProcessSliders() {
+            const container = document.getElementById('processSlidersContainer');
+            const team = getCurrentTeam();
+            container.innerHTML = '';
+
+            PROCESS_DEFS.forEach(def => {
+                const val = team.process[def.key] ?? 0;
+
+                const row = document.createElement('div');
+                row.className = 'space-y-1.5';
+                row.innerHTML = `
+                    <div class="flex justify-between items-center text-xs font-sans">
+                        <span class="text-slate-800 font-semibold flex items-center gap-2">
+                            <i class="fa-solid ${def.icon} text-slate-900"></i>
+                            ${def.label}
+                        </span>
+                        <span class="font-mono font-bold text-slate-900 bg-[#ececec] px-2 py-0.5 rounded border border-slate-900" id="sliderVal_${def.key}">
+                            ${val}%
+                        </span>
+                    </div>
+                    <input type="range" min="0" max="100" value="${val}"
+                        oninput="onProcessSliderChange('${def.key}', this.value)">
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function onProcessSliderChange(key, val) {
+            const num = parseInt(val, 10);
+            const team = getCurrentTeam();
+            team.process[key] = num;
+            document.getElementById(`sliderVal_${key}`).innerText = `${num}%`;
+            markTeamAsEvaluated();
+            updateUIRealtime();
+        }
+
+        /* 3. 2D CARTESIAN MATRIX (X: Viabilidad Técnica, Y: Impacto / Innovación) */
+        function initMatrixInteraction() {
+            const canvas = document.getElementById('matrixCanvas');
+            let isDragging = false;
+
+            const updateFromEvent = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+                const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+
+                let relX = (clientX - rect.left) / rect.width;
+                let relY = (clientY - rect.top) / rect.height;
+
+                relX = Math.max(0, Math.min(1, relX));
+                relY = Math.max(0, Math.min(1, relY));
+
+                const scoreX = parseFloat((relX * 10).toFixed(1));
+                const scoreY = parseFloat(((1 - relY) * 10).toFixed(1));
+
+                const team = getCurrentTeam();
+                team.matrix.x = scoreX;
+                team.matrix.y = scoreY;
+
+                markTeamAsEvaluated();
+                updateUIRealtime();
+            };
+
+            canvas.addEventListener('mousedown', (e) => { isDragging = true; updateFromEvent(e); });
+            window.addEventListener('mousemove', (e) => { if (isDragging) updateFromEvent(e); });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+
+            canvas.addEventListener('touchstart', (e) => { isDragging = true; updateFromEvent(e); }, { passive: true });
+            window.addEventListener('touchmove', (e) => { if (isDragging) updateFromEvent(e); }, { passive: true });
+            window.addEventListener('touchend', () => { isDragging = false; });
+        }
+
+        function renderMatrixState() {
+            const team = getCurrentTeam();
+            const { x, y } = team.matrix;
+
+            const pointer = document.getElementById('matrixPointer');
+            const coordsLabel = document.getElementById('matrixCoordsLabel');
+            const titleEl = document.getElementById('quadrantTitle');
+            const descEl = document.getElementById('quadrantDesc');
+            const contribEl = document.getElementById('matrixScoreContribution');
+
+            pointer.style.left = `${(x / 10) * 100}%`;
+            pointer.style.top = `${(1 - (y / 10)) * 100}%`;
+
+            coordsLabel.innerText = `X(Viab): ${x.toFixed(1)} | Y(Impacto): ${y.toFixed(1)}`;
+
+            const matrixAvg = ((x + y) / 2).toFixed(1);
+            contribEl.innerText = `${matrixAvg} / 10 pts`;
+
+            if (x === 0 && y === 0) {
+                titleEl.innerText = "Sin posicionar (0,0)";
+                descEl.innerText = "Arrastre el indicador para definir el cuadrante estratégico del anteproyecto.";
+            } else if (x >= 5 && y >= 5) {
+                titleEl.innerText = "★ Proyecto de Alto Valor Estratégico";
+                descEl.innerText = "Equilibrio óptimo entre innovación/impacto e ingenio técnico factible.";
+            } else if (x < 5 && y >= 5) {
+                titleEl.innerText = "🚀 Visión Conceptual Altamente Ambiciosa";
+                descEl.innerText = "Gran potencial de impacto visual/social; requiere acotar viabilidad técnica de producción.";
+            } else if (x >= 5 && y < 5) {
+                titleEl.innerText = "🛠️ Solución Viable de Bajo Impacto";
+                descEl.innerText = "Factible físicamente, pero requiere mayor propuesta de valor y profundización formal.";
+            } else {
+                titleEl.innerText = "⚠️ Requiere Reformulación";
+                descEl.innerText = "Se recomienda revisar el alcance del proyecto antes del desarrollo final.";
+            }
+        }
+
+        /* 4. RUBRIC MATRIX (6 Criteria, 4 Levels) */
+        const RUBRIC_ROWS = [
+            { key: 'r1', label: '1. Planteamiento & Relevancia de la investigación' },
+            { key: 'r2', label: '2. Avance del Marco Teórico' },
+            { key: 'r3', label: '3. Propuesta de Diseño & Originalidad' },
+            { key: 'r4', label: '4. Viabilidad Técnica y Material' },
+            { key: 'r5', label: '5. Claridad en la Exposición y Entregables' },
+            { key: 'r6', label: '6. Impacto y Justificación del Proyecto' }
+        ];
+
+        const RUBRIC_LEVELS = [
+            { level: 1, label: 'Insuficiente', percent: '25%' },
+            { level: 2, label: 'Aceptable', percent: '50%' },
+            { level: 3, label: 'Bueno', percent: '75%' },
+            { level: 4, label: 'Excelente', percent: '100%' }
+        ];
+
+        function renderRubric() {
+            const container = document.getElementById('rubricRowsContainer');
+            const team = getCurrentTeam();
+            container.innerHTML = '';
+
+            RUBRIC_ROWS.forEach(rowDef => {
+                const currentLevel = team.rubric[rowDef.key];
+
+                const rowEl = document.createElement('div');
+                rowEl.className = 'bg-[#f8f8f8] border-1.5 border-slate-900 rounded p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2';
+
+                let btnsHtml = '';
+                RUBRIC_LEVELS.forEach(lvl => {
+                    const isActive = currentLevel === lvl.level;
+                    const activeStyle = isActive 
+                        ? 'bg-udemyellow text-slate-950 border-slate-900 font-bold shadow-[1px_1px_0px_#1a1a1a]' 
+                        : 'bg-white text-slate-700 border-slate-300 hover:border-slate-900';
+
+                    btnsHtml += `
+                        <button onclick="setRubricLevel('${rowDef.key}', ${lvl.level})"
+                            class="flex-1 py-1 px-1 rounded border text-[10px] font-mono transition flex flex-col items-center justify-center ${activeStyle}">
+                            <span>${lvl.label}</span>
+                            <span class="text-[8px] opacity-75">${lvl.percent}</span>
+                        </button>
+                    `;
+                });
+
+                rowEl.innerHTML = `
+                    <span class="text-xs font-semibold text-slate-800 sm:w-1/3">${rowDef.label}</span>
+                    <div class="grid grid-cols-4 gap-1 sm:w-2/3">
+                        ${btnsHtml}
+                    </div>
+                `;
+
+                container.appendChild(rowEl);
+            });
+        }
+
+        function setRubricLevel(rowKey, level) {
+            const team = getCurrentTeam();
+            team.rubric[rowKey] = level;
+            markTeamAsEvaluated();
+            renderRubric();
+            updateUIRealtime();
+        }
+
+        /* 5. RECOMMENDATION OPTIONS (DICTAMEN A, B, C, D) */
+        const RECOMMENDATION_OPTIONS = [
+            { id: 'A', title: 'A) Aceptado sin cambios' },
+            { id: 'B', title: 'B) Aceptado con correcciones menores obligatorias' },
+            { id: 'C', title: 'C) Aceptado condicionalmente (Ajustes mayores)' },
+            { id: 'D', title: 'D) Rechazado (Necesita nueva presentación)' }
+        ];
+
+        function renderRecommendations() {
+            const container = document.getElementById('recommendationOptionsContainer');
+            const team = getCurrentTeam();
+            container.innerHTML = '';
+
+            RECOMMENDATION_OPTIONS.forEach(opt => {
+                const isSelected = team.recommendation === opt.id;
+                const activeStyle = isSelected
+                    ? 'bg-udemyellow text-slate-950 border-slate-900 font-bold shadow-[2px_2px_0px_#1a1a1a]'
+                    : 'bg-white border-slate-300 text-slate-700 hover:border-slate-900';
+
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.onclick = () => {
+                    team.recommendation = opt.id;
+                    markTeamAsEvaluated();
+                    renderRecommendations();
+                    updateSummaryTable();
+                };
+                card.className = `p-2.5 rounded border-1.5 text-left text-xs font-mono transition flex items-center justify-between ${activeStyle}`;
+
+                card.innerHTML = `
+                    <span>${opt.title}</span>
+                    <i class="fa-solid ${isSelected ? 'fa-circle-check text-slate-950' : 'fa-circle text-slate-300'} text-sm"></i>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        /* RADAR CHART GENERATOR */
+        function renderRadarChart() {
+            const svg = document.getElementById('radarSVG');
+            const team = getCurrentTeam();
+
+            let rubricAvgVal = 0;
+            const rVals = Object.values(team.rubric).filter(v => v !== null);
+            if (rVals.length > 0) {
+                rubricAvgVal = (rVals.reduce((a, b) => a + b, 0) / (rVals.length * 4)) * 10;
+            }
+
+            const axes = [
+                { label: 'Problemática', val: team.qualitative.problemClarity },
+                { label: 'Objetivos', val: team.qualitative.definedObjectives },
+                { label: 'Prop. Valor', val: team.qualitative.feasibilityValue },
+                { label: 'Investigación', val: team.process.research / 10 },
+                { label: 'Entregables', val: team.process.deliverables / 10 },
+                { label: 'Presentación', val: team.process.presentationQuality / 10 },
+                { label: 'Viab (X)', val: team.matrix.x },
+                { label: 'Rúbrica', val: rubricAvgVal }
+            ];
+
+            const center = 150;
+            const maxR = 95;
+            const totalAxes = axes.length;
+
+            let html = '';
+
+            // Grid concentric circles
+            [0.25, 0.5, 0.75, 1.0].forEach(level => {
+                let pts = [];
+                for (let i = 0; i < totalAxes; i++) {
+                    const angle = (Math.PI * 2 / totalAxes) * i - Math.PI / 2;
+                    const x = center + Math.cos(angle) * maxR * level;
+                    const y = center + Math.sin(angle) * maxR * level;
+                    pts.push(`${x},${y}`);
+                }
+                html += `<polygon points="${pts.join(' ')}" fill="none" stroke="#d5d5d5" stroke-width="1" />`;
+            });
+
+            let polygonPts = [];
+
+            axes.forEach((axis, i) => {
+                const angle = (Math.PI * 2 / totalAxes) * i - Math.PI / 2;
+                const axisX = center + Math.cos(angle) * maxR;
+                const axisY = center + Math.sin(angle) * maxR;
+
+                html += `<line x1="${center}" y1="${center}" x2="${axisX}" y2="${axisY}" stroke="#cccccc" stroke-width="1" />`;
+
+                const normVal = Math.max(0, Math.min(10, axis.val)) / 10;
+                const dataX = center + Math.cos(angle) * maxR * normVal;
+                const dataY = center + Math.sin(angle) * maxR * normVal;
+                polygonPts.push(`${dataX},${dataY}`);
+
+                const labelX = center + Math.cos(angle) * (maxR + 22);
+                const labelY = center + Math.sin(angle) * (maxR + 12);
+
+                html += `
+                    <text x="${labelX}" y="${labelY}" fill="#333333" font-size="8" font-family="JetBrains Mono" font-weight="600" text-anchor="middle" dominant-baseline="central">
+                        ${axis.label}
+                    </text>
+                `;
+            });
+
+            // Radar Polygon
+            html += `
+                <polygon points="${polygonPts.join(' ')}"
+                    fill="rgba(255, 199, 0, 0.45)"
+                    stroke="#1a1a1a"
+                    stroke-width="2" />
+            `;
+
+            polygonPts.forEach(pt => {
+                const [px, py] = pt.split(',');
+                html += `<circle cx="${px}" cy="${py}" r="3" fill="#FFC700" stroke="#1a1a1a" stroke-width="1.5" />`;
+            });
+
+            svg.innerHTML = html;
+        }
+
+        /* CALCULATIONS ENGINE */
+        function calculateScoresForTeam(team) {
+            const qualAvg = (team.qualitative.problemClarity + team.qualitative.definedObjectives + team.qualitative.feasibilityValue) / 3;
+            const procAvg = ((team.process.research + team.process.deliverables + team.process.presentationQuality) / 3) / 10;
+            const matrixAvg = (team.matrix.x + team.matrix.y) / 2;
+
+            let rubricAvg = 0;
+            const rVals = Object.values(team.rubric).filter(v => v !== null);
+            if (rVals.length > 0) {
+                rubricAvg = (rVals.reduce((a, b) => a + b, 0) / (rVals.length * 4)) * 10;
+            }
+
+            let global = (qualAvg * 0.25) + (procAvg * 0.25) + (matrixAvg * 0.20) + (rubricAvg * 0.30);
+            global = Math.max(0, Math.min(10, global));
+
+            return {
+                global: parseFloat(global.toFixed(1)),
+                qualAvg: parseFloat(qualAvg.toFixed(1)),
+                procAvg: parseFloat(procAvg.toFixed(1)),
+                matrixAvg: parseFloat(matrixAvg.toFixed(1)),
+                rubricAvg: parseFloat(rubricAvg.toFixed(1))
+            };
+        }
+
+        function markTeamAsEvaluated() {
+            const team = getCurrentTeam();
+            if (!team.evaluated) {
+                team.evaluated = true;
+                updateTeamStatusBadge();
+                populateTeamSelector();
+            }
+        }
+
+        function updateTeamStatusBadge() {
+            const team = getCurrentTeam();
+            const badge = document.getElementById('evaluationStatusBadge');
+            if (team.evaluated) {
+                badge.innerText = "EVALUADO";
+                badge.className = "text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-950 bg-emerald-300 px-2 py-0.5 rounded border border-slate-900";
+            } else {
+                badge.innerText = "NO EVALUADO";
+                badge.className = "text-[10px] font-mono font-bold uppercase tracking-wider text-slate-700 bg-slate-200 px-2 py-0.5 rounded border border-slate-400";
+            }
+        }
+
+        function updateUIRealtime() {
+            const team = getCurrentTeam();
+
+            QUALITATIVE_DEFS.forEach(def => {
+                const val = team.qualitative[def.key];
+                const valEl = document.getElementById(`dialVal_${def.key}`);
+                if (valEl) valEl.innerText = val.toFixed(1);
+
+                const dialContainer = document.querySelector(`#dialSvg_${def.key}`);
+                if (dialContainer) {
+                    const circle = dialContainer.querySelectorAll('circle')[1];
+                    if (circle) {
+                        const dashOffset = 169.6 - (val / 10) * 169.6;
+                        circle.setAttribute('stroke-dashoffset', dashOffset + 56.5);
+                    }
+                }
+            });
+
+            renderMatrixState();
+            renderRadarChart();
+
+            const scores = calculateScoresForTeam(team);
+            document.getElementById('globalScoreText').innerText = scores.global.toFixed(1);
+            document.getElementById('subQualitativeScore').innerText = scores.qualAvg.toFixed(1);
+            document.getElementById('subProcessScore').innerText = scores.procAvg.toFixed(1);
+            document.getElementById('subRubricScore').innerText = scores.rubricAvg.toFixed(1);
+
+            const maxDash = 314.15;
+            const offset = maxDash - (scores.global / 10) * maxDash;
+            document.getElementById('finalGaugeCircle').style.strokeDashoffset = offset;
+
+            const badge = document.getElementById('finalBadgeGrade');
+            if (!team.evaluated && scores.global === 0) {
+                badge.innerText = "Pendiente";
+                badge.className = "mt-1 text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700 border border-slate-400";
+            } else if (scores.global >= 9.0) {
+                badge.innerText = "Excelente (A+)";
+                badge.className = "mt-1 text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-udemyellow text-slate-950 border border-slate-900";
+            } else if (scores.global >= 8.0) {
+                badge.innerText = "Sobresaliente (A)";
+                badge.className = "mt-1 text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-300 text-slate-950 border border-slate-900";
+            } else if (scores.global >= 7.0) {
+                badge.innerText = "Aprobado (B)";
+                badge.className = "mt-1 text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-sky-200 text-slate-950 border border-slate-900";
+            } else {
+                badge.innerText = "Insuficiente (C)";
+                badge.className = "mt-1 text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-rose-200 text-slate-950 border border-slate-900";
+            }
+
+            updateSummaryTable();
+            updateCloudStatusTag();
+        }
+
+        function updateSummaryTable() {
+            const tbody = document.getElementById('summaryTableBody');
+            tbody.innerHTML = '';
+
+            state.teams.forEach(t => {
+                const scores = calculateScoresForTeam(t);
+                const isCurrent = t.id === state.currentTeamId;
+                const tr = document.createElement('tr');
+                tr.className = isCurrent ? 'bg-amber-100 font-bold text-slate-900' : 'hover:bg-slate-100';
+
+                tr.innerHTML = `
+                    <td class="py-2">
+                        <div class="text-[11px] text-slate-900 font-bold">${t.teamNumber}</div>
+                        <div class="text-[9px] text-slate-500 font-sans truncate max-w-[110px]">${t.topic}</div>
+                    </td>
+                    <td class="py-2 font-bold text-slate-900">${scores.global.toFixed(1)}</td>
+                    <td class="py-2">
+                        <span class="text-[9px] px-1.5 py-0.5 rounded border border-slate-300 bg-white">
+                            Dictamen ${t.recommendation || '-'}
+                        </span>
+                    </td>
+                    <td class="py-2 text-right">
+                        <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${t.evaluated ? 'bg-emerald-300 text-emerald-950 border border-slate-900' : 'bg-slate-200 text-slate-600'}">
+                            ${t.evaluated ? 'Evaluado' : 'Pendiente'}
+                        </span>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateCloudStatusTag() {
+            const syncText = document.getElementById('cloudSyncText');
+            if (state.sheetsUrl && state.sheetsUrl.trim() !== '') {
+                syncText.innerText = "Conectado ✓";
+                syncText.className = "text-emerald-700 font-bold";
+            } else {
+                syncText.innerText = "No configurado";
+                syncText.className = "text-amber-700";
+            }
+        }
+
+        /* PERSISTENCE, GOOGLE SHEETS & TEAM SWITCHING */
+        function populateTeamSelector() {
+            const select = document.getElementById('teamSelect');
+            select.innerHTML = '';
+
+            state.teams.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.id;
+                opt.innerText = `${t.teamNumber} - ${t.topic} ${t.evaluated ? '✓' : ''}`;
+                if (t.id === state.currentTeamId) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            select.onchange = (e) => {
+                state.currentTeamId = e.target.value;
+                loadCurrentTeamToUI();
+            };
+        }
+
+        function loadCurrentTeamToUI() {
+            const team = getCurrentTeam();
+
+            document.getElementById('teamBadge').innerText = team.teamNumber;
+            document.getElementById('projectTopicTitle').innerText = `Tema: ${team.topic}`;
+            document.getElementById('teamMembersList').innerHTML = `<strong>Integrantes:</strong> ${team.members}`;
+            document.getElementById('projectComments').value = team.comments || '';
+
+            updateTeamStatusBadge();
+            renderQualitativeDials();
+            renderProcessSliders();
+            renderRubric();
+            renderRecommendations();
+            updateUIRealtime();
+            populateTeamSelector();
+        }
+
+        function updateEvaluatorName(val) {
+            state.evaluatorName = val;
+        }
+
+        function showToast(message, isSuccess = true) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `p-3 rounded border-1.5 border-slate-900 font-mono text-xs font-bold shadow-lg animate-toast flex items-center gap-2 pointer-events-auto mb-2 ${isSuccess ? 'bg-udemyellow text-slate-950' : 'bg-rose-200 text-rose-900'}`;
+            toast.innerHTML = `<i class="fa-solid ${isSuccess ? 'fa-circle-check' : 'fa-circle-exclamation'} text-sm"></i> ${message}`;
+
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3500);
+        }
+
+        async function saveCurrentEvaluation() {
+            const team = getCurrentTeam();
+            team.comments = document.getElementById('projectComments').value;
+            team.evaluated = true;
+
+            // Save state in browser localStorage
+            localStorage.setItem('udem_evaluations_store', JSON.stringify(state.teams));
+
+            updateTeamStatusBadge();
+            populateTeamSelector();
+            updateSummaryTable();
+
+            const scores = calculateScoresForTeam(team);
+
+            // Google Sheets cloud sync logic
+            if (state.sheetsUrl && state.sheetsUrl.trim() !== '') {
+                const payload = {
+                    evaluator: state.evaluatorName || "No especificado",
+                    teamNumber: team.teamNumber,
+                    topic: team.topic,
+                    finalScore: scores.global,
+                    recommendation: team.recommendation || "Sin dictamen",
+                    qualitativeScore: scores.qualAvg,
+                    processScore: scores.procAvg,
+                    rubricScore: scores.rubricAvg,
+                    comments: team.comments
+                };
+
+                try {
+                    await fetch(state.sheetsUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    showToast("✓ Evaluación guardada y enviada a Google Sheets en la nube");
+                } catch (err) {
+                    console.error(err);
+                    showToast("Guardado local correcto. Fallo al conectar con Google Sheets", false);
+                }
+            } else {
+                showToast("✓ Evaluación guardada localmente (Google Sheets no configurado)");
+            }
+        }
+
+        document.getElementById('projectComments').oninput = (e) => {
+            const team = getCurrentTeam();
+            team.comments = e.target.value;
+            markTeamAsEvaluated();
+        };
+
+        /* GOOGLE SHEETS MODAL HANDLERS */
+        function openSheetsModal() {
+            document.getElementById('scriptUrlInput').value = state.sheetsUrl || '';
+            document.getElementById('sheetsModal').classList.remove('hidden');
+        }
+
+        function closeSheetsModal() {
+            document.getElementById('sheetsModal').classList.add('hidden');
+        }
+
+        function saveSheetsUrl() {
+            const url = document.getElementById('scriptUrlInput').value.trim();
+            state.sheetsUrl = url;
+            localStorage.setItem('udem_google_sheets_url', url);
+            
+            const notice = document.getElementById('savedUrlNotice');
+            notice.innerText = "✓ URL guardada exitosamente.";
+            setTimeout(() => { notice.innerText = ""; }, 2500);
+
+            updateCloudStatusTag();
+            closeSheetsModal();
+            showToast("URL de Google Sheets configurada");
+        }
+
+        /* QR CODE MODAL HANDLERS */
+        function openQrModal() {
+            const qrContainer = document.getElementById('qrcodeContainer');
+            qrContainer.innerHTML = '';
+
+            const currentUrl = window.location.href;
+            document.getElementById('qrCurrentUrlText').innerText = currentUrl;
+
+            new QRCode(qrContainer, {
+                text: currentUrl,
+                width: 180,
+                height: 180,
+                colorDark : "#1a1a1a",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            document.getElementById('qrModal').classList.remove('hidden');
+        }
+
+        function closeQrModal() {
+            document.getElementById('qrModal').classList.add('hidden');
+        }
+
+        /* CONSOLIDATED PRINTABLE PDF ENGINE FOR ALL 5 TEAMS */
+        function generateConsolidatedPrintReport() {
+            const printContainer = document.getElementById('printConsolidatedReport');
+            const evaluator = state.evaluatorName || "No especificado";
+            const today = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            let html = `
+                <div class="border-b-2 border-slate-900 pb-3 mb-6 flex justify-between items-end">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="bg-slate-900 text-amber-400 font-mono font-bold text-xs px-2 py-0.5 rounded">UDEM</span>
+                            <span class="text-xs font-mono text-slate-700 font-bold">UNIVERSIDAD DE MONTERREY</span>
+                        </div>
+                        <h1 class="text-xl font-bold text-slate-900 font-sans">Reporte Consolidado de Evaluación de Proyectos</h1>
+                        <p class="text-xs text-slate-600 font-mono">Materia: <strong>Diseño Integral</strong> (8° Semestre) | <strong>Diseño Industrial</strong></p>
+                    </div>
+                    <div class="text-right text-xs font-mono text-slate-800">
+                        <p><strong>Evaluador:</strong> ${evaluator}</p>
+                        <p><strong>Fecha:</strong> ${today}</p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h2 class="text-xs font-bold font-mono text-slate-900 uppercase border-b border-slate-300 pb-1 mb-2">
+                        Resumen Ejecutivo de Evaluaciones (5 Equipos)
+                    </h2>
+                    <table class="w-full text-left text-xs font-mono border border-slate-900 divide-y divide-slate-300">
+                        <thead class="bg-slate-100 text-slate-900 font-bold">
+                            <tr>
+                                <th class="p-2 border-r border-slate-300">Equipo</th>
+                                <th class="p-2 border-r border-slate-300">Tema del Proyecto</th>
+                                <th class="p-2 border-r border-slate-300">Nota Final</th>
+                                <th class="p-2 border-r border-slate-300">Dictamen</th>
+                                <th class="p-2">Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+            `;
+
+            state.teams.forEach(t => {
+                const sc = calculateScoresForTeam(t);
+                const dictLabel = RECOMMENDATION_OPTIONS.find(r => r.id === t.recommendation)?.title || t.recommendation || '-';
+                html += `
+                    <tr>
+                        <td class="p-2 font-bold border-r border-slate-300">${t.teamNumber}</td>
+                        <td class="p-2 border-r border-slate-300">${t.topic}</td>
+                        <td class="p-2 font-bold text-slate-900 border-r border-slate-300">${sc.global.toFixed(1)} / 10</td>
+                        <td class="p-2 border-r border-slate-300">${dictLabel}</td>
+                        <td class="p-2 font-bold">${t.evaluated ? 'EVALUADO' : 'NO EVALUADO'}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="page-break"></div>
+
+                <h2 class="text-sm font-bold font-mono text-slate-900 uppercase border-b-2 border-slate-900 pb-1 mb-4">
+                    Desglose de Evaluaciones Individuales
+                </h2>
+            `;
+
+            state.teams.forEach((t, index) => {
+                const sc = calculateScoresForTeam(t);
+                const dictLabel = RECOMMENDATION_OPTIONS.find(r => r.id === t.recommendation)?.title || t.recommendation || '-';
+
+                html += `
+                    <div class="border border-slate-900 rounded p-4 mb-5 bg-white">
+                        <div class="flex justify-between items-start border-b border-slate-300 pb-2 mb-2">
+                            <div>
+                                <span class="text-xs font-mono font-bold bg-slate-900 text-amber-400 px-2 py-0.5 rounded">${t.teamNumber}</span>
+                                <span class="text-xs font-mono font-bold ml-2 ${t.evaluated ? 'text-emerald-800' : 'text-slate-500'}">[${t.evaluated ? 'EVALUADO' : 'NO EVALUADO'}]</span>
+                                <h3 class="text-sm font-bold text-slate-900 mt-1">${t.topic}</h3>
+                                <p class="text-xs text-slate-600 font-sans"><strong>Integrantes:</strong> ${t.members}</p>
+                            </div>
+                            <div class="text-right font-mono">
+                                <span class="text-2xl font-black text-slate-900">${sc.global.toFixed(1)}</span>
+                                <span class="text-[8px] text-slate-500 block uppercase font-bold">Nota Final</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-2 mb-2 text-xs font-mono bg-slate-50 p-2 rounded border border-slate-200">
+                            <div><strong>Cualitativo:</strong> ${sc.qualAvg.toFixed(1)}</div>
+                            <div><strong>Proceso:</strong> ${sc.procAvg.toFixed(1)}</div>
+                            <div><strong>Matriz 2D:</strong> ${sc.matrixAvg.toFixed(1)}</div>
+                            <div><strong>Rúbrica:</strong> ${sc.rubricAvg.toFixed(1)}</div>
+                        </div>
+
+                        <div class="text-xs font-sans space-y-1">
+                            <p><strong>Dictamen:</strong> <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded border border-slate-300">${dictLabel}</span></p>
+                            <p class="text-slate-700 italic"><strong>Observaciones:</strong> ${t.comments || 'Sin comentarios registrados.'}</p>
+                        </div>
+                    </div>
+                `;
+
+                if ((index + 1) % 2 === 0 && index < state.teams.length - 1) {
+                    html += `<div class="page-break"></div>`;
+                }
+            });
+
+            printContainer.innerHTML = html;
+        }
+
+        function triggerPrintAllProjects() {
+            generateConsolidatedPrintReport();
+            window.print();
+        }
+
+        /* INITIALIZATION ON WINDOW LOAD */
+        window.onload = function() {
+            loadCurrentTeamToUI();
+            initMatrixInteraction();
+        };
+    </script>
+</body>
+</html>
