@@ -35,6 +35,63 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* Ajustes para Pantallas Móviles (Smartphones y Tablets) */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .evaluator-box {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .project-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .score-badge {
+    width: 100%;
+    text-align: center;
+  }
+
+  .grid-layout {
+    grid-template-columns: 1fr; /* Una sola columna en móvil */
+  }
+
+  .knobs-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 dials por fila */
+    gap: 10px;
+  }
+
+  /* Scroll horizontal para la tabla de rúbrica sin romper la pantalla */
+  .full-width-card {
+    overflow-x: auto;
+  }
+
+  .rubric-table {
+    min-width: 600px; /* Mantiene la legibilidad de la tabla */
+  }
+
+  /* Botones de acción apilados en móvil */
+  .action-bar {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  .btn-main, .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+}
+
     body {
       background-color: var(--bg-dark);
       background-image: radial-gradient(#262630 1px, transparent 1px);
