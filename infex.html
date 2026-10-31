@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UDEM - Evaluación de Proyectos | Diseño Integral</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome & QRCode Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --bg-body: #F4F5F7;
+      --bg-card: #FFFFFF;
+      --bg-input: #FAFAFA;
+      --border-color: #E2E8F0;
+      --border-hover: #CBD5E1;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #64748B;
+      --udem-yellow: #FFC700;
+      --udem-yellow-hover: #E6B200;
+      --udem-yellow-light: #FFFBEB;
+      --accent-green: #10B981;
+      --accent-red: #EF4444;
+      --accent-blue: #3B82F6;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    .app-container {
+      max-width: 1350px;
+      margin: 0 auto;
+    }
+
+    /* Header Bar */
+    header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-tag {
+      background-color: var(--udem-yellow);
+      color: #000;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-action {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+      background: #F8FAFC;
+    }
+
+    /* Evaluator Bar */
+    .evaluator-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 24px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+    }
+
+    .evaluator-bar label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .evaluator-bar input {
+      flex: 1;
+      min-width: 240px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .evaluator-bar input:focus {
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+    }
+
+    /* Teams Nav Tabs */
+    .teams-nav {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .team-tab {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 18px;
+      cursor: pointer;
+      min-width: 190px;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .team-tab:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .team-tab.active {
+      border-color: var(--text-primary);
+      box-shadow: 0 0 0 2px var(--text-primary);
+    }
+
+    .team-tab-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    .team-tab-status {
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #CBD5E1;
+    }
+
+    .team-tab.evaluated .status-dot {
+      background: var(--accent-green);
+    }
+
+    /* Main Grid Layout */
+    .app-body {
+      display: grid;
+      grid-template-columns: 2.3fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 980px) {
+      .app-body { grid-template-columns: 1fr; }
+    }
+
+    /* Cards & Panels */
+    .panel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #F1F5F9;
+      color: var(--text-secondary);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    /* Project Info Banner */
+    .project-banner {
+      background: var(--udem-yellow-light);
+      border: 1px solid rgba(255, 199, 0, 0.4);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+
+    .project-banner h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #78350F;
+      margin-bottom: 4px;
+    }
+
+    .project-banner p {
+      font-size: 0.88rem;
+      color: #92400E;
+    }
+
+    /* Section 1: Knobs */
+    .dials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 16px;
+    }
+
+    .dial-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      cursor: ns-resize;
+      transition: all 0.2s;
+    }
+
+    .dial-card:hover {
+      border-color: var(--border-hover);
+      background: #F1F5F9;
+    }
+
+    .dial-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .dial-svg {
+      width: 76px;
+      height: 76px;
+      pointer-events: none;
+    }
+
+    .dial-val {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 6px;
+    }
+
+    /* Section 2: Sliders */
+    .slider-row {
+      margin-bottom: 18px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .slider-header span.val {
+      font-family: var(--font-mono);
+      color: var(--text-primary);
+      background: #F1F5F9;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 6px;
+      background: #E2E8F0;
+      border-radius: 3px;
+      accent-color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    /* Section 3: Matrix 2D */
+    .matrix-container {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      background: #FAFAFA;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: crosshair;
+      overflow: hidden;
+    }
+
+    .matrix-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .quadrant {
+      padding: 12px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 0.5px stroke #E2E8F0;
+    }
+
+    .quadrant.q1 { text-align: right; align-items: flex-end; background: rgba(16, 185, 129, 0.03); }
+    .quadrant.q2 { background: rgba(245, 158, 11, 0.03); }
+    .quadrant.q3 { justify-content: flex-end; background: rgba(239, 68, 68, 0.03); }
+    .quadrant.q4 { justify-content: flex-end; align-items: flex-end; text-align: right; background: rgba(59, 130, 246, 0.03); }
+
+    .matrix-point {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: var(--udem-yellow);
+      border: 2px solid var(--text-primary);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    /* Section 4: Rubric Table */
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .rubric-table th, .rubric-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .rubric-table th {
+      background: #F8FAFC;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .rubric-table td.criterion-name {
+      text-align: left;
+      font-weight: 600;
+      background: #FAFAFA;
+      color: var(--text-primary);
+      width: 30%;
+    }
+
+    .rubric-btn {
+      width: 100%;
+      padding: 8px 4px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+
+    .rubric-btn:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+    }
+
+    .rubric-btn.selected {
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border-color: var(--text-primary);
+    }
+
+    /* Section 5: Recommendations Pool & Custom Textarea */
+    .pool-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .chips-pool {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .chip-btn {
+      background: #F1F5F9;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-btn:hover {
+      background: var(--udem-yellow);
+      border-color: var(--udem-yellow-hover);
+      color: #000;
+    }
+
+    .custom-textarea {
+      width: 100%;
+      min-height: 110px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .custom-textarea:focus {
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+    }
+
+    /* Recommendations Radios */
+    .rec-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .rec-radio-label {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+      transition: all 0.15s;
+    }
+
+    .rec-radio-label:hover {
+      border-color: var(--border-hover);
+    }
+
+    .rec-radio-label input {
+      accent-color: var(--text-primary);
+    }
+
+    .rec-radio-label.selected {
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* Bottom Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .btn-main {
+      flex: 2;
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+
+    .btn-main:hover {
+      background: #1E293B;
+    }
+
+    .btn-secondary {
+      flex: 1;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      color: var(--accent-red);
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: #FEF2F2;
+      border-color: #FCA5A5;
+    }
+
+    /* Sidebar Dashboard */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .score-card {
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .score-card-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      color: #94A3B8;
+    }
+
+    .score-card-number {
+      font-family: var(--font-mono);
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--udem-yellow);
+      margin: 8px 0;
+    }
+
+    .score-card-status {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #CBD5E1;
+    }
+
+    .radar-wrapper {
+      width: 100%;
+      height: 230px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Modals & Toasts */
+    .modal-overlay {
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--text-primary);
+      color: #FFFFFF;
+      padding: 12px 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 8px;
+      box-shadow: var(--shadow-md);
+      display: none;
+      z-index: 2000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Top Header -->
+    <header>
+      <div class="brand">
+        <span class="brand-tag">UDEM</span>
+        <span class="brand-title">Diseño Integral — Evaluación de Proyectos (8° Semestre)</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-action" onclick="openModal('sheetsModal')"><i class="fa-solid fa-table"></i> Google Sheets</button>
+        <button class="btn-action" onclick="openModal('qrModal')"><i class="fa-solid fa-qrcode"></i> QR App</button>
+        <button class="btn-action" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
+      </div>
+    </header>
+
+    <!-- Evaluator Input Bar -->
+    <div class="evaluator-bar">
+      <label for="evaluatorName"><i class="fa-solid fa-user-pen"></i> Evaluador / Profesor:</label>
+      <input type="text" id="evaluatorName" placeholder="Escribe tu nombre completo..." oninput="updateEvaluatorName(this.value)">
+    </div>
+
+    <!-- Teams Navigation -->
+    <nav class="teams-nav" id="teamsNav"></nav>
+
+    <!-- Main Content -->
+    <main class="app-body">
+      <!-- Form Column -->
+      <div class="form-column">
+        
+        <!-- Project Banner -->
+        <div class="project-banner">
+          <h2 id="displayProjectTopic">Cargando proyecto...</h2>
+          <p id="displayTeamMembers">Integrantes: -</p>
+        </div>
+
+        <!-- Section 1: Criterios Cualitativos -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-sliders"></i> 1. Criterios Cualitativos</span>
+            <span class="panel-badge">0 - 10 PTS (Arrastra verticalmente)</span>
+          </div>
+          <div class="dials-grid">
+            <div class="dial-card" id="dial_card_innovation">
+              <span class="dial-label">Innovación & Creatividad</span>
+              <svg class="dial-svg" id="dial_svg_innovation"></svg>
+              <div class="dial-val" id="val_innovation">0.0</div>
+            </div>
+            <div class="dial-card" id="dial_card_problem">
+              <span class="dial-label">Problemática Clara</span>
+              <svg class="dial-svg" id="dial_svg_problem"></svg>
+              <div class="dial-val" id="val_problem">0.0</div>
+            </div>
+            <div class="dial-card" id="dial_card_objectives">
+              <span class="dial-label">Objetivos Definidos</span>
+              <svg class="dial-svg" id="dial_svg_objectives"></svg>
+              <div class="dial-val" id="val_objectives">0.0</div>
+            </div>
+            <div class="dial-card" id="dial_card_feasibility">
+              <span class="dial-label">Viabilidad Técnica</span>
+              <svg class="dial-svg" id="dial_svg_feasibility"></svg>
+              <div class="dial-val" id="val_feasibility">0.0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Criterios de Proceso -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-chart-line"></i> 2. Criterios de Proceso y Avance</span>
+            <span class="panel-badge">0 - 100 %</span>
+          </div>
+          
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Métodos de Investigación & Rigor Científico</span>
+              <span class="val" id="val_research">0%</span>
+            </div>
+            <input type="range" id="input_research" min="0" max="100" value="0" oninput="updateScore('research', this.value)">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>¿Son claros los entregables que se proyectan?</span>
+              <span class="val" id="val_deliverables">0%</span>
+            </div>
+            <input type="range" id="input_deliverables" min="0" max="100" value="0" oninput="updateScore('deliverables', this.value)">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Calidad de la presentación y coherencia</span>
+              <span class="val" id="val_presentation">0%</span>
+            </div>
+            <input type="range" id="input_presentation" min="0" max="100" value="0" oninput="updateScore('presentation', this.value)">
+          </div>
+        </div>
+
+        <!-- Section 3: Matriz 2D Cartesiana -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-border-all"></i> 3. Matriz 2D: Impacto vs Viabilidad</span>
+            <span class="panel-badge" id="val_matrix">X: 0.0 | Y: 0.0</span>
+          </div>
+          <div class="matrix-container" id="matrixContainer" onclick="handleMatrixClick(event)">
+            <div class="matrix-bg">
+              <div class="quadrant q2">
+                <span>II. Alto Impacto</span>
+                <span>Baja Viabilidad</span>
+              </div>
+              <div class="quadrant q1">
+                <span>I. Alto Impacto</span>
+                <span>Alta Viabilidad</span>
+              </div>
+              <div class="quadrant q3">
+                <span>III. Bajo Impacto</span>
+                <span>Baja Viabilidad</span>
+              </div>
+              <div class="quadrant q4">
+                <span>IV. Bajo Impacto</span>
+                <span>Alta Viabilidad</span>
+              </div>
+            </div>
+            <div class="matrix-point" id="matrixPoint" style="left: 0%; top: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- Section 4: Matriz de Rúbrica Evaluativa -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-list-check"></i> 4. Matriz de Rúbrica Evaluativa</span>
+            <span class="panel-badge">Niveles Cualitativos</span>
+          </div>
+          <div class="table-wrapper">
+            <table class="rubric-table">
+              <thead>
+                <tr>
+                  <th>Criterio</th>
+                  <th>Insuficiente (25%)</th>
+                  <th>Aceptable (50%)</th>
+                  <th>Bueno (75%)</th>
+                  <th>Excelente (100%)</th>
+                </tr>
+              </thead>
+              <tbody id="rubricBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 5: Dictamen y Recomendaciones Personalizadas -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-comment-dots"></i> 5. Dictamen & Recomendaciones del Profesor</span>
+          </div>
+
+          <!-- Dictamen Radios -->
+          <div class="rec-options" id="recommendationList"></div>
+
+          <!-- Space for Custom Recommendations + Pool of Quick Feedback Chips -->
+          <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+            <div class="pool-label"><i class="fa-solid fa-bolt"></i> Pool de Recomendaciones Rápida (Haz clic para agregar):</div>
+            <div class="chips-pool" id="chipsPool"></div>
+
+            <div class="pool-label" style="margin-top: 12px;"><i class="fa-solid fa-pen"></i> Retroalimentación / Observaciones Personalizadas:</div>
+            <textarea class="custom-textarea" id="customFeedback" placeholder="Escribe aquí observaciones adicionales o haz clic en los botones de arriba..." oninput="updateCustomFeedback(this.value)"></textarea>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn-main" onclick="saveCurrentEvaluation()">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Confirmar & Guardar Evaluación
+          </button>
+          <button class="btn-secondary" onclick="resetCurrentEvaluation()">
+            <i class="fa-solid fa-trash-can"></i> Limpiar Campos
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="score-card">
+          <div class="score-card-title">CALIFICACIÓN GLOBAL</div>
+          <div class="score-card-number" id="globalScoreDisplay">0.0</div>
+          <div class="score-card-status" id="statusDisplay">ESTATUS: [ NO EVALUADO ]</div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header" style="margin-bottom: 10px;">
+            <span class="panel-title" style="font-size: 0.9rem;">Perfil del Proyecto</span>
+          </div>
+          <div class="radar-wrapper">
+            <svg id="radarSvg" width="240" height="200" viewBox="0 0 240 200"></svg>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header" style="margin-bottom: 10px;">
+            <span class="panel-title" style="font-size: 0.9rem;">Resumen de Evaluación</span>
+          </div>
+          <div id="summaryText" style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-secondary); white-space: pre-line;">
+            Modifica cualquier parámetro para visualizar en tiempo real.
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal 1: Google Sheets -->
+  <div class="modal-overlay" id="sheetsModal">
+    <div class="modal-card">
+      <div class="modal-title"><i class="fa-solid fa-table"></i> Configuración de Google Sheets</div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">
+        Pega la URL de tu **Google Apps Script** (Web App que termina en <code>/exec</code>) para enviar las evaluaciones a tu hoja de cálculo:
+      </p>
+      <input type="text" id="sheetsUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; margin-bottom: 16px;">
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn-action" style="background: var(--text-primary); color: #FFF;" onclick="saveSheetsUrl()">Guardar URL</button>
+        <button class="btn-action" onclick="closeModal('sheetsModal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: QR App -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-card" style="text-align: center;">
+      <div class="modal-title"><i class="fa-solid fa-qrcode"></i> Código QR para Evaluadores</div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Escanea este código para acceder a la aplicación desde dispositivos móviles:</p>
+      <div id="qrcodeCanvas" style="display: flex; justify-content: center; margin: 0 auto 16px auto; padding: 10px; background: #FFF; border: 1px solid var(--border-color); border-radius: 8px; width: fit-content;"></div>
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); word-break: break-all;" id="currentAppUrl"></div>
+      <div style="margin-top: 18px;">
+        <button class="btn-action" onclick="closeModal('qrModal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Message -->
+  <div class="toast" id="toastMsg"></div>
+
+  <script>
+    const TEAMS = [
+      { id: 1, topic: "Senderismo", members: "Sara D. Chapa Carranco, Roberto A. Flores Garza, Marlen Rendón Hernández, Yolanda M. Vega Gómez" },
+      { id: 2, topic: "Sistema híbrido de planeación académica adaptativa", members: "Eugenio J. Decrescenzo Melicoff, Hernán Macías García" },
+      { id: 3, topic: "Sargazo", members: "Michelle Betanzo Carriles, Eugenio González Sánchez, Matias Romero Rangel, Luis A. Jáuregui Zúñiga" },
+      { id: 4, topic: "Sistema de Respuesta Inmediata", members: "Raúl E. Hernández Ramón, Alfonso Torres Medina, Carlos E. Tovar Castañeda" },
+      { id: 5, topic: "Mobiliario urbano para áreas caninas", members: "Sebastián Montaño Barrón, Amy L. Neri Arriaga, Dalia A. Rocha" }
+    ];
+
+    const RUBRIC_CRITERIA = [
+      "Relevancia de la investigación",
+      "Avance del Marco Teórico",
+      "Analítica de Usuario / Mercado",
+      "Desarrollo Formal / Estético",
+      "Sostenibilidad / Impacto",
+      "Documentación Técnica"
+    ];
+
+    const RECOMMENDATIONS = [
+      "Aceptado sin cambios",
+      "Aceptado con correcciones menores obligatorias",
+      "Aceptado condicionalmente (Requiere reunión de seguimiento para ajustes mayores)",
+      "Rechazado (Necesita nueva presentación tras reformulación completa)"
+    ];
+
+    // Pool de Frases de Recomendación Rápida
+    const QUICK_FEEDBACK_POOL = [
+      "+ Profundizar en la validación con usuarios finales.",
+      "+ Revisar la factibilidad de manufactura y costos.",
+      "+ Mejorar la claridad en la presentación visual de datos.",
+      "+ Definir con mayor precisión la propuesta de valor.",
+      "+ Fortalecer el sustento técnico y marco teórico.",
+      "+ Excelente síntesis y articulación del concepto.",
+      "+ Ajustar ergonomía y dimensiones antropométricas.",
+      "+ Presentar prototipo funcional en la siguiente entrega."
+    ];
+
+    let currentTeamId = 1;
+    let evaluatorName = "";
+    let googleSheetsUrl = localStorage.getItem("udem_sheets_url") || "";
+
+    let evaluations = {};
+
+    function getEmptyEvaluation() {
+      return {
+        evaluated: false,
+        innovation: 0,
+        problem: 0,
+        objectives: 0,
+        feasibility: 0,
+        research: 0,
+        deliverables: 0,
+        presentation: 0,
+        matrixX: 0,
+        matrixY: 0,
+        rubric: {},
+        recommendation: "",
+        customFeedback: ""
+      };
+    }
+
+    TEAMS.forEach(team => { evaluations[team.id] = getEmptyEvaluation(); });
+
+    window.onload = function() {
+      renderTeamTabs();
+      renderRubricTable();
+      renderRecommendations();
+      renderChipsPool();
+      initDialDragEvents();
+      loadTeamData(currentTeamId);
+      if(googleSheetsUrl) document.getElementById("sheetsUrlInput").value
