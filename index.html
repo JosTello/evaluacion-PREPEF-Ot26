@@ -1548,15 +1548,73 @@
     }
 
     function saveCurrentEvaluation() {
-      if(!evaluatorName.trim()) {
-        showToast("Por favor, ingresa tu nombre como Evaluador/Profesor.");
-        return;
-      }
-      evaluations[currentTeamId].evaluated = true;
-      renderTeamTabs();
-      recalculate();
-      showToast(`Evaluación del Equipo ${currentTeamId} guardada con éxito.`);
-    }
+  if(!evaluatorName.trim()) {
+    showToast("Por favor, ingresa tu nombre como Evaluador/Profesor.");
+    return;
+  }
+  
+  evaluations[currentTeamId].evaluated = true;
+  renderTeamTabs();
+  recalculate();
+
+  const team = TEAMS.find(t => t.id === currentTeamId);
+  const d = evaluations[currentTeamId];
+  const globalScore = document.getElementById("globalScoreDisplay").innerText;
+
+  // Formatear texto de las recomendaciones del pool seleccionadas
+  const poolTexts = (d.selectedPoolIds || []).map(id => {
+    const item = RECOMMENDATION_POOL.find(p => p.id === id);
+    return item ? `[${item.category}] ${item.text}` : '';
+  }).join(" | ");
+
+  // Formatear desglose de la rúbrica
+  const rubricDetail = RUBRIC_CRITERIA.map((criterion, idx) => {
+    const val = d.rubric[idx] ? (d.rubric[idx] * 100) + "%" : "N/E";
+    return `${criterion}: ${val}`;
+  }).join(" | ");
+
+  // Carga útil estructurada para Google Sheets
+  const payload = {
+    evaluator: evaluatorName,
+    teamId: currentTeamId,
+    topic: team.topic,
+    members: team.members,
+    globalScore: parseFloat(globalScore),
+    innovation: d.innovation,
+    problem: d.problem,
+    objectives: d.objectives,
+    feasibility: d.feasibility,
+    research: d.research,
+    deliverables: d.deliverables,
+    presentation: d.presentation,
+    matrixX: d.matrixX,
+    matrixY: d.matrixY,
+    rubricDetail: rubricDetail,
+    recommendation: d.recommendation,
+    poolRecommendations: poolTexts,
+    customFeedback: d.customFeedback
+  };
+
+  showToast(`Guardando evaluación del Equipo ${currentTeamId}...`);
+
+  if(googleSheetsUrl) {
+    fetch(googleSheetsUrl, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      showToast(`Evaluación enviada a Google Sheets exitosamente.`);
+    })
+    .catch(err => {
+      console.error(err);
+      showToast(`Error al enviar los datos a Google Sheets.`);
+    });
+  } else {
+    showToast(`Evaluación guardada localmente (Pega la URL de Sheets en la barra superior).`);
+  }
+}
 
     function resetCurrentEvaluation() {
       evaluations[currentTeamId] = getEmptyEvaluation();
