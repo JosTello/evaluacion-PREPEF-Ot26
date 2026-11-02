@@ -1,56 +1,85 @@
-/* Ajustes para Pantallas Móviles (Smartphones y Tablets) */
-@media (max-width: 768px) {
-  body {
-    padding: 12px;
-  }
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+  
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    
+    // Decodificación segura de payload JSON
+    var data = {};
+    if (e && e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
+    } else if (e && e.parameter) {
+      data = e.parameter;
+    }
+    
+    // Encabezados automáticos en la primera fila si la hoja está vacía
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        "Fecha y Hora",
+        "Evaluador",
+        "ID Equipo",
+        "Nombre Equipo",
+        "Tema del Proyecto",
+        "Integrantes",
+        "Calificación Global",
+        "Innovación (0-10)",
+        "Problemática (0-10)",
+        "Objetivos (0-10)",
+        "Viabilidad Técnica (0-10)",
+        "Investigación (%)",
+        "Entregables (%)",
+        "Presentación (%)",
+        "Matriz X (Viabilidad)",
+        "Matriz Y (Impacto)",
+        "Rúbrica: Relevancia",
+        "Rúbrica: Marco Teórico",
+        "Rúbrica: Analítica Usuario",
+        "Rúbrica: Desarrollo Formal",
+        "Rúbrica: Sostenibilidad",
+        "Rúbrica: Documentación",
+        "Recomendación / Dictamen"
+      ]);
+    }
+    
+    // Agregar fila con valores recibidos
+    sheet.appendRow([
+      data.timestamp || new Date().toLocaleString('es-MX'),
+      data.evaluator || "Anónimo",
+      data.teamId || "",
+      data.teamName || "",
+      data.projectTopic || "",
+      data.teamMembers || "",
+      data.finalScore || "0.0",
+      data.innovation !== undefined ? data.innovation : 0,
+      data.problem !== undefined ? data.problem : 0,
+      data.objectives !== undefined ? data.objectives : 0,
+      data.feasibility !== undefined ? data.feasibility : 0,
+      data.research || "0%",
+      data.deliverables || "0%",
+      data.presentation || "0%",
+      data.matrixX !== undefined ? data.matrixX : 0,
+      data.matrixY !== undefined ? data.matrixY : 0,
+      data.rubric_relevancia || "0%",
+      data.rubric_marco_teorico || "0%",
+      data.rubric_analitica_usuario || "0%",
+      data.rubric_desarrollo_formal || "0%",
+      data.rubric_sostenibilidad || "0%",
+      data.rubric_documentacion || "0%",
+      data.recommendationText || "Sin dictamen"
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ 
+      "status": "success", 
+      "message": "Evaluación guardada correctamente" 
+    })).setMimeType(ContentService.MimeType.JSON);
 
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .evaluator-box {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .project-header-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .score-badge {
-    width: 100%;
-    text-align: center;
-  }
-
-  .grid-layout {
-    grid-template-columns: 1fr; /* Una sola columna en móvil */
-  }
-
-  .knobs-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 dials por fila */
-    gap: 10px;
-  }
-
-  /* Scroll horizontal para la tabla de rúbrica sin romper la pantalla */
-  .full-width-card {
-    overflow-x: auto;
-  }
-
-  .rubric-table {
-    min-width: 600px; /* Mantiene la legibilidad de la tabla */
-  }
-
-  /* Botones de acción apilados en móvil */
-  .action-bar {
-    flex-direction: column-reverse;
-    gap: 12px;
-  }
-
-  .btn-main, .btn-secondary {
-    width: 100%;
-    text-align: center;
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ 
+      "status": "error", 
+      "message": error.toString() 
+    })).setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
   }
 }
