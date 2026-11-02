@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UDEM - Evaluación de Proyectos | Diseño Integral</title>
+  <title>UDEM - Evaluación de Proyectos | Liquid Glass UI</title>
 
-  <!-- Google Fonts: Roboto Condensed para títulos y Google Sans para cuerpos de texto -->
+  <!-- Tipografías Tecno-minimalistas: Space Grotesk (Títulos), Plus Jakarta Sans (Cuerpo), JetBrains Mono (Datos) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
   <!-- FontAwesome & QRCode Library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,67 +16,108 @@
 
   <style>
     :root {
-      --bg-body: #EAECEF; 
-      --bg-card: #FFFFFF;
-      --bg-input: #F8FAFC;
-      --border-color: #CBD5E1;
-      --border-hover: #94A3B8;
+      /* Paleta Liquid Glass inspirada en la referencia */
+      --bg-glass: rgba(255, 255, 255, 0.55);
+      --bg-glass-card: rgba(255, 255, 255, 0.65);
+      --bg-glass-input: rgba(240, 244, 248, 0.6);
+      --border-glass: rgba(255, 255, 255, 0.85);
+      --border-subtle: rgba(203, 213, 225, 0.6);
+      
       --text-primary: #0F172A;
       --text-secondary: #334155;
       --text-muted: #64748B;
+      
+      /* Gama de colores extraída de la imagen */
+      --accent-pink: #FF2A85;     /* Magenta neón / Ui logo */
+      --accent-cyan: #00CEFF;     /* Cyan vibrante */
+      --accent-blue: #3B82F6;     /* Azul royal */
+      --accent-indigo: #4F46E5;   /* Indigo/Azul profundo */
+      --accent-mint: #00E6A5;     /* Verde menta */
       --udem-yellow: #FFC700;
-      --udem-yellow-hover: #E6B200;
-      --udem-yellow-light: #FFFBEB;
-      --accent-green: #10B981;
-      --accent-red: #EF4444;
-      --accent-blue: #2563EB;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
-      --shadow-md: 0 4px 8px -1px rgba(0,0,0,0.08);
 
-      /* Tipografía Roboto Condensed aplicada a títulos */
-      --font-heading: 'Roboto Condensed', sans-serif;
-      --font-body: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-mono: 'Courier New', Courier, monospace;
+      --shadow-glass: 0 10px 30px rgba(31, 38, 135, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      --shadow-neumorphic: 6px 6px 14px rgba(166, 180, 200, 0.3), -6px -6px 14px rgba(255, 255, 255, 0.8);
+      --shadow-inset: inset 3px 3px 6px rgba(166, 180, 200, 0.25), inset -3px -3px 6px rgba(255, 255, 255, 0.7);
+
+      /* Fuentes Tecno-minimalistas */
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--bg-body);
+      background-color: #EBF0F5;
       color: var(--text-primary);
       font-family: var(--font-body);
       padding: 16px;
       line-height: 1.5;
       width: 100%;
       min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    /* Títulos en Roboto Condensed con peso semi-bold / bold */
+    /* Fondo fluido difuminado (Liquid Glass Effect) */
+    .glass-ambient-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      overflow: hidden;
+      background: #EBF0F5;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      animation: float 20s ease-in-out infinite alternate;
+    }
+
+    .blob-1 { width: 450px; height: 450px; background: var(--accent-pink); top: -100px; left: -100px; }
+    .blob-2 { width: 500px; height: 500px; background: var(--accent-cyan); top: 30%; right: -150px; animation-delay: -5s; }
+    .blob-3 { width: 400px; height: 400px; background: var(--accent-indigo); bottom: -100px; left: 20%; animation-delay: -10s; }
+    .blob-4 { width: 350px; height: 350px; background: var(--accent-mint); top: 60%; right: 25%; animation-delay: -15s; }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(50px, 40px) scale(1.08); }
+      100% { transform: translate(-40px, 60px) scale(0.95); }
+    }
+
+    /* Títulos Tecno-minimalistas */
     h1, h2, h3, h4, .brand-title, .panel-title, .score-card-title, .modal-title, .team-tab-title, .pool-section-title {
       font-family: var(--font-heading);
       font-weight: 700;
-      letter-spacing: 0.2px;
+      letter-spacing: -0.3px;
       text-transform: uppercase;
     }
 
-    /* Layout Full Width (Pasa a ocupar el 100% de la pantalla) */
     .app-container {
       width: 100%;
       max-width: 100%;
       margin: 0;
     }
 
+    /* Glass Panels */
+    .glass-panel {
+      background: var(--bg-glass-card);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      box-shadow: var(--shadow-glass);
+    }
+
     /* Header Bar */
     header {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
       padding: 16px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
-      box-shadow: var(--shadow-sm);
       flex-wrap: wrap;
       gap: 16px;
       width: 100%;
@@ -86,21 +126,22 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .brand-tag {
-      background-color: var(--udem-yellow);
-      color: #000;
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-indigo));
+      color: #FFFFFF;
       font-family: var(--font-heading);
-      font-size: 1.1rem;
-      font-weight: 800;
-      padding: 4px 12px;
-      border-radius: 6px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(255, 42, 133, 0.3);
     }
 
     .brand-title {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       color: var(--text-primary);
     }
 
@@ -110,64 +151,63 @@
     }
 
     .btn-action {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--border-glass);
       color: var(--text-secondary);
-      padding: 9px 15px;
-      border-radius: 8px;
-      font-size: 0.9rem;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.88rem;
       font-weight: 600;
       font-family: var(--font-body);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-glass);
     }
 
     .btn-action:hover {
-      border-color: var(--text-primary);
-      color: var(--text-primary);
-      background: #F1F5F9;
+      background: #FFFFFF;
+      border-color: var(--accent-pink);
+      color: var(--accent-pink);
+      transform: translateY(-2px);
     }
 
     /* Evaluator Bar */
     .evaluator-bar {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
       padding: 14px 24px;
       margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 16px;
-      box-shadow: var(--shadow-sm);
       flex-wrap: wrap;
       width: 100%;
     }
 
     .evaluator-bar label {
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--text-secondary);
     }
 
     .evaluator-bar input {
       flex: 1;
       min-width: 250px;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
+      background: var(--bg-glass-input);
+      border: 1px solid var(--border-subtle);
       padding: 10px 16px;
-      border-radius: 8px;
+      border-radius: 12px;
       font-family: var(--font-body);
       font-size: 0.95rem;
       color: var(--text-primary);
       outline: none;
-      transition: border-color 0.2s;
+      box-shadow: var(--shadow-inset);
+      transition: all 0.2s;
     }
 
     .evaluator-bar input:focus {
-      border-color: var(--text-primary);
+      border-color: var(--accent-indigo);
       background: #FFFFFF;
     }
 
@@ -182,26 +222,27 @@
     }
 
     .team-tab {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 14px 20px;
       cursor: pointer;
       min-width: 220px;
       flex: 1;
-      transition: all 0.2s;
-      box-shadow: var(--shadow-sm);
+      transition: all 0.25s;
+      box-shadow: var(--shadow-glass);
+      backdrop-filter: blur(12px);
     }
 
     .team-tab:hover {
-      border-color: var(--border-hover);
+      background: rgba(255, 255, 255, 0.85);
       transform: translateY(-2px);
     }
 
     .team-tab.active {
-      border-color: var(--text-primary);
       background: #FFFFFF;
-      box-shadow: 0 0 0 2px var(--text-primary);
+      border-color: var(--accent-pink);
+      box-shadow: 0 8px 24px rgba(255, 42, 133, 0.15), 0 0 0 2px var(--accent-pink);
     }
 
     .team-tab-title {
@@ -212,10 +253,11 @@
     .team-tab-status {
       font-size: 0.78rem;
       font-weight: 600;
-      margin-top: 4px;
+      margin-top: 6px;
       display: flex;
       align-items: center;
       gap: 6px;
+      color: var(--text-muted);
     }
 
     .status-dot {
@@ -226,10 +268,11 @@
     }
 
     .team-tab.evaluated .status-dot {
-      background: var(--accent-green);
+      background: var(--accent-mint);
+      box-shadow: 0 0 8px var(--accent-mint);
     }
 
-    /* Grid Layout Adaptable al 100% */
+    /* Grid Layout */
     .app-body {
       display: grid;
       grid-template-columns: 1fr 340px;
@@ -238,19 +281,13 @@
     }
 
     @media (max-width: 1024px) {
-      .app-body { 
-        grid-template-columns: 1fr; 
-      }
+      .app-body { grid-template-columns: 1fr; }
     }
 
     /* Cards & Panels */
     .panel-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
       padding: 24px;
       margin-bottom: 20px;
-      box-shadow: var(--shadow-sm);
       width: 100%;
     }
 
@@ -258,13 +295,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-subtle);
     }
 
     .panel-title {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: var(--text-primary);
       display: flex;
       align-items: center;
@@ -272,61 +309,67 @@
     }
 
     .panel-badge {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
       font-weight: 600;
-      background: #F1F5F9;
+      background: rgba(241, 245, 249, 0.8);
       color: var(--text-secondary);
       padding: 4px 10px;
-      border-radius: 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
     }
 
     /* Project Info Banner */
     .project-banner {
-      background: var(--udem-yellow-light);
-      border: 1px solid rgba(255, 199, 0, 0.6);
-      border-radius: 10px;
-      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6));
+      border: 1px solid var(--border-glass);
+      border-left: 5px solid var(--accent-pink);
+      border-radius: 16px;
+      padding: 18px 22px;
       margin-bottom: 20px;
+      box-shadow: var(--shadow-glass);
     }
 
     .project-banner h2 {
-      font-size: 1.4rem;
-      color: #78350F;
+      font-size: 1.35rem;
+      color: var(--text-primary);
       margin-bottom: 4px;
     }
 
     .project-banner p {
-      font-size: 0.95rem;
-      color: #92400E;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
     }
 
-    /* Section 1: Knobs */
+    /* Section 1: Knobs Corregidos */
     .dials-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 16px;
+      gap: 18px;
     }
 
     .dial-card {
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 16px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 18px 12px;
       text-align: center;
       cursor: ns-resize;
-      transition: all 0.2s;
+      transition: all 0.25s;
+      user-select: none;
+      box-shadow: var(--shadow-glass);
     }
 
     .dial-card:hover {
-      border-color: var(--border-hover);
-      background: #F1F5F9;
+      background: rgba(255, 255, 255, 0.9);
+      transform: translateY(-2px);
     }
 
     .dial-label {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       color: var(--text-secondary);
-      height: 36px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -337,6 +380,8 @@
       width: 76px;
       height: 76px;
       pointer-events: none;
+      margin: 0 auto;
+      display: block;
     }
 
     .dial-val {
@@ -344,51 +389,54 @@
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--text-primary);
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
-    /* Section 2: Sliders */
+    /* Section 2: Sliders Neumorphic Glass */
     .slider-row {
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .slider-header {
       display: flex;
       justify-content: space-between;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
       color: var(--text-secondary);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .slider-header span.val {
       font-family: var(--font-mono);
-      color: var(--text-primary);
-      background: #F1F5F9;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-weight: bold;
+      color: var(--accent-indigo);
+      background: rgba(255, 255, 255, 0.8);
+      padding: 2px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      border: 1px solid var(--border-subtle);
     }
 
     input[type=range] {
       width: 100%;
-      height: 6px;
-      background: #CBD5E1;
-      border-radius: 3px;
-      accent-color: var(--text-primary);
+      height: 8px;
+      background: rgba(203, 213, 225, 0.5);
+      border-radius: 4px;
+      accent-color: var(--accent-pink);
       cursor: pointer;
+      box-shadow: var(--shadow-inset);
     }
 
-    /* Section 3: Matrix 2D (Colores de cuadrantes intensificados y más visibles) */
+    /* Section 3: Matrix 2D Tecno-Color */
     .matrix-container {
       position: relative;
       width: 100%;
       height: 260px;
-      background: #FFFFFF;
-      border: 2px solid var(--border-color);
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
       cursor: crosshair;
       overflow: hidden;
+      box-shadow: var(--shadow-glass);
     }
 
     .matrix-bg {
@@ -402,74 +450,76 @@
 
     .quadrant {
       padding: 14px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
+      font-family: var(--font-heading);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    /* Colores saturados y contrastados */
     .quadrant.q1 { 
       text-align: right; 
       align-items: flex-end; 
-      background: rgba(16, 185, 129, 0.22); 
-      color: #065F46;
-      border-left: 1px solid rgba(16, 185, 129, 0.4);
-      border-bottom: 1px solid rgba(16, 185, 129, 0.4);
+      background: rgba(0, 230, 165, 0.18); 
+      color: #047857;
+      border-left: 1px solid rgba(0, 230, 165, 0.3);
+      border-bottom: 1px solid rgba(0, 230, 165, 0.3);
     }
     .quadrant.q2 { 
-      background: rgba(245, 158, 11, 0.22); 
-      color: #92400E;
-      border-right: 1px solid rgba(245, 158, 11, 0.4);
-      border-bottom: 1px solid rgba(245, 158, 11, 0.4);
+      background: rgba(255, 42, 133, 0.18); 
+      color: #BE123C;
+      border-right: 1px solid rgba(255, 42, 133, 0.3);
+      border-bottom: 1px solid rgba(255, 42, 133, 0.3);
     }
     .quadrant.q3 { 
       justify-content: flex-end; 
-      background: rgba(239, 68, 68, 0.22); 
-      color: #991B1B;
-      border-right: 1px solid rgba(239, 68, 68, 0.4);
-      border-top: 1px solid rgba(239, 68, 68, 0.4);
+      background: rgba(79, 70, 229, 0.18); 
+      color: #4338CA;
+      border-right: 1px solid rgba(79, 70, 229, 0.3);
+      border-top: 1px solid rgba(79, 70, 229, 0.3);
     }
     .quadrant.q4 { 
       justify-content: flex-end; 
       align-items: flex-end; 
       text-align: right; 
-      background: rgba(59, 130, 246, 0.22); 
-      color: #1E40AF;
-      border-left: 1px solid rgba(59, 130, 246, 0.4);
-      border-top: 1px solid rgba(59, 130, 246, 0.4);
+      background: rgba(0, 206, 255, 0.18); 
+      color: #0369A1;
+      border-left: 1px solid rgba(0, 206, 255, 0.3);
+      border-top: 1px solid rgba(0, 206, 255, 0.3);
     }
 
     .matrix-point {
       position: absolute;
       width: 18px;
       height: 18px;
-      background: var(--udem-yellow);
-      border: 3px solid var(--text-primary);
+      background: var(--accent-pink);
+      border: 3px solid #FFFFFF;
       border-radius: 50%;
       transform: translate(-50%, -50%);
       pointer-events: none;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 0 12px var(--accent-pink);
     }
 
-    /* Section 4: Rubric Table */
+    /* Section 4: Rubric Table Glass */
     .table-wrapper { overflow-x: auto; }
 
     .rubric-table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       font-size: 0.88rem;
     }
 
     .rubric-table th, .rubric-table td {
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border-subtle);
       padding: 10px 12px;
       text-align: center;
     }
 
     .rubric-table th {
-      background: #F1F5F9;
+      background: rgba(241, 245, 249, 0.7);
+      font-family: var(--font-heading);
       font-weight: 600;
       color: var(--text-secondary);
     }
@@ -477,38 +527,39 @@
     .rubric-table td.criterion-name {
       text-align: left;
       font-weight: 600;
-      background: #FAFAFA;
+      background: rgba(255, 255, 255, 0.6);
       color: var(--text-primary);
-      width: 30%;
+      width: 28%;
     }
 
     .rubric-btn {
       width: 100%;
       padding: 8px 4px;
-      background: #FFFFFF;
-      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       font-family: var(--font-body);
       font-weight: 600;
-      transition: all 0.15s;
+      transition: all 0.2s;
     }
 
     .rubric-btn:hover {
-      border-color: var(--text-primary);
-      color: var(--text-primary);
+      border-color: var(--accent-indigo);
+      color: var(--accent-indigo);
     }
 
     .rubric-btn.selected {
-      background: var(--text-primary);
+      background: var(--accent-indigo);
       color: #FFFFFF;
-      border-color: var(--text-primary);
+      border-color: var(--accent-indigo);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
     }
 
-    /* Pool de Recomendaciones (Sin barra de desplazamiento, 100% visible) */
+    /* Pool de Recomendaciones */
     .pool-section-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-secondary);
       margin-bottom: 12px;
       display: flex;
@@ -517,12 +568,11 @@
     }
 
     .pool-table-wrapper {
-      max-height: none; /* Sin limite de altura */
-      overflow: visible;  /* Sin barra de desplazamiento */
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
       margin-bottom: 20px;
-      background: #FFFFFF;
+      background: rgba(255, 255, 255, 0.6);
+      overflow: hidden;
     }
 
     .pool-table {
@@ -532,81 +582,74 @@
     }
 
     .pool-table th {
-      background: #F1F5F9;
-      border-bottom: 2px solid var(--border-color);
+      background: rgba(241, 245, 249, 0.8);
+      border-bottom: 2px solid var(--border-subtle);
       padding: 12px 14px;
       text-align: left;
       color: var(--text-secondary);
       font-family: var(--font-heading);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .pool-table td {
       padding: 12px 14px;
-      border-bottom: 1px solid #E2E8F0;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
       vertical-align: middle;
     }
 
-    .pool-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .pool-table tr:hover {
-      background: #F8FAFC;
-    }
+    .pool-table tr:hover { background: rgba(255, 255, 255, 0.9); }
 
     .pool-table tr.selected-row {
-      background: var(--udem-yellow-light);
+      background: rgba(255, 42, 133, 0.08);
     }
 
     .category-badge {
       display: inline-block;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 700;
+      font-family: var(--font-heading);
       padding: 4px 10px;
-      border-radius: 4px;
-      background: #E2E8F0;
-      color: var(--text-secondary);
-      text-transform: uppercase;
+      border-radius: 6px;
+      background: rgba(0, 206, 255, 0.15);
+      color: #0284C7;
     }
 
     .custom-textarea {
       width: 100%;
       min-height: 110px;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      background: var(--bg-glass-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
       padding: 12px 16px;
       font-family: var(--font-body);
       font-size: 0.92rem;
       color: var(--text-primary);
       outline: none;
       resize: vertical;
+      box-shadow: var(--shadow-inset);
       transition: border-color 0.2s;
     }
 
     .custom-textarea:focus {
-      border-color: var(--text-primary);
+      border-color: var(--accent-indigo);
       background: #FFFFFF;
     }
 
     .selected-recs-box {
-      background: #F8FAFC;
-      border: 1px dashed var(--border-color);
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px dashed var(--border-subtle);
+      border-radius: 12px;
       padding: 16px;
       margin-top: 16px;
     }
 
     .selected-recs-box ul {
       padding-left: 20px;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: var(--text-primary);
     }
 
-    .selected-recs-box li {
-      margin-bottom: 6px;
-    }
+    .selected-recs-box li { margin-bottom: 6px; }
 
     /* Dictamen Radios */
     .rec-options {
@@ -617,26 +660,27 @@
     }
 
     .rec-radio-label {
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--border-subtle);
       padding: 12px 16px;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 12px;
       font-size: 0.92rem;
-      transition: all 0.15s;
+      transition: all 0.2s;
     }
 
-    .rec-radio-label:hover { border-color: var(--border-hover); }
+    .rec-radio-label:hover { background: rgba(255, 255, 255, 0.9); }
 
-    .rec-radio-label input { accent-color: var(--text-primary); }
+    .rec-radio-label input { accent-color: var(--accent-pink); }
 
     .rec-radio-label.selected {
-      border-color: var(--text-primary);
+      border-color: var(--accent-pink);
       background: #FFFFFF;
       font-weight: 600;
+      box-shadow: 0 4px 14px rgba(255, 42, 133, 0.12);
     }
 
     /* Action Buttons */
@@ -648,31 +692,35 @@
 
     .btn-main {
       flex: 2;
-      background: var(--text-primary);
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-indigo));
       color: #FFFFFF;
       border: none;
       padding: 14px 24px;
-      border-radius: 8px;
-      font-family: var(--font-body);
-      font-size: 0.98rem;
+      border-radius: 12px;
+      font-family: var(--font-heading);
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      transition: background 0.2s;
+      box-shadow: 0 8px 20px rgba(255, 42, 133, 0.3);
+      transition: all 0.25s;
     }
 
-    .btn-main:hover { background: #1E293B; }
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(255, 42, 133, 0.4);
+    }
 
     .btn-secondary {
       flex: 1;
-      background: #FFFFFF;
-      border: 1px solid var(--border-color);
-      color: var(--accent-red);
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--border-glass);
+      color: #E11D48;
       padding: 14px 20px;
-      border-radius: 8px;
+      border-radius: 12px;
       font-family: var(--font-body);
       font-size: 0.92rem;
       font-weight: 600;
@@ -685,11 +733,11 @@
     }
 
     .btn-secondary:hover {
-      background: #FEF2F2;
-      border-color: #FCA5A5;
+      background: #FFF1F2;
+      border-color: #FDA4AF;
     }
 
-    /* Sidebar Panel */
+    /* Sidebar Dashboard Glass */
     .sidebar {
       display: flex;
       flex-direction: column;
@@ -697,25 +745,27 @@
     }
 
     .score-card {
-      background: var(--text-primary);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
       color: #FFFFFF;
-      border-radius: 12px;
+      border-radius: 20px;
       padding: 24px;
       text-align: center;
-      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
     }
 
     .score-card-title {
-      font-size: 1.15rem;
-      color: #CBD5E1;
+      font-size: 1.1rem;
+      color: #94A3B8;
     }
 
     .score-card-number {
       font-family: var(--font-heading);
-      font-size: 4rem;
-      font-weight: 800;
+      font-size: 4.2rem;
+      font-weight: 700;
       color: var(--udem-yellow);
       margin: 4px 0;
+      text-shadow: 0 0 16px rgba(255, 199, 0, 0.4);
     }
 
     .score-card-status {
@@ -736,8 +786,8 @@
     .modal-overlay {
       position: fixed;
       top:0; left:0; right:0; bottom:0;
-      background: rgba(15, 23, 42, 0.55);
-      backdrop-filter: blur(4px);
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(8px);
       display: none;
       justify-content: center;
       align-items: center;
@@ -745,18 +795,14 @@
     }
 
     .modal-card {
-      background: #FFFFFF;
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(24px);
+      border-radius: 20px;
       width: 90%;
       max-width: 500px;
       padding: 24px;
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-    }
-
-    .modal-title {
-      font-size: 1.3rem;
-      margin-bottom: 12px;
-      color: var(--text-primary);
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
     .toast {
@@ -768,8 +814,8 @@
       padding: 12px 20px;
       font-size: 0.9rem;
       font-weight: 600;
-      border-radius: 8px;
-      box-shadow: var(--shadow-md);
+      border-radius: 12px;
+      box-shadow: var(--shadow-glass);
       display: none;
       z-index: 2000;
     }
@@ -777,12 +823,20 @@
 </head>
 <body>
 
+  <!-- Fondo animado Liquid Glass -->
+  <div class="glass-ambient-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
+
   <div class="app-container">
-    <!-- Top Header Bar -->
-    <header>
+    <!-- Header -->
+    <header class="glass-panel">
       <div class="brand">
         <span class="brand-tag">UDEM</span>
-        <span class="brand-title">Diseño Integral — Evaluación de Proyectos (8° Semestre)</span>
+        <span class="brand-title">Diseño Integral — Evaluación de Proyectos</span>
       </div>
       <div class="header-actions">
         <button class="btn-action" onclick="openModal('sheetsModal')"><i class="fa-solid fa-table"></i> Google Sheets</button>
@@ -792,7 +846,7 @@
     </header>
 
     <!-- Evaluator Input Bar -->
-    <div class="evaluator-bar">
+    <div class="evaluator-bar glass-panel">
       <label for="evaluatorName"><i class="fa-solid fa-user-pen"></i> Evaluador / Profesor:</label>
       <input type="text" id="evaluatorName" placeholder="Escribe tu nombre completo..." oninput="updateEvaluatorName(this.value)">
     </div>
@@ -800,9 +854,8 @@
     <!-- Teams Navigation Tabs -->
     <nav class="teams-nav" id="teamsNav"></nav>
 
-    <!-- Main Grid Layout (Adaptado al 100% de la pantalla) -->
+    <!-- Main App Body -->
     <main class="app-body">
-      <!-- Form Column -->
       <div class="form-column">
         
         <!-- Project Banner -->
@@ -811,8 +864,8 @@
           <p id="displayTeamMembers">Integrantes: -</p>
         </div>
 
-        <!-- Section 1: Criterios Cualitativos -->
-        <div class="panel-card">
+        <!-- Section 1: Criterios Cualitativos (Knobs Corregidos) -->
+        <div class="panel-card glass-panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fa-solid fa-sliders"></i> 1. Criterios Cualitativos</span>
             <span class="panel-badge">0 - 10 PTS (Arrastra verticalmente)</span>
@@ -820,29 +873,29 @@
           <div class="dials-grid">
             <div class="dial-card" id="dial_card_innovation">
               <span class="dial-label">Innovación & Creatividad</span>
-              <svg class="dial-svg" id="dial_svg_innovation"></svg>
+              <svg class="dial-svg" id="dial_svg_innovation" viewBox="0 0 76 76"></svg>
               <div class="dial-val" id="val_innovation">0.0</div>
             </div>
             <div class="dial-card" id="dial_card_problem">
               <span class="dial-label">Problemática Clara</span>
-              <svg class="dial-svg" id="dial_svg_problem"></svg>
+              <svg class="dial-svg" id="dial_svg_problem" viewBox="0 0 76 76"></svg>
               <div class="dial-val" id="val_problem">0.0</div>
             </div>
             <div class="dial-card" id="dial_card_objectives">
               <span class="dial-label">Objetivos Definidos</span>
-              <svg class="dial-svg" id="dial_svg_objectives"></svg>
+              <svg class="dial-svg" id="dial_svg_objectives" viewBox="0 0 76 76"></svg>
               <div class="dial-val" id="val_objectives">0.0</div>
             </div>
             <div class="dial-card" id="dial_card_feasibility">
               <span class="dial-label">Viabilidad Técnica</span>
-              <svg class="dial-svg" id="dial_svg_feasibility"></svg>
+              <svg class="dial-svg" id="dial_svg_feasibility" viewBox="0 0 76 76"></svg>
               <div class="dial-val" id="val_feasibility">0.0</div>
             </div>
           </div>
         </div>
 
         <!-- Section 2: Proceso -->
-        <div class="panel-card">
+        <div class="panel-card glass-panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fa-solid fa-chart-line"></i> 2. Criterios de Proceso y Avance</span>
             <span class="panel-badge">0 - 100 %</span>
@@ -873,8 +926,8 @@
           </div>
         </div>
 
-        <!-- Section 3: Matriz 2D (Colores de cuadrantes más visibles) -->
-        <div class="panel-card">
+        <!-- Section 3: Matriz 2D Tecno-Color -->
+        <div class="panel-card glass-panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fa-solid fa-border-all"></i> 3. Matriz 2D: Impacto vs Viabilidad</span>
             <span class="panel-badge" id="val_matrix">X: 0.0 | Y: 0.0</span>
@@ -903,7 +956,7 @@
         </div>
 
         <!-- Section 4: Matriz de Rúbrica -->
-        <div class="panel-card">
+        <div class="panel-card glass-panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fa-solid fa-list-check"></i> 4. Matriz de Rúbrica Evaluativa</span>
             <span class="panel-badge">Niveles Cualitativos</span>
@@ -924,20 +977,18 @@
           </div>
         </div>
 
-        <!-- Section 5: Recomendaciones & Pool de Opciones Totalmente Visibles -->
-        <div class="panel-card">
+        <!-- Section 5: Recomendaciones & Pool -->
+        <div class="panel-card glass-panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fa-solid fa-comment-dots"></i> 5. Recomendaciones & Dictamen del Profesor</span>
           </div>
 
-          <!-- Dictamen General -->
           <div class="pool-section-title"><i class="fa-solid fa-gavel"></i> Dictamen Final del Proyecto:</div>
           <div class="rec-options" id="recommendationList"></div>
 
-          <!-- Pool de Recomendaciones en Tabla (Sin scrollbar, todo visible) -->
-          <div style="margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+          <div style="margin-top: 24px; border-top: 1px solid var(--border-subtle); padding-top: 20px;">
             <div class="pool-section-title">
-              <i class="fa-solid fa-list-ul"></i> Pool de Recomendaciones Sugeridas (Selecciona las convenientes):
+              <i class="fa-solid fa-list-ul"></i> Pool de Recomendaciones Sugeridas:
             </div>
             
             <div class="pool-table-wrapper">
@@ -953,17 +1004,15 @@
               </table>
             </div>
 
-            <!-- Resumen de Recomendaciones Seleccionadas -->
             <div class="selected-recs-box">
               <div class="pool-section-title" style="margin-bottom: 8px;">
-                <i class="fa-solid fa-clipboard-check"></i> Recomendaciones del Pool Seleccionadas:
+                <i class="fa-solid fa-clipboard-check"></i> Recomendaciones Seleccionadas:
               </div>
               <div id="selectedRecsDisplay" style="color: var(--text-muted); font-size: 0.9rem;">
                 No has seleccionado recomendaciones del pool aún.
               </div>
             </div>
 
-            <!-- Observaciones adicionales personalizadas -->
             <div class="pool-section-title" style="margin-top: 20px;">
               <i class="fa-solid fa-pen-to-square"></i> Observaciones Adicionales / Notas Personalizadas:
             </div>
@@ -977,7 +1026,7 @@
             <i class="fa-solid fa-cloud-arrow-up"></i> Confirmar & Guardar Evaluación
           </button>
           <button class="btn-secondary" onclick="resetCurrentEvaluation()">
-            <i class="fa-solid fa-rotate-left"></i> Limpiar Campos
+            <i class="fa-solid fa-rotate-left"></i> Limpiar
           </button>
         </div>
 
@@ -991,18 +1040,18 @@
           <div class="score-card-status" id="statusDisplay">ESTATUS: [ NO EVALUADO ]</div>
         </div>
 
-        <div class="panel-card">
+        <div class="panel-card glass-panel">
           <div class="panel-header" style="margin-bottom: 10px;">
-            <span class="panel-title" style="font-size: 1.05rem;">Perfil del Proyecto</span>
+            <span class="panel-title" style="font-size: 1rem;">Perfil del Proyecto</span>
           </div>
           <div class="radar-wrapper">
             <svg id="radarSvg" width="240" height="200" viewBox="0 0 240 200"></svg>
           </div>
         </div>
 
-        <div class="panel-card">
+        <div class="panel-card glass-panel">
           <div class="panel-header" style="margin-bottom: 10px;">
-            <span class="panel-title" style="font-size: 1.05rem;">Resumen en Tiempo Real</span>
+            <span class="panel-title" style="font-size: 1rem;">Resumen en Tiempo Real</span>
           </div>
           <div id="summaryText" style="font-size: 0.88rem; font-family: var(--font-mono); color: var(--text-secondary); white-space: pre-line;">
             Modifica cualquier parámetro para visualizar en tiempo real.
@@ -1017,9 +1066,9 @@
     <div class="modal-card">
       <div class="modal-title"><i class="fa-solid fa-table"></i> Configuración de Google Sheets</div>
       <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 14px;">
-        Pega la URL de tu Web App de Google Apps Script (que termine en <code>/exec</code>):
+        Pega la URL de tu Web App de Google Apps Script:
       </p>
-      <input type="text" id="sheetsUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; margin-bottom: 16px;">
+      <input type="text" id="sheetsUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; padding: 10px; border: 1px solid var(--border-subtle); border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px;">
       <div style="display: flex; justify-content: flex-end; gap: 10px;">
         <button class="btn-action" style="background: var(--text-primary); color: #FFF;" onclick="saveSheetsUrl()">Guardar URL</button>
         <button class="btn-action" onclick="closeModal('sheetsModal')">Cerrar</button>
@@ -1030,8 +1079,8 @@
   <div class="modal-overlay" id="qrModal">
     <div class="modal-card" style="text-align: center;">
       <div class="modal-title"><i class="fa-solid fa-qrcode"></i> Código QR App</div>
-      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">Escanea para abrir la app en móvil:</p>
-      <div id="qrcodeCanvas" style="display: flex; justify-content: center; margin: 0 auto 16px auto; padding: 10px; background: #FFF; border: 1px solid var(--border-color); border-radius: 8px; width: fit-content;"></div>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">Escanea para abrir en dispositivo móvil:</p>
+      <div id="qrcodeCanvas" style="display: flex; justify-content: center; margin: 0 auto 16px auto; padding: 10px; background: #FFF; border-radius: 12px; width: fit-content;"></div>
       <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); word-break: break-all;" id="currentAppUrl"></div>
       <div style="margin-top: 18px;">
         <button class="btn-action" onclick="closeModal('qrModal')">Cerrar</button>
@@ -1066,7 +1115,6 @@
       "Rechazado (Necesita nueva presentación tras reformulación completa)"
     ];
 
-    // POOL DE RECOMENDACIONES COMPLETO
     const RECOMMENDATION_POOL = [
       { id: "p1", category: "Investigación", text: "Profundizar en la validación directa con usuarios finales del segmento objetivo." },
       { id: "p2", category: "Viabilidad", text: "Revisar la factibilidad de manufactura, proveedores locales y estimación de costos unitarios." },
@@ -1114,7 +1162,7 @@
       if(googleSheetsUrl) document.getElementById("sheetsUrlInput").value = googleSheetsUrl;
     };
 
-    /* Dial Dragging Logic */
+    /* Arrastre de Knobs con Matemática Exacta */
     let activeDialKey = null;
     let startY = 0;
     let startVal = 0;
@@ -1151,7 +1199,7 @@
 
     function stopDialDrag() { activeDialKey = null; }
 
-    /* UI Rendering Methods */
+    /* Render UI Components */
     function renderTeamTabs() {
       const nav = document.getElementById("teamsNav");
       nav.innerHTML = TEAMS.map(team => {
@@ -1203,7 +1251,7 @@
       tbody.innerHTML = RECOMMENDATION_POOL.map(item => `
         <tr id="pool_row_${item.id}">
           <td style="text-align: center;">
-            <input type="checkbox" id="chk_pool_${item.id}" onchange="togglePoolItem('${item.id}')" style="width: 18px; height: 18px; accent-color: var(--text-primary); cursor: pointer;">
+            <input type="checkbox" id="chk_pool_${item.id}" onchange="togglePoolItem('${item.id}')" style="width: 18px; height: 18px; accent-color: var(--accent-pink); cursor: pointer;">
           </td>
           <td><span class="category-badge">${item.category}</span></td>
           <td><label for="chk_pool_${item.id}" style="cursor: pointer; font-weight: 500;">${item.text}</label></td>
@@ -1251,7 +1299,7 @@
       }
     }
 
-    /* Core Application Operations */
+    /* Core Operations */
     function switchTeam(teamId) {
       currentTeamId = teamId;
       renderTeamTabs();
@@ -1307,20 +1355,49 @@
       recalculate();
     }
 
+    /* MATEMÁTICA Y SVG DE KNOBS ALINEADOS AL 100% */
     function updateDialSVG(key, val) {
       const svg = document.getElementById(`dial_svg_${key}`);
-      const pct = val / 10;
-      const angle = pct * 270 - 135;
-      const rad = (angle - 90) * (Math.PI / 180);
+      if (!svg) return;
+
+      const pct = Math.max(0, Math.min(1, val / 10));
       const cx = 38, cy = 38, r = 28;
-      const x2 = cx + r * Math.cos(rad);
-      const y2 = cy + r * Math.sin(rad);
+      const circumference = 175.93; // 2 * PI * 28
+      const arcLength = 131.95;     // 270 deg = 0.75 * circumference
+      const activeLength = arcLength * pct;
+
+      // El ángulo comienza a 135 deg (abajo izquierda) y gira 270 deg en sentido horario
+      const angleDeg = 135 + (pct * 270);
+      const angleRad = angleDeg * (Math.PI / 180);
+
+      const rIn = 12;
+      const rOut = 23;
+      const x1 = cx + rIn * Math.cos(angleRad);
+      const y1 = cy + rIn * Math.sin(angleRad);
+      const x2 = cx + rOut * Math.cos(angleRad);
+      const y2 = cy + rOut * Math.sin(angleRad);
 
       svg.innerHTML = `
-        <circle cx="${cx}" cy="${cy}" r="${r}" stroke="#E2E8F0" stroke-width="6" fill="none" stroke-dasharray="132" stroke-dashoffset="-33" />
-        <circle cx="${cx}" cy="${cy}" r="${r}" stroke="var(--text-primary)" stroke-width="6" fill="none" 
-                stroke-dasharray="175" stroke-dashoffset="${175 - (132 * pct)}" stroke-linecap="round" />
-        <line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="var(--text-primary)" stroke-width="3" stroke-linecap="round" />
+        <defs>
+          <linearGradient id="dialGrad_${key}" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="var(--accent-pink)" />
+            <stop offset="100%" stop-color="var(--accent-indigo)" />
+          </linearGradient>
+        </defs>
+        <!-- Arco de fondo perfectamente superpuesto -->
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(15, 23, 42, 0.08)" stroke-width="6"
+                stroke-dasharray="${arcLength.toFixed(2)} ${circumference.toFixed(2)}"
+                stroke-linecap="round"
+                transform="rotate(135 ${cx} ${cy})" />
+        <!-- Arco activo alineado -->
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="url(#dialGrad_${key})" stroke-width="6"
+                stroke-dasharray="${activeLength.toFixed(2)} ${circumference.toFixed(2)}"
+                stroke-linecap="round"
+                transform="rotate(135 ${cx} ${cy})" />
+        <!-- Centro y Aguja indicadora -->
+        <circle cx="${cx}" cy="${cy}" r="3.5" fill="var(--text-primary)" />
+        <line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}"
+              stroke="var(--accent-pink)" stroke-width="3.5" stroke-linecap="round" />
       `;
     }
 
@@ -1375,9 +1452,7 @@
       recalculate();
     }
 
-    function updateEvaluatorName(val) {
-      evaluatorName = val;
-    }
+    function updateEvaluatorName(val) { evaluatorName = val; }
 
     /* Score Math & Radar Chart */
     function recalculate() {
@@ -1396,7 +1471,7 @@
       const statusDisp = document.getElementById("statusDisplay");
       if(d.evaluated) {
         statusDisp.innerText = "ESTATUS: [ EVALUADO & GUARDADO ]";
-        statusDisp.style.color = "var(--accent-green)";
+        statusDisp.style.color = "var(--accent-mint)";
       } else {
         statusDisp.innerText = "ESTATUS: [ EN EDICIÓN ]";
         statusDisp.style.color = "#CBD5E1";
@@ -1427,7 +1502,7 @@
           let angle = (Math.PI * 2 / numPoints) * i - Math.PI / 2;
           points.push(`${cx + levelR * Math.cos(angle)},${cy + levelR * Math.sin(angle)}`);
         }
-        gridHtml += `<polygon points="${points.join(' ')}" fill="none" stroke="#CBD5E1" stroke-width="1"/>`;
+        gridHtml += `<polygon points="${points.join(' ')}" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>`;
       }
 
       let dataPoints = [];
@@ -1439,10 +1514,10 @@
 
       svg.innerHTML = `
         ${gridHtml}
-        <polygon points="${dataPoints.join(' ')}" fill="rgba(255, 199, 0, 0.35)" stroke="var(--udem-yellow)" stroke-width="2.5"/>
+        <polygon points="${dataPoints.join(' ')}" fill="rgba(255, 42, 133, 0.35)" stroke="var(--accent-pink)" stroke-width="2.5"/>
         ${dataPoints.map(pt => {
           let [px, py] = pt.split(',');
-          return `<circle cx="${px}" cy="${py}" r="4" fill="var(--text-primary)"/>`;
+          return `<circle cx="${px}" cy="${py}" r="4" fill="#FFFFFF"/>`;
         }).join('')}
       `;
     }
@@ -1465,7 +1540,7 @@
       showToast("Campos restablecidos.");
     }
 
-    /* Modal Controls */
+    /* Modales */
     function openModal(id) {
       if(id === 'qrModal') {
         const qrContainer = document.getElementById("qrcodeCanvas");
@@ -1496,5 +1571,3 @@
   </script>
 </body>
 </html>
-
-```
