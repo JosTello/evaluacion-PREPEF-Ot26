@@ -16,7 +16,7 @@
 
   <style>
     :root {
-      /* Paleta Liquid Glass inspirada en la referencia */
+      /* Paleta Liquid Glass */
       --bg-glass: rgba(255, 255, 255, 0.55);
       --bg-glass-card: rgba(255, 255, 255, 0.65);
       --bg-glass-input: rgba(240, 244, 248, 0.6);
@@ -27,16 +27,15 @@
       --text-secondary: #334155;
       --text-muted: #64748B;
       
-      /* Gama de colores extraída de la imagen */
-      --accent-pink: #FF2A85;     /* Magenta neón / Ui logo */
-      --accent-cyan: #00CEFF;     /* Cyan vibrante */
-      --accent-blue: #3B82F6;     /* Azul royal */
-      --accent-indigo: #4F46E5;   /* Indigo/Azul profundo */
-      --accent-mint: #00E6A5;     /* Verde menta */
+      /* Paleta Tecno-minimalista */
+      --accent-pink: #FF2A85;     /* Rosa neón / Ui principal */
+      --accent-cyan: #00CEFF;     
+      --accent-blue: #3B82F6;     
+      --accent-indigo: #4F46E5;   
+      --accent-mint: #00E6A5;     
       --udem-yellow: #FFC700;
 
       --shadow-glass: 0 10px 30px rgba(31, 38, 135, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      --shadow-neumorphic: 6px 6px 14px rgba(166, 180, 200, 0.3), -6px -6px 14px rgba(255, 255, 255, 0.8);
       --shadow-inset: inset 3px 3px 6px rgba(166, 180, 200, 0.25), inset -3px -3px 6px rgba(255, 255, 255, 0.7);
 
       /* Fuentes Tecno-minimalistas */
@@ -59,7 +58,7 @@
       overflow-x: hidden;
     }
 
-    /* Fondo fluido difuminado (Liquid Glass Effect) */
+    /* Fondo fluido animado Liquid Glass */
     .glass-ambient-bg {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -87,7 +86,6 @@
       100% { transform: translate(-40px, 60px) scale(0.95); }
     }
 
-    /* Títulos Tecno-minimalistas */
     h1, h2, h3, h4, .brand-title, .panel-title, .score-card-title, .modal-title, .team-tab-title, .pool-section-title {
       font-family: var(--font-heading);
       font-weight: 700;
@@ -101,7 +99,6 @@
       margin: 0;
     }
 
-    /* Glass Panels */
     .glass-panel {
       background: var(--bg-glass-card);
       backdrop-filter: blur(20px) saturate(180%);
@@ -227,7 +224,7 @@
       border-radius: 16px;
       padding: 14px 20px;
       cursor: pointer;
-      min-width: 220px;
+      min-width: 240px;
       flex: 1;
       transition: all 0.25s;
       box-shadow: var(--shadow-glass);
@@ -246,8 +243,9 @@
     }
 
     .team-tab-title {
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       color: var(--text-primary);
+      line-height: 1.3;
     }
 
     .team-tab-status {
@@ -331,9 +329,10 @@
     }
 
     .project-banner h2 {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       color: var(--text-primary);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      line-height: 1.35;
     }
 
     .project-banner p {
@@ -341,7 +340,7 @@
       color: var(--text-secondary);
     }
 
-    /* Section 1: Knobs Corregidos */
+    /* Section 1: Knobs */
     .dials-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -392,10 +391,8 @@
       margin-top: 8px;
     }
 
-    /* Section 2: Sliders Neumorphic Glass */
-    .slider-row {
-      margin-bottom: 20px;
-    }
+    /* Section 2: Sliders */
+    .slider-row { margin-bottom: 20px; }
 
     .slider-header {
       display: flex;
@@ -426,7 +423,7 @@
       box-shadow: var(--shadow-inset);
     }
 
-    /* Section 3: Matrix 2D Tecno-Color */
+    /* Section 3: Matrix 2D */
     .matrix-container {
       position: relative;
       width: 100%;
@@ -501,7 +498,7 @@
       box-shadow: 0 0 12px var(--accent-pink);
     }
 
-    /* Section 4: Rubric Table Glass */
+    /* Section 4: Rubric Table */
     .table-wrapper { overflow-x: auto; }
 
     .rubric-table {
@@ -759,13 +756,14 @@
       color: #94A3B8;
     }
 
+    /* AJUSTE E: Número de Calificación Global en Color Rosa */
     .score-card-number {
       font-family: var(--font-heading);
       font-size: 4.2rem;
       font-weight: 700;
-      color: var(--udem-yellow);
+      color: var(--accent-pink);
       margin: 4px 0;
-      text-shadow: 0 0 16px rgba(255, 199, 0, 0.4);
+      text-shadow: 0 0 20px rgba(255, 42, 133, 0.4);
     }
 
     .score-card-status {
@@ -864,7 +862,7 @@
           <p id="displayTeamMembers">Integrantes: -</p>
         </div>
 
-        <!-- Section 1: Criterios Cualitativos (Knobs Corregidos) -->
+        <!-- Section 1: Criterios Cualitativos -->
         <div class="panel-card glass-panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fa-solid fa-sliders"></i> 1. Criterios Cualitativos</span>
@@ -1032,7 +1030,7 @@
 
       </div>
 
-      <!-- Sidebar Dashboard -->
+      <!-- Sidebar Dashboard Glass -->
       <div class="sidebar">
         <div class="score-card">
           <div class="score-card-title">CALIFICACIÓN GLOBAL</div>
@@ -1091,12 +1089,33 @@
   <div class="toast" id="toastMsg"></div>
 
   <script>
+    /* AJUSTES A, B y C: Nombres de equipos actualizados */
     const TEAMS = [
-      { id: 1, topic: "Senderismo", members: "Sara D. Chapa Carranco, Roberto A. Flores Garza, Marlen Rendón Hernández, Yolanda M. Vega Gómez" },
-      { id: 2, topic: "Sistema híbrido de planeación académica adaptativa", members: "Eugenio J. Decrescenzo Melicoff, Hernán Macías García" },
-      { id: 3, topic: "Sargazo", members: "Michelle Betanzo Carriles, Eugenio González Sánchez, Matias Romero Rangel, Luis A. Jáuregui Zúñiga" },
-      { id: 4, topic: "Sistema de Respuesta Inmediata", members: "Raúl E. Hernández Ramón, Alfonso Torres Medina, Carlos E. Tovar Castañeda" },
-      { id: 5, topic: "Mobiliario urbano para áreas caninas", members: "Sebastián Montaño Barrón, Amy L. Neri Arriaga, Dalia A. Rocha" }
+      { 
+        id: 1, 
+        topic: "Diseño de producto orientado a la recuperación de lesiones de tobillo en mujeres senderistas del Área Metropolitana de Monterrey", 
+        members: "Sara D. Chapa Carranco, Roberto A. Flores Garza, Marlen Rendón Hernández, Yolanda M. Vega Gómez" 
+      },
+      { 
+        id: 2, 
+        topic: "Diseño de una estación Interactiva para apoyar la planeación académica anticipada en la UDEM", 
+        members: "Eugenio J. Decrescenzo Melicoff, Hernán Macías García" 
+      },
+      { 
+        id: 3, 
+        topic: "Mobiliario urbano / Rediseño de Parque", 
+        members: "Michelle Betanzo Carriles, Eugenio González Sánchez, Matias Romero Rangel, Luis A. Jáuregui Zúñiga" 
+      },
+      { 
+        id: 4, 
+        topic: "Sistema de Respuesta Inmediata", 
+        members: "Raúl E. Hernández Ramón, Alfonso Torres Medina, Carlos E. Tovar Castañeda" 
+      },
+      { 
+        id: 5, 
+        topic: "Mobiliario urbano para áreas caninas", 
+        members: "Sebastián Montaño Barrón, Amy L. Neri Arriaga, Dalia A. Rocha" 
+      }
     ];
 
     const RUBRIC_CRITERIA = [
@@ -1162,7 +1181,7 @@
       if(googleSheetsUrl) document.getElementById("sheetsUrlInput").value = googleSheetsUrl;
     };
 
-    /* Arrastre de Knobs con Matemática Exacta */
+    /* Arrastre de Knobs */
     let activeDialKey = null;
     let startY = 0;
     let startVal = 0;
@@ -1299,7 +1318,7 @@
       }
     }
 
-    /* Core Operations */
+    /* Operations */
     function switchTeam(teamId) {
       currentTeamId = teamId;
       renderTeamTabs();
@@ -1355,18 +1374,16 @@
       recalculate();
     }
 
-    /* MATEMÁTICA Y SVG DE KNOBS ALINEADOS AL 100% */
     function updateDialSVG(key, val) {
       const svg = document.getElementById(`dial_svg_${key}`);
       if (!svg) return;
 
       const pct = Math.max(0, Math.min(1, val / 10));
       const cx = 38, cy = 38, r = 28;
-      const circumference = 175.93; // 2 * PI * 28
-      const arcLength = 131.95;     // 270 deg = 0.75 * circumference
+      const circumference = 175.93;
+      const arcLength = 131.95;
       const activeLength = arcLength * pct;
 
-      // El ángulo comienza a 135 deg (abajo izquierda) y gira 270 deg en sentido horario
       const angleDeg = 135 + (pct * 270);
       const angleRad = angleDeg * (Math.PI / 180);
 
@@ -1384,17 +1401,15 @@
             <stop offset="100%" stop-color="var(--accent-indigo)" />
           </linearGradient>
         </defs>
-        <!-- Arco de fondo perfectamente superpuesto -->
         <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(15, 23, 42, 0.08)" stroke-width="6"
                 stroke-dasharray="${arcLength.toFixed(2)} ${circumference.toFixed(2)}"
                 stroke-linecap="round"
                 transform="rotate(135 ${cx} ${cy})" />
-        <!-- Arco activo alineado -->
         <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="url(#dialGrad_${key})" stroke-width="6"
                 stroke-dasharray="${activeLength.toFixed(2)} ${circumference.toFixed(2)}"
                 stroke-linecap="round"
                 transform="rotate(135 ${cx} ${cy})" />
-        <!-- Centro y Aguja indicadora -->
+        <circle cx="${cx}" cy="${cy}" r="${rIn}" fill="none" />
         <circle cx="${cx}" cy="${cy}" r="3.5" fill="var(--text-primary)" />
         <line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}"
               stroke="var(--accent-pink)" stroke-width="3.5" stroke-linecap="round" />
@@ -1454,7 +1469,7 @@
 
     function updateEvaluatorName(val) { evaluatorName = val; }
 
-    /* Score Math & Radar Chart */
+    /* Math & Radar Chart */
     function recalculate() {
       const d = evaluations[currentTeamId];
       const qualAvg = (d.innovation + d.problem + d.objectives + d.feasibility) / 4;
@@ -1489,12 +1504,14 @@
         `Dictamen: ${d.recommendation || 'Sin seleccionar'}`;
     }
 
+    /* AJUSTE D: Líneas de la gráfica de radar en COLOR NEGRO VISIBLE */
     function drawRadarChart(values) {
       const svg = document.getElementById("radarSvg");
       const cx = 120, cy = 100, r = 70;
       const numPoints = values.length;
       
       let gridHtml = '';
+      // Polígonos concéntricos con líneas negras
       for(let level = 1; level <= 4; level++) {
         let levelR = (r / 4) * level;
         let points = [];
@@ -1502,7 +1519,15 @@
           let angle = (Math.PI * 2 / numPoints) * i - Math.PI / 2;
           points.push(`${cx + levelR * Math.cos(angle)},${cy + levelR * Math.sin(angle)}`);
         }
-        gridHtml += `<polygon points="${points.join(' ')}" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>`;
+        gridHtml += `<polygon points="${points.join(' ')}" fill="none" stroke="#000000" stroke-width="1.2" stroke-opacity="0.45"/>`;
+      }
+
+      // Ejes radiales en color negro
+      for(let i = 0; i < numPoints; i++) {
+        let angle = (Math.PI * 2 / numPoints) * i - Math.PI / 2;
+        let x2 = cx + r * Math.cos(angle);
+        let y2 = cy + r * Math.sin(angle);
+        gridHtml += `<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="#000000" stroke-width="1" stroke-opacity="0.35"/>`;
       }
 
       let dataPoints = [];
@@ -1514,10 +1539,10 @@
 
       svg.innerHTML = `
         ${gridHtml}
-        <polygon points="${dataPoints.join(' ')}" fill="rgba(255, 42, 133, 0.35)" stroke="var(--accent-pink)" stroke-width="2.5"/>
+        <polygon points="${dataPoints.join(' ')}" fill="rgba(255, 42, 133, 0.4)" stroke="var(--accent-pink)" stroke-width="2.5"/>
         ${dataPoints.map(pt => {
           let [px, py] = pt.split(',');
-          return `<circle cx="${px}" cy="${py}" r="4" fill="#FFFFFF"/>`;
+          return `<circle cx="${px}" cy="${py}" r="4" fill="#000000" stroke="var(--accent-pink)" stroke-width="1.5"/>`;
         }).join('')}
       `;
     }
