@@ -77,4 +77,1424 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
-      box
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-tag {
+      background-color: var(--udem-yellow);
+      color: #000;
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+
+    .brand-title {
+      font-size: 1.35rem;
+      color: var(--text-primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-action {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+      background: #F1F5F9;
+    }
+
+    /* Evaluator Bar */
+    .evaluator-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 24px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .evaluator-bar label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .evaluator-bar input {
+      flex: 1;
+      min-width: 250px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .evaluator-bar input:focus {
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+    }
+
+    /* Teams Nav Tabs */
+    .teams-nav {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      width: 100%;
+    }
+
+    .team-tab {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 18px;
+      cursor: pointer;
+      min-width: 220px;
+      flex: 1;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .team-tab:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .team-tab.active {
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 2px var(--text-primary);
+    }
+
+    .team-tab-title {
+      font-size: 1.05rem;
+      color: var(--text-primary);
+    }
+
+    .team-tab-status {
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #CBD5E1;
+    }
+
+    .team-tab.evaluated .status-dot {
+      background: var(--accent-green);
+    }
+
+    /* Grid Layout Adaptable al 100% */
+    .app-body {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      width: 100%;
+    }
+
+    @media (max-width: 1024px) {
+      .app-body { 
+        grid-template-columns: 1fr; 
+      }
+    }
+
+    /* Cards & Panels */
+    .panel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      width: 100%;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-title {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-badge {
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: #F1F5F9;
+      color: var(--text-secondary);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Project Info Banner */
+    .project-banner {
+      background: var(--udem-yellow-light);
+      border: 1px solid rgba(255, 199, 0, 0.6);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+    }
+
+    .project-banner h2 {
+      font-size: 1.4rem;
+      color: #78350F;
+      margin-bottom: 4px;
+    }
+
+    .project-banner p {
+      font-size: 0.95rem;
+      color: #92400E;
+    }
+
+    /* Section 1: Knobs */
+    .dials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .dial-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      cursor: ns-resize;
+      transition: all 0.2s;
+    }
+
+    .dial-card:hover {
+      border-color: var(--border-hover);
+      background: #F1F5F9;
+    }
+
+    .dial-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .dial-svg {
+      width: 76px;
+      height: 76px;
+      pointer-events: none;
+    }
+
+    .dial-val {
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 6px;
+    }
+
+    /* Section 2: Sliders */
+    .slider-row {
+      margin-bottom: 18px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .slider-header span.val {
+      font-family: var(--font-mono);
+      color: var(--text-primary);
+      background: #F1F5F9;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 6px;
+      background: #CBD5E1;
+      border-radius: 3px;
+      accent-color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    /* Section 3: Matrix 2D (Colores de cuadrantes intensificados y más visibles) */
+    .matrix-container {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      background: #FFFFFF;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      cursor: crosshair;
+      overflow: hidden;
+    }
+
+    .matrix-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .quadrant {
+      padding: 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Colores saturados y contrastados */
+    .quadrant.q1 { 
+      text-align: right; 
+      align-items: flex-end; 
+      background: rgba(16, 185, 129, 0.22); 
+      color: #065F46;
+      border-left: 1px solid rgba(16, 185, 129, 0.4);
+      border-bottom: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .quadrant.q2 { 
+      background: rgba(245, 158, 11, 0.22); 
+      color: #92400E;
+      border-right: 1px solid rgba(245, 158, 11, 0.4);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .quadrant.q3 { 
+      justify-content: flex-end; 
+      background: rgba(239, 68, 68, 0.22); 
+      color: #991B1B;
+      border-right: 1px solid rgba(239, 68, 68, 0.4);
+      border-top: 1px solid rgba(239, 68, 68, 0.4);
+    }
+    .quadrant.q4 { 
+      justify-content: flex-end; 
+      align-items: flex-end; 
+      text-align: right; 
+      background: rgba(59, 130, 246, 0.22); 
+      color: #1E40AF;
+      border-left: 1px solid rgba(59, 130, 246, 0.4);
+      border-top: 1px solid rgba(59, 130, 246, 0.4);
+    }
+
+    .matrix-point {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: var(--udem-yellow);
+      border: 3px solid var(--text-primary);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    }
+
+    /* Section 4: Rubric Table */
+    .table-wrapper { overflow-x: auto; }
+
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    .rubric-table th, .rubric-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .rubric-table th {
+      background: #F1F5F9;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .rubric-table td.criterion-name {
+      text-align: left;
+      font-weight: 600;
+      background: #FAFAFA;
+      color: var(--text-primary);
+      width: 30%;
+    }
+
+    .rubric-btn {
+      width: 100%;
+      padding: 8px 4px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+
+    .rubric-btn:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+    }
+
+    .rubric-btn.selected {
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border-color: var(--text-primary);
+    }
+
+    /* Pool de Recomendaciones (Sin barra de desplazamiento, 100% visible) */
+    .pool-section-title {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pool-table-wrapper {
+      max-height: none; /* Sin limite de altura */
+      overflow: visible;  /* Sin barra de desplazamiento */
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+
+    .pool-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .pool-table th {
+      background: #F1F5F9;
+      border-bottom: 2px solid var(--border-color);
+      padding: 12px 14px;
+      text-align: left;
+      color: var(--text-secondary);
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+    }
+
+    .pool-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #E2E8F0;
+      vertical-align: middle;
+    }
+
+    .pool-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pool-table tr:hover {
+      background: #F8FAFC;
+    }
+
+    .pool-table tr.selected-row {
+      background: var(--udem-yellow-light);
+    }
+
+    .category-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: #E2E8F0;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    .custom-textarea {
+      width: 100%;
+      min-height: 110px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      color: var(--text-primary);
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .custom-textarea:focus {
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+    }
+
+    .selected-recs-box {
+      background: #F8FAFC;
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .selected-recs-box ul {
+      padding-left: 20px;
+      font-size: 0.92rem;
+      color: var(--text-primary);
+    }
+
+    .selected-recs-box li {
+      margin-bottom: 6px;
+    }
+
+    /* Dictamen Radios */
+    .rec-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .rec-radio-label {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.92rem;
+      transition: all 0.15s;
+    }
+
+    .rec-radio-label:hover { border-color: var(--border-hover); }
+
+    .rec-radio-label input { accent-color: var(--text-primary); }
+
+    .rec-radio-label.selected {
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .btn-main {
+      flex: 2;
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+
+    .btn-main:hover { background: #1E293B; }
+
+    .btn-secondary {
+      flex: 1;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      color: var(--accent-red);
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: #FEF2F2;
+      border-color: #FCA5A5;
+    }
+
+    /* Sidebar Panel */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .score-card {
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .score-card-title {
+      font-size: 1.15rem;
+      color: #CBD5E1;
+    }
+
+    .score-card-number {
+      font-family: var(--font-heading);
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--udem-yellow);
+      margin: 4px 0;
+    }
+
+    .score-card-status {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #E2E8F0;
+    }
+
+    .radar-wrapper {
+      width: 100%;
+      height: 230px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Modales & Toast */
+    .modal-overlay {
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--text-primary);
+      color: #FFFFFF;
+      padding: 12px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 8px;
+      box-shadow: var(--shadow-md);
+      display: none;
+      z-index: 2000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Top Header Bar -->
+    <header>
+      <div class="brand">
+        <span class="brand-tag">UDEM</span>
+        <span class="brand-title">Diseño Integral — Evaluación de Proyectos (8° Semestre)</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-action" onclick="openModal('sheetsModal')"><i class="fa-solid fa-table"></i> Google Sheets</button>
+        <button class="btn-action" onclick="openModal('qrModal')"><i class="fa-solid fa-qrcode"></i> QR App</button>
+        <button class="btn-action" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
+      </div>
+    </header>
+
+    <!-- Evaluator Input Bar -->
+    <div class="evaluator-bar">
+      <label for="evaluatorName"><i class="fa-solid fa-user-pen"></i> Evaluador / Profesor:</label>
+      <input type="text" id="evaluatorName" placeholder="Escribe tu nombre completo..." oninput="updateEvaluatorName(this.value)">
+    </div>
+
+    <!-- Teams Navigation Tabs -->
+    <nav class="teams-nav" id="teamsNav"></nav>
+
+    <!-- Main Grid Layout (Adaptado al 100% de la pantalla) -->
+    <main class="app-body">
+      <!-- Form Column -->
+      <div class="form-column">
+        
+        <!-- Project Banner -->
+        <div class="project-banner">
+          <h2 id="displayProjectTopic">Cargando proyecto...</h2>
+          <p id="displayTeamMembers">Integrantes: -</p>
+        </div>
+
+        <!-- Section 1: Criterios Cualitativos -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-sliders"></i> 1. Criterios Cualitativos</span>
+            <span class="panel-badge">0 - 10 PTS (Arrastra verticalmente)</span>
+          </div>
+          <div class="dials-grid">
+            <div class="dial-card" id="dial_card_innovation">
+              <span class="dial-label">Innovación & Creatividad</span>
+              <svg class="dial-svg" id="dial_svg_innovation"></svg>
+              <div class="dial-val" id="val_innovation">0.0</div>
+            </div>
+            <div class="dial-card" id="dial_card_problem">
+              <span class="dial-label">Problemática Clara</span>
+              <svg class="dial-svg" id="dial_svg_problem"></svg>
+              <div class="dial-val" id="val_problem">0.0</div>
+            </div>
+            <div class="dial-card" id="dial_card_objectives">
+              <span class="dial-label">Objetivos Definidos</span>
+              <svg class="dial-svg" id="dial_svg_objectives"></svg>
+              <div class="dial-val" id="val_objectives">0.0</div>
+            </div>
+            <div class="dial-card" id="dial_card_feasibility">
+              <span class="dial-label">Viabilidad Técnica</span>
+              <svg class="dial-svg" id="dial_svg_feasibility"></svg>
+              <div class="dial-val" id="val_feasibility">0.0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Proceso -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-chart-line"></i> 2. Criterios de Proceso y Avance</span>
+            <span class="panel-badge">0 - 100 %</span>
+          </div>
+          
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Métodos de Investigación & Rigor Científico</span>
+              <span class="val" id="val_research">0%</span>
+            </div>
+            <input type="range" id="input_research" min="0" max="100" value="0" oninput="updateScore('research', this.value)">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>¿Son claros los entregables que se proyectan?</span>
+              <span class="val" id="val_deliverables">0%</span>
+            </div>
+            <input type="range" id="input_deliverables" min="0" max="100" value="0" oninput="updateScore('deliverables', this.value)">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-header">
+              <span>Calidad de la presentación y coherencia</span>
+              <span class="val" id="val_presentation">0%</span>
+            </div>
+            <input type="range" id="input_presentation" min="0" max="100" value="0" oninput="updateScore('presentation', this.value)">
+          </div>
+        </div>
+
+        <!-- Section 3: Matriz 2D (Colores de cuadrantes más visibles) -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-border-all"></i> 3. Matriz 2D: Impacto vs Viabilidad</span>
+            <span class="panel-badge" id="val_matrix">X: 0.0 | Y: 0.0</span>
+          </div>
+          <div class="matrix-container" id="matrixContainer" onclick="handleMatrixClick(event)">
+            <div class="matrix-bg">
+              <div class="quadrant q2">
+                <span>II. ALTO IMPACTO</span>
+                <span>BAJA VIABILIDAD</span>
+              </div>
+              <div class="quadrant q1">
+                <span>I. ALTO IMPACTO</span>
+                <span>ALTA VIABILIDAD</span>
+              </div>
+              <div class="quadrant q3">
+                <span>III. BAJO IMPACTO</span>
+                <span>BAJA VIABILIDAD</span>
+              </div>
+              <div class="quadrant q4">
+                <span>IV. BAJO IMPACTO</span>
+                <span>ALTA VIABILIDAD</span>
+              </div>
+            </div>
+            <div class="matrix-point" id="matrixPoint" style="left: 0%; top: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- Section 4: Matriz de Rúbrica -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-list-check"></i> 4. Matriz de Rúbrica Evaluativa</span>
+            <span class="panel-badge">Niveles Cualitativos</span>
+          </div>
+          <div class="table-wrapper">
+            <table class="rubric-table">
+              <thead>
+                <tr>
+                  <th>Criterio</th>
+                  <th>Insuficiente (25%)</th>
+                  <th>Aceptable (50%)</th>
+                  <th>Bueno (75%)</th>
+                  <th>Excelente (100%)</th>
+                </tr>
+              </thead>
+              <tbody id="rubricBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 5: Recomendaciones & Pool de Opciones Totalmente Visibles -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-comment-dots"></i> 5. Recomendaciones & Dictamen del Profesor</span>
+          </div>
+
+          <!-- Dictamen General -->
+          <div class="pool-section-title"><i class="fa-solid fa-gavel"></i> Dictamen Final del Proyecto:</div>
+          <div class="rec-options" id="recommendationList"></div>
+
+          <!-- Pool de Recomendaciones en Tabla (Sin scrollbar, todo visible) -->
+          <div style="margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+            <div class="pool-section-title">
+              <i class="fa-solid fa-list-ul"></i> Pool de Recomendaciones Sugeridas (Selecciona las convenientes):
+            </div>
+            
+            <div class="pool-table-wrapper">
+              <table class="pool-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50px; text-align: center;">Usar</th>
+                    <th style="width: 150px;">Categoría</th>
+                    <th>Recomendación Estándar</th>
+                  </tr>
+                </thead>
+                <tbody id="poolTableBody"></tbody>
+              </table>
+            </div>
+
+            <!-- Resumen de Recomendaciones Seleccionadas -->
+            <div class="selected-recs-box">
+              <div class="pool-section-title" style="margin-bottom: 8px;">
+                <i class="fa-solid fa-clipboard-check"></i> Recomendaciones del Pool Seleccionadas:
+              </div>
+              <div id="selectedRecsDisplay" style="color: var(--text-muted); font-size: 0.9rem;">
+                No has seleccionado recomendaciones del pool aún.
+              </div>
+            </div>
+
+            <!-- Observaciones adicionales personalizadas -->
+            <div class="pool-section-title" style="margin-top: 20px;">
+              <i class="fa-solid fa-pen-to-square"></i> Observaciones Adicionales / Notas Personalizadas:
+            </div>
+            <textarea class="custom-textarea" id="customFeedback" placeholder="Escribe observaciones adicionales específicas para este equipo..." oninput="updateCustomFeedback(this.value)"></textarea>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn-main" onclick="saveCurrentEvaluation()">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Confirmar & Guardar Evaluación
+          </button>
+          <button class="btn-secondary" onclick="resetCurrentEvaluation()">
+            <i class="fa-solid fa-rotate-left"></i> Limpiar Campos
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Sidebar Dashboard -->
+      <div class="sidebar">
+        <div class="score-card">
+          <div class="score-card-title">CALIFICACIÓN GLOBAL</div>
+          <div class="score-card-number" id="globalScoreDisplay">0.0</div>
+          <div class="score-card-status" id="statusDisplay">ESTATUS: [ NO EVALUADO ]</div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header" style="margin-bottom: 10px;">
+            <span class="panel-title" style="font-size: 1.05rem;">Perfil del Proyecto</span>
+          </div>
+          <div class="radar-wrapper">
+            <svg id="radarSvg" width="240" height="200" viewBox="0 0 240 200"></svg>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header" style="margin-bottom: 10px;">
+            <span class="panel-title" style="font-size: 1.05rem;">Resumen en Tiempo Real</span>
+          </div>
+          <div id="summaryText" style="font-size: 0.88rem; font-family: var(--font-mono); color: var(--text-secondary); white-space: pre-line;">
+            Modifica cualquier parámetro para visualizar en tiempo real.
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modales -->
+  <div class="modal-overlay" id="sheetsModal">
+    <div class="modal-card">
+      <div class="modal-title"><i class="fa-solid fa-table"></i> Configuración de Google Sheets</div>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 14px;">
+        Pega la URL de tu Web App de Google Apps Script (que termine en <code>/exec</code>):
+      </p>
+      <input type="text" id="sheetsUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; margin-bottom: 16px;">
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn-action" style="background: var(--text-primary); color: #FFF;" onclick="saveSheetsUrl()">Guardar URL</button>
+        <button class="btn-action" onclick="closeModal('sheetsModal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-card" style="text-align: center;">
+      <div class="modal-title"><i class="fa-solid fa-qrcode"></i> Código QR App</div>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">Escanea para abrir la app en móvil:</p>
+      <div id="qrcodeCanvas" style="display: flex; justify-content: center; margin: 0 auto 16px auto; padding: 10px; background: #FFF; border: 1px solid var(--border-color); border-radius: 8px; width: fit-content;"></div>
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); word-break: break-all;" id="currentAppUrl"></div>
+      <div style="margin-top: 18px;">
+        <button class="btn-action" onclick="closeModal('qrModal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toastMsg"></div>
+
+  <script>
+    const TEAMS = [
+      { id: 1, topic: "Senderismo", members: "Sara D. Chapa Carranco, Roberto A. Flores Garza, Marlen Rendón Hernández, Yolanda M. Vega Gómez" },
+      { id: 2, topic: "Sistema híbrido de planeación académica adaptativa", members: "Eugenio J. Decrescenzo Melicoff, Hernán Macías García" },
+      { id: 3, topic: "Sargazo", members: "Michelle Betanzo Carriles, Eugenio González Sánchez, Matias Romero Rangel, Luis A. Jáuregui Zúñiga" },
+      { id: 4, topic: "Sistema de Respuesta Inmediata", members: "Raúl E. Hernández Ramón, Alfonso Torres Medina, Carlos E. Tovar Castañeda" },
+      { id: 5, topic: "Mobiliario urbano para áreas caninas", members: "Sebastián Montaño Barrón, Amy L. Neri Arriaga, Dalia A. Rocha" }
+    ];
+
+    const RUBRIC_CRITERIA = [
+      "Relevancia de la investigación",
+      "Avance del Marco Teórico",
+      "Analítica de Usuario / Mercado",
+      "Desarrollo Formal / Estético",
+      "Sostenibilidad / Impacto",
+      "Documentación Técnica"
+    ];
+
+    const RECOMMENDATIONS = [
+      "Aceptado sin cambios",
+      "Aceptado con correcciones menores obligatorias",
+      "Aceptado condicionalmente (Requiere reunión de seguimiento para ajustes mayores)",
+      "Rechazado (Necesita nueva presentación tras reformulación completa)"
+    ];
+
+    // POOL DE RECOMENDACIONES COMPLETO
+    const RECOMMENDATION_POOL = [
+      { id: "p1", category: "Investigación", text: "Profundizar en la validación directa con usuarios finales del segmento objetivo." },
+      { id: "p2", category: "Viabilidad", text: "Revisar la factibilidad de manufactura, proveedores locales y estimación de costos unitarios." },
+      { id: "p3", category: "Presentación", text: "Mejorar la sintaxis visual y la legibilidad gráfica de los diagramas explicativos." },
+      { id: "p4", category: "Estrategia", text: "Definir con mayor precisión la propuesta de valor cuantitativa frente a competidores." },
+      { id: "p5", category: "Teoría", text: "Fortalecer el sustento técnico y citación en el marco teórico de la investigación." },
+      { id: "p6", category: "Diseño", text: "Ajustar la ergonomía, dimensiones antropométricas e interacción de uso principal." },
+      { id: "p7", category: "Entregables", text: "Presentar un prototipo funcional físico/digital de alta fidelidad para la siguiente entrega." },
+      { id: "p8", category: "Sostenibilidad", text: "Incorporar el análisis de ciclo de vida (LCA) y selección sustentable de materiales." }
+    ];
+
+    let currentTeamId = 1;
+    let evaluatorName = "";
+    let googleSheetsUrl = localStorage.getItem("udem_sheets_url") || "";
+    let evaluations = {};
+
+    function getEmptyEvaluation() {
+      return {
+        evaluated: false,
+        innovation: 0,
+        problem: 0,
+        objectives: 0,
+        feasibility: 0,
+        research: 0,
+        deliverables: 0,
+        presentation: 0,
+        matrixX: 0,
+        matrixY: 0,
+        rubric: {},
+        recommendation: "",
+        selectedPoolIds: [],
+        customFeedback: ""
+      };
+    }
+
+    TEAMS.forEach(team => { evaluations[team.id] = getEmptyEvaluation(); });
+
+    window.onload = function() {
+      renderTeamTabs();
+      renderRubricTable();
+      renderRecommendations();
+      renderPoolTable();
+      initDialDragEvents();
+      loadTeamData(currentTeamId);
+      if(googleSheetsUrl) document.getElementById("sheetsUrlInput").value = googleSheetsUrl;
+    };
+
+    /* Dial Dragging Logic */
+    let activeDialKey = null;
+    let startY = 0;
+    let startVal = 0;
+
+    function initDialDragEvents() {
+      const keys = ['innovation', 'problem', 'objectives', 'feasibility'];
+      keys.forEach(key => {
+        const card = document.getElementById(`dial_card_${key}`);
+        if(card) {
+          card.addEventListener('mousedown', (e) => startDialDrag(e, key));
+          card.addEventListener('touchstart', (e) => startDialDrag(e.touches[0], key), {passive: true});
+        }
+      });
+
+      window.addEventListener('mousemove', doDialDrag);
+      window.addEventListener('touchmove', (e) => { if(activeDialKey) doDialDrag(e.touches[0]); });
+      window.addEventListener('mouseup', stopDialDrag);
+      window.addEventListener('touchend', stopDialDrag);
+    }
+
+    function startDialDrag(e, key) {
+      activeDialKey = key;
+      startY = e.clientY;
+      startVal = evaluations[currentTeamId][key] || 0;
+    }
+
+    function doDialDrag(e) {
+      if(!activeDialKey) return;
+      const deltaY = startY - e.clientY;
+      let newVal = startVal + (deltaY / 15.0);
+      newVal = Math.max(0, Math.min(10, Math.round(newVal * 10) / 10));
+      updateScore(activeDialKey, newVal);
+    }
+
+    function stopDialDrag() { activeDialKey = null; }
+
+    /* UI Rendering Methods */
+    function renderTeamTabs() {
+      const nav = document.getElementById("teamsNav");
+      nav.innerHTML = TEAMS.map(team => {
+        const isEval = evaluations[team.id].evaluated;
+        const activeClass = team.id === currentTeamId ? 'active' : '';
+        const evaluatedClass = isEval ? 'evaluated' : '';
+        const statusText = isEval ? 'EVALUADO' : 'NO EVALUADO';
+        return `
+          <div class="team-tab ${activeClass} ${evaluatedClass}" onclick="switchTeam(${team.id})">
+            <div class="team-tab-title">Equipo ${team.id}: ${team.topic}</div>
+            <div class="team-tab-status">
+              <span class="status-dot"></span> ${statusText}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderRubricTable() {
+      const tbody = document.getElementById("rubricBody");
+      tbody.innerHTML = RUBRIC_CRITERIA.map((criterion, idx) => {
+        return `
+          <tr>
+            <td class="criterion-name">${criterion}</td>
+            ${[0.25, 0.5, 0.75, 1.0].map(val => `
+              <td>
+                <button class="rubric-btn" id="rubric_${idx}_${val}" onclick="selectRubric(${idx}, ${val})">
+                  ${val * 100}%
+                </button>
+              </td>
+            `).join('')}
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderRecommendations() {
+      const container = document.getElementById("recommendationList");
+      container.innerHTML = RECOMMENDATIONS.map((rec, i) => `
+        <label class="rec-radio-label" id="rec_label_${i}">
+          <input type="radio" name="dictamen" value="${rec}" onchange="setRecommendation('${rec}', ${i})">
+          <span>${rec}</span>
+        </label>
+      `).join('');
+    }
+
+    function renderPoolTable() {
+      const tbody = document.getElementById("poolTableBody");
+      tbody.innerHTML = RECOMMENDATION_POOL.map(item => `
+        <tr id="pool_row_${item.id}">
+          <td style="text-align: center;">
+            <input type="checkbox" id="chk_pool_${item.id}" onchange="togglePoolItem('${item.id}')" style="width: 18px; height: 18px; accent-color: var(--text-primary); cursor: pointer;">
+          </td>
+          <td><span class="category-badge">${item.category}</span></td>
+          <td><label for="chk_pool_${item.id}" style="cursor: pointer; font-weight: 500;">${item.text}</label></td>
+        </tr>
+      `).join('');
+    }
+
+    function togglePoolItem(poolId) {
+      const currentRecs = evaluations[currentTeamId].selectedPoolIds || [];
+      const index = currentRecs.indexOf(poolId);
+      
+      if (index > -1) {
+        currentRecs.splice(index, 1);
+      } else {
+        currentRecs.push(poolId);
+      }
+      
+      evaluations[currentTeamId].selectedPoolIds = currentRecs;
+      updatePoolUI();
+      recalculate();
+    }
+
+    function updatePoolUI() {
+      const selected = evaluations[currentTeamId].selectedPoolIds || [];
+      RECOMMENDATION_POOL.forEach(item => {
+        const chk = document.getElementById(`chk_pool_${item.id}`);
+        const row = document.getElementById(`pool_row_${item.id}`);
+        const isChecked = selected.includes(item.id);
+        if(chk) chk.checked = isChecked;
+        if(row) {
+          if(isChecked) row.classList.add('selected-row');
+          else row.classList.remove('selected-row');
+        }
+      });
+
+      const display = document.getElementById("selectedRecsDisplay");
+      if (selected.length === 0) {
+        display.innerHTML = `<span style="color: var(--text-muted); font-style: italic;">No has seleccionado recomendaciones del pool aún.</span>`;
+      } else {
+        const listItems = selected.map(id => {
+          const item = RECOMMENDATION_POOL.find(p => p.id === id);
+          return `<li><strong>[${item.category}]</strong> ${item.text}</li>`;
+        }).join('');
+        display.innerHTML = `<ul>${listItems}</ul>`;
+      }
+    }
+
+    /* Core Application Operations */
+    function switchTeam(teamId) {
+      currentTeamId = teamId;
+      renderTeamTabs();
+      loadTeamData(teamId);
+    }
+
+    function loadTeamData(id) {
+      const team = TEAMS.find(t => t.id === id);
+      const data = evaluations[id];
+
+      document.getElementById("displayProjectTopic").innerText = `Equipo ${team.id}: ${team.topic}`;
+      document.getElementById("displayTeamMembers").innerText = `Integrantes: ${team.members}`;
+
+      ['innovation', 'problem', 'objectives', 'feasibility'].forEach(k => {
+        updateDialSVG(k, data[k]);
+        document.getElementById(`val_${k}`).innerText = data[k].toFixed(1);
+      });
+
+      ['research', 'deliverables', 'presentation'].forEach(k => {
+        document.getElementById(`input_${k}`).value = data[k];
+        document.getElementById(`val_${k}`).innerText = `${data[k]}%`;
+      });
+
+      updateMatrixPointUI(data.matrixX, data.matrixY);
+      updateRubricUI();
+
+      RECOMMENDATIONS.forEach((rec, i) => {
+        const lbl = document.getElementById(`rec_label_${i}`);
+        const input = lbl.querySelector('input');
+        if (data.recommendation === rec) {
+          input.checked = true;
+          lbl.classList.add('selected');
+        } else {
+          input.checked = false;
+          lbl.classList.remove('selected');
+        }
+      });
+
+      updatePoolUI();
+      document.getElementById("customFeedback").value = data.customFeedback || "";
+
+      recalculate();
+    }
+
+    function updateScore(key, val) {
+      evaluations[currentTeamId][key] = parseFloat(val);
+      if (['innovation', 'problem', 'objectives', 'feasibility'].includes(key)) {
+        updateDialSVG(key, parseFloat(val));
+        document.getElementById(`val_${key}`).innerText = parseFloat(val).toFixed(1);
+      } else {
+        document.getElementById(`val_${key}`).innerText = `${val}%`;
+      }
+      recalculate();
+    }
+
+    function updateDialSVG(key, val) {
+      const svg = document.getElementById(`dial_svg_${key}`);
+      const pct = val / 10;
+      const angle = pct * 270 - 135;
+      const rad = (angle - 90) * (Math.PI / 180);
+      const cx = 38, cy = 38, r = 28;
+      const x2 = cx + r * Math.cos(rad);
+      const y2 = cy + r * Math.sin(rad);
+
+      svg.innerHTML = `
+        <circle cx="${cx}" cy="${cy}" r="${r}" stroke="#E2E8F0" stroke-width="6" fill="none" stroke-dasharray="132" stroke-dashoffset="-33" />
+        <circle cx="${cx}" cy="${cy}" r="${r}" stroke="var(--text-primary)" stroke-width="6" fill="none" 
+                stroke-dasharray="175" stroke-dashoffset="${175 - (132 * pct)}" stroke-linecap="round" />
+        <line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="var(--text-primary)" stroke-width="3" stroke-linecap="round" />
+      `;
+    }
+
+    function handleMatrixClick(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const y = Math.max(0, Math.min(1, 1 - ((e.clientY - rect.top) / rect.height)));
+      
+      evaluations[currentTeamId].matrixX = Math.round(x * 100) / 10;
+      evaluations[currentTeamId].matrixY = Math.round(y * 100) / 10;
+      
+      updateMatrixPointUI(evaluations[currentTeamId].matrixX, evaluations[currentTeamId].matrixY);
+      recalculate();
+    }
+
+    function updateMatrixPointUI(x, y) {
+      const pt = document.getElementById("matrixPoint");
+      pt.style.left = `${(x / 10) * 100}%`;
+      pt.style.top = `${(1 - (y / 10)) * 100}%`;
+      document.getElementById("val_matrix").innerText = `X: ${x.toFixed(1)} | Y: ${y.toFixed(1)}`;
+    }
+
+    function selectRubric(criterionIdx, val) {
+      evaluations[currentTeamId].rubric[criterionIdx] = val;
+      updateRubricUI();
+      recalculate();
+    }
+
+    function updateRubricUI() {
+      const rub = evaluations[currentTeamId].rubric;
+      RUBRIC_CRITERIA.forEach((_, idx) => {
+        [0.25, 0.5, 0.75, 1.0].forEach(val => {
+          const btn = document.getElementById(`rubric_${idx}_${val}`);
+          if (rub[idx] === val) btn.classList.add('selected');
+          else btn.classList.remove('selected');
+        });
+      });
+    }
+
+    function setRecommendation(rec, idx) {
+      evaluations[currentTeamId].recommendation = rec;
+      RECOMMENDATIONS.forEach((_, i) => {
+        const lbl = document.getElementById(`rec_label_${i}`);
+        if(i === idx) lbl.classList.add('selected');
+        else lbl.classList.remove('selected');
+      });
+      recalculate();
+    }
+
+    function updateCustomFeedback(val) {
+      evaluations[currentTeamId].customFeedback = val;
+      recalculate();
+    }
+
+    function updateEvaluatorName(val) {
+      evaluatorName = val;
+    }
+
+    /* Score Math & Radar Chart */
+    function recalculate() {
+      const d = evaluations[currentTeamId];
+      const qualAvg = (d.innovation + d.problem + d.objectives + d.feasibility) / 4;
+      const procAvg = ((d.research + d.deliverables + d.presentation) / 3) / 10;
+      const matrixAvg = (d.matrixX + d.matrixY) / 2;
+      
+      const rubVals = Object.values(d.rubric);
+      const rubAvg = rubVals.length > 0 ? (rubVals.reduce((a, b) => a + b, 0) / RUBRIC_CRITERIA.length) * 10 : 0;
+
+      const finalScore = (qualAvg * 0.3) + (procAvg * 0.3) + (matrixAvg * 0.2) + (rubAvg * 0.2);
+      
+      document.getElementById("globalScoreDisplay").innerText = finalScore.toFixed(1);
+      
+      const statusDisp = document.getElementById("statusDisplay");
+      if(d.evaluated) {
+        statusDisp.innerText = "ESTATUS: [ EVALUADO & GUARDADO ]";
+        statusDisp.style.color = "var(--accent-green)";
+      } else {
+        statusDisp.innerText = "ESTATUS: [ EN EDICIÓN ]";
+        statusDisp.style.color = "#CBD5E1";
+      }
+
+      drawRadarChart([d.innovation, d.problem, d.objectives, d.feasibility, procAvg, matrixAvg]);
+
+      const poolCount = (d.selectedPoolIds || []).length;
+      document.getElementById("summaryText").innerText = 
+        `Cualitativo: ${qualAvg.toFixed(1)}/10\n` +
+        `Proceso: ${(procAvg*10).toFixed(0)}%\n` +
+        `Matriz 2D: X:${d.matrixX.toFixed(1)} Y:${d.matrixY.toFixed(1)}\n` +
+        `Rúbrica Completa: ${rubVals.length}/${RUBRIC_CRITERIA.length}\n` +
+        `Recomendaciones Pool: ${poolCount}\n` +
+        `Dictamen: ${d.recommendation || 'Sin seleccionar'}`;
+    }
+
+    function drawRadarChart(values) {
+      const svg = document.getElementById("radarSvg");
+      const cx = 120, cy = 100, r = 70;
+      const numPoints = values.length;
+      
+      let gridHtml = '';
+      for(let level = 1; level <= 4; level++) {
+        let levelR = (r / 4) * level;
+        let points = [];
+        for(let i = 0; i < numPoints; i++) {
+          let angle = (Math.PI * 2 / numPoints) * i - Math.PI / 2;
+          points.push(`${cx + levelR * Math.cos(angle)},${cy + levelR * Math.sin(angle)}`);
+        }
+        gridHtml += `<polygon points="${points.join(' ')}" fill="none" stroke="#CBD5E1" stroke-width="1"/>`;
+      }
+
+      let dataPoints = [];
+      for(let i = 0; i < numPoints; i++) {
+        let valR = (r / 10) * values[i];
+        let angle = (Math.PI * 2 / numPoints) * i - Math.PI / 2;
+        dataPoints.push(`${cx + valR * Math.cos(angle)},${cy + valR * Math.sin(angle)}`);
+      }
+
+      svg.innerHTML = `
+        ${gridHtml}
+        <polygon points="${dataPoints.join(' ')}" fill="rgba(255, 199, 0, 0.35)" stroke="var(--udem-yellow)" stroke-width="2.5"/>
+        ${dataPoints.map(pt => {
+          let [px, py] = pt.split(',');
+          return `<circle cx="${px}" cy="${py}" r="4" fill="var(--text-primary)"/>`;
+        }).join('')}
+      `;
+    }
+
+    function saveCurrentEvaluation() {
+      if(!evaluatorName.trim()) {
+        showToast("Por favor, ingresa tu nombre como Evaluador/Profesor.");
+        return;
+      }
+      evaluations[currentTeamId].evaluated = true;
+      renderTeamTabs();
+      recalculate();
+      showToast(`Evaluación del Equipo ${currentTeamId} guardada con éxito.`);
+    }
+
+    function resetCurrentEvaluation() {
+      evaluations[currentTeamId] = getEmptyEvaluation();
+      renderTeamTabs();
+      loadTeamData(currentTeamId);
+      showToast("Campos restablecidos.");
+    }
+
+    /* Modal Controls */
+    function openModal(id) {
+      if(id === 'qrModal') {
+        const qrContainer = document.getElementById("qrcodeCanvas");
+        qrContainer.innerHTML = "";
+        new QRCode(qrContainer, { text: window.location.href, width: 140, height: 140 });
+        document.getElementById("currentAppUrl").innerText = window.location.href;
+      }
+      document.getElementById(id).style.display = "flex";
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+    function saveSheetsUrl() {
+      googleSheetsUrl = document.getElementById("sheetsUrlInput").value.trim();
+      localStorage.setItem("udem_sheets_url", googleSheetsUrl);
+      closeModal("sheetsModal");
+      showToast("URL de Google Sheets guardada.");
+    }
+
+    function exportPDF() { window.print(); }
+
+    function showToast(msg) {
+      const t = document.getElementById("toastMsg");
+      t.innerText = msg;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 3000);
+    }
+  </script>
+</body>
+</html>
+
+```
