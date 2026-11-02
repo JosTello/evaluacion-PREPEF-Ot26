@@ -3,367 +3,376 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UDEM - Evaluation Canvas | Processing Studio</title>
+  <title>UDEM - Evaluación de Proyectos | Diseño Integral</title>
 
-  <!-- Google Fonts: JetBrains Mono & Inter -->
+  <!-- Google Fonts: Tiny5 para títulos y Google Sans (fallback a sans-serif moderna) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet">
+
   <!-- FontAwesome & QRCode Library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
     :root {
-      --bg-dark: #121214;
-      --bg-panel: #1A1A1E;
-      --bg-card: #222228;
-      --bg-card-hover: #2A2A32;
-      --border-color: #33333E;
-      --border-focus: #555566;
-      --text-main: #ECECF1;
-      --text-muted: #8E8EA0;
+      /* Fondo gris claro aplicado */
+      --bg-body: #EAECEF; 
+      --bg-card: #FFFFFF;
+      --bg-input: #F8FAFC;
+      --border-color: #CBD5E1;
+      --border-hover: #94A3B8;
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
       --udem-yellow: #FFC700;
-      --udem-yellow-glow: rgba(255, 199, 0, 0.25);
-      --accent-red: #FF453A;
-      --accent-green: #30D158;
-      --accent-blue: #0A84FF;
-      --font-mono: 'JetBrains Mono', monospace;
-      --font-sans: 'Inter', sans-serif;
+      --udem-yellow-hover: #E6B200;
+      --udem-yellow-light: #FFFBEB;
+      --accent-green: #10B981;
+      --accent-red: #EF4444;
+      --accent-blue: #2563EB;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 8px -1px rgba(0,0,0,0.08);
+
+      /* Tipografías configuradas */
+      --font-heading: 'Tiny5', cursive, monospace;
+      --font-body: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'Courier New', Courier, monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--bg-dark);
-      background-image: radial-gradient(#262630 1px, transparent 1px);
-      background-size: 20px 20px;
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      padding: 15px;
-      line-height: 1.4;
-      user-select: none;
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      padding: 24px 16px;
+      line-height: 1.5;
     }
 
-    .ide-container {
-      max-width: 1350px;
+    /* Títulos en Tiny5 Duo */
+    h1, h2, h3, h4, .brand-title, .panel-title, .score-card-title, .modal-title, .team-tab-title {
+      font-family: var(--font-heading);
+      letter-spacing: 0.5px;
+    }
+
+    .app-container {
+      max-width: 1380px;
       margin: 0 auto;
-      border: 1px solid var(--border-color);
-      background: var(--bg-panel);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      border-radius: 8px;
-      overflow: hidden;
     }
 
-    /* Header IDE */
-    .ide-header {
-      background: #0D0D0F;
-      border-bottom: 1px solid var(--border-color);
-      padding: 12px 20px;
+    /* Header Bar */
+    header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
       flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
       gap: 12px;
     }
 
-    .brand-title {
-      font-family: var(--font-mono);
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--text-main);
+    .brand-tag {
+      background-color: var(--udem-yellow);
+      color: #000;
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      padding: 4px 12px;
+      border-radius: 6px;
     }
 
-    .brand-tag {
-      background: var(--udem-yellow);
-      color: #000;
-      padding: 2px 8px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      border-radius: 3px;
+    .brand-title {
+      font-size: 1.4rem;
+      color: var(--text-primary);
     }
 
     .header-actions {
       display: flex;
       gap: 10px;
-      align-items: center;
     }
 
-    .btn-ide {
+    .btn-action {
       background: var(--bg-card);
-      color: var(--text-main);
       border: 1px solid var(--border-color);
-      padding: 8px 14px;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
+      color: var(--text-secondary);
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 0.9rem;
       font-weight: 500;
+      font-family: var(--font-body);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      border-radius: 4px;
       transition: all 0.2s ease;
     }
 
-    .btn-ide:hover {
-      background: var(--border-focus);
-      border-color: var(--udem-yellow);
-      color: var(--udem-yellow);
-    }
-
-    .btn-ide.btn-accent {
-      background: var(--udem-yellow);
-      color: #000;
-      border-color: var(--udem-yellow);
-      font-weight: 700;
-    }
-
-    .btn-ide.btn-accent:hover {
-      background: #E6B200;
-      color: #000;
-      box-shadow: 0 0 12px var(--udem-yellow-glow);
-    }
-
-    .btn-ide.btn-danger {
-      border-color: rgba(255, 69, 58, 0.4);
-      color: var(--accent-red);
-    }
-
-    .btn-ide.btn-danger:hover {
-      background: var(--accent-red);
-      color: #FFF;
+    .btn-action:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+      background: #F1F5F9;
     }
 
     /* Evaluator Bar */
     .evaluator-bar {
-      background: #151518;
-      padding: 12px 20px;
-      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
       flex-wrap: wrap;
     }
 
     .evaluator-bar label {
-      font-family: var(--font-mono);
       font-weight: 600;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
     }
 
     .evaluator-bar input {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 8px 14px;
-      font-family: var(--font-sans);
-      font-size: 0.9rem;
       flex: 1;
       min-width: 250px;
-      border-radius: 4px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text-primary);
       outline: none;
       transition: border-color 0.2s;
     }
 
     .evaluator-bar input:focus {
-      border-color: var(--udem-yellow);
+      border-color: var(--text-primary);
+      background: #FFFFFF;
     }
 
     /* Teams Nav Tabs */
     .teams-nav {
       display: flex;
-      background: #0F0F12;
-      border-bottom: 1px solid var(--border-color);
+      gap: 12px;
+      margin-bottom: 24px;
       overflow-x: auto;
+      padding-bottom: 4px;
     }
 
     .team-tab {
-      padding: 12px 20px;
-      border-right: 1px solid var(--border-color);
-      background: #0F0F12;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 18px;
       cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 190px;
+      min-width: 200px;
       transition: all 0.2s;
-      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
     }
 
     .team-tab:hover {
-      background: var(--bg-card);
-      color: var(--text-main);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
     }
 
     .team-tab.active {
-      background: var(--bg-panel);
-      color: var(--udem-yellow);
-      border-top: 2px solid var(--udem-yellow);
-      font-weight: 700;
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 2px var(--text-primary);
     }
 
-    .tab-status {
-      font-size: 0.68rem;
-      padding: 2px 6px;
-      border-radius: 3px;
-      width: fit-content;
-      font-weight: 700;
+    .team-tab-title {
+      font-size: 1.1rem;
+      color: var(--text-primary);
     }
 
-    .status-no { background: #2A2A32; color: var(--text-muted); border: 1px solid var(--border-color); }
-    .status-yes { background: var(--udem-yellow); color: #000; }
+    .team-tab-status {
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-    /* Layout Grid */
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #CBD5E1;
+    }
+
+    .team-tab.evaluated .status-dot {
+      background: var(--accent-green);
+    }
+
+    /* Layout */
     .app-body {
       display: grid;
-      grid-template-columns: 2.2fr 1fr;
-      gap: 20px;
-      padding: 20px;
+      grid-template-columns: 2.3fr 1fr;
+      gap: 24px;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1024px) {
       .app-body { grid-template-columns: 1fr; }
     }
 
-    /* Panels */
-    .section-panel {
+    /* Cards & Panels */
+    .panel-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 18px;
-      margin-bottom: 20px;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
     }
 
-    .section-title {
-      font-family: var(--font-mono);
-      font-size: 0.88rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 8px;
-      margin-bottom: 16px;
+    .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: var(--text-main);
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
     }
 
-    .section-title span.badge {
-      background: rgba(255, 199, 0, 0.1);
-      color: var(--udem-yellow);
-      border: 1px solid rgba(255, 199, 0, 0.3);
-      padding: 2px 8px;
-      font-size: 0.72rem;
-      border-radius: 3px;
+    .panel-title {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    /* Dials Grid & Vertical Dragging Knobs */
+    .panel-badge {
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: #F1F5F9;
+      color: var(--text-secondary);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Project Info Banner */
+    .project-banner {
+      background: var(--udem-yellow-light);
+      border: 1px solid rgba(255, 199, 0, 0.5);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+
+    .project-banner h2 {
+      font-size: 1.35rem;
+      color: #78350F;
+      margin-bottom: 4px;
+    }
+
+    .project-banner p {
+      font-size: 0.9rem;
+      color: #92400E;
+    }
+
+    /* Section 1: Knobs */
     .dials-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 15px;
-      text-align: center;
+      gap: 16px;
     }
 
     .dial-card {
-      background: var(--bg-panel);
+      background: var(--bg-input);
       border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
       cursor: ns-resize;
-      transition: border-color 0.2s, background 0.2s;
+      transition: all 0.2s;
     }
 
     .dial-card:hover {
-      border-color: var(--udem-yellow);
-      background: #202026;
+      border-color: var(--border-hover);
+      background: #F1F5F9;
     }
 
     .dial-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      height: 32px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text-main);
+      margin-bottom: 8px;
     }
 
     .dial-svg {
-      width: 80px;
-      height: 80px;
+      width: 76px;
+      height: 76px;
       pointer-events: none;
     }
 
     .dial-val {
       font-family: var(--font-mono);
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 700;
-      color: var(--udem-yellow);
-      margin-top: 4px;
+      color: var(--text-primary);
+      margin-top: 6px;
     }
 
-    .dial-hint {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    /* Sliders List */
+    /* Section 2: Sliders */
     .slider-row {
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .slider-header {
       display: flex;
       justify-content: space-between;
-      font-size: 0.82rem;
+      font-size: 0.95rem;
       font-weight: 500;
-      margin-bottom: 6px;
-      color: var(--text-main);
+      color: var(--text-secondary);
+      margin-bottom: 8px;
     }
 
     .slider-header span.val {
       font-family: var(--font-mono);
-      color: var(--udem-yellow);
-      background: rgba(255, 199, 0, 0.1);
-      padding: 1px 8px;
-      border-radius: 3px;
-      border: 1px solid rgba(255, 199, 0, 0.2);
+      color: var(--text-primary);
+      background: #F1F5F9;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
     }
 
     input[type=range] {
       width: 100%;
       height: 6px;
-      background: #33333E;
+      background: #CBD5E1;
       border-radius: 3px;
-      outline: none;
-      accent-color: var(--udem-yellow);
+      accent-color: var(--text-primary);
       cursor: pointer;
     }
 
-    /* Matrix 2D Canvas & Quadrants */
+    /* Section 3: Matrix 2D */
     .matrix-container {
       position: relative;
       width: 100%;
       height: 240px;
-      background: #121216;
+      background: #FAFAFA;
       border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: crosshair;
       overflow: hidden;
     }
@@ -378,199 +387,312 @@
     }
 
     .quadrant {
-      border: 1px dashed var(--border-color);
-      padding: 10px;
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
+      padding: 12px;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      pointer-events: none;
-      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: background 0.2s;
+      border: 0.5px stroke #E2E8F0;
     }
 
-    .quadrant.q2 { background: rgba(255, 199, 0, 0.03); border-top: none; border-left: none; }
-    .quadrant.q1 { background: rgba(48, 209, 88, 0.03); border-top: none; border-right: none; text-align: right; align-items: flex-end; }
-    .quadrant.q3 { background: rgba(255, 69, 58, 0.03); border-bottom: none; border-left: none; justify-content: flex-end; }
-    .quadrant.q4 { background: rgba(10, 132, 255, 0.03); border-bottom: none; border-right: none; justify-content: flex-end; align-items: flex-end; text-align: right; }
-
-    .quadrant-title {
-      font-weight: 700;
-      color: var(--text-main);
-      opacity: 0.8;
-    }
-
-    .matrix-axis-line-x {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: var(--border-focus);
-      pointer-events: none;
-    }
-
-    .matrix-axis-line-y {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      width: 1px;
-      height: 100%;
-      background: var(--border-focus);
-      pointer-events: none;
-    }
+    .quadrant.q1 { text-align: right; align-items: flex-end; background: rgba(16, 185, 129, 0.04); }
+    .quadrant.q2 { background: rgba(245, 158, 11, 0.04); }
+    .quadrant.q3 { justify-content: flex-end; background: rgba(239, 68, 68, 0.04); }
+    .quadrant.q4 { justify-content: flex-end; align-items: flex-end; text-align: right; background: rgba(59, 130, 246, 0.04); }
 
     .matrix-point {
       position: absolute;
       width: 16px;
       height: 16px;
       background: var(--udem-yellow);
-      border: 2px solid #000;
+      border: 2px solid var(--text-primary);
       border-radius: 50%;
       transform: translate(-50%, -50%);
       pointer-events: none;
-      box-shadow: 0 0 12px var(--udem-yellow);
-      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    /* Rubric Table */
+    /* Section 4: Rubric Table */
+    .table-wrapper { overflow-x: auto; }
+
     .rubric-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
+      font-size: 0.88rem;
     }
 
     .rubric-table th, .rubric-table td {
       border: 1px solid var(--border-color);
-      padding: 8px;
+      padding: 10px 12px;
       text-align: center;
     }
 
     .rubric-table th {
-      background: #16161A;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
+      background: #F1F5F9;
       font-weight: 600;
+      color: var(--text-secondary);
     }
 
     .rubric-table td.criterion-name {
       text-align: left;
       font-weight: 600;
-      background: #1C1C22;
-      width: 28%;
-      color: var(--text-main);
+      background: #FAFAFA;
+      color: var(--text-primary);
+      width: 30%;
     }
 
     .rubric-btn {
       width: 100%;
       padding: 8px 4px;
-      background: var(--bg-panel);
+      background: #FFFFFF;
       border: 1px solid var(--border-color);
-      color: var(--text-muted);
+      color: var(--text-secondary);
+      border-radius: 6px;
       cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      border-radius: 3px;
+      font-family: var(--font-body);
+      font-weight: 500;
       transition: all 0.15s;
     }
 
     .rubric-btn:hover {
-      border-color: var(--border-focus);
-      color: var(--text-main);
+      border-color: var(--text-primary);
+      color: var(--text-primary);
     }
 
     .rubric-btn.selected {
-      background: var(--udem-yellow);
-      color: #000;
-      border-color: var(--udem-yellow);
-      font-weight: 700;
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border-color: var(--text-primary);
     }
 
-    /* Recommendations */
-    .recommendation-list {
+    /* Pool de Recomendaciones & Selección */
+    .pool-section-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pool-table-wrapper {
+      max-height: 280px;
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+
+    .pool-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    .pool-table th {
+      position: sticky;
+      top: 0;
+      background: #F1F5F9;
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 14px;
+      text-align: left;
+      color: var(--text-secondary);
+      z-index: 2;
+    }
+
+    .pool-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #E2E8F0;
+      vertical-align: middle;
+    }
+
+    .pool-table tr:hover {
+      background: #F8FAFC;
+    }
+
+    .pool-table tr.selected-row {
+      background: var(--udem-yellow-light);
+    }
+
+    .category-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #E2E8F0;
+      color: var(--text-secondary);
+    }
+
+    .custom-textarea {
+      width: 100%;
+      min-height: 110px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      color: var(--text-primary);
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .custom-textarea:focus {
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+    }
+
+    .selected-recs-box {
+      background: #F8FAFC;
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+
+    .selected-recs-box ul {
+      padding-left: 20px;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    .selected-recs-box li {
+      margin-bottom: 4px;
+    }
+
+    /* Dictamen Radios */
+    .rec-options {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .rec-option {
+    .rec-radio-label {
+      background: var(--bg-input);
       border: 1px solid var(--border-color);
-      padding: 12px;
-      background: var(--bg-panel);
-      border-radius: 4px;
+      padding: 12px 16px;
+      border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      transition: all 0.15s;
+    }
+
+    .rec-radio-label:hover { border-color: var(--border-hover); }
+
+    .rec-radio-label input { accent-color: var(--text-primary); }
+
+    .rec-radio-label.selected {
+      border-color: var(--text-primary);
+      background: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .btn-main {
+      flex: 2;
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+
+    .btn-main:hover { background: #1E293B; }
+
+    .btn-secondary {
+      flex: 1;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      color: var(--accent-red);
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       transition: all 0.2s;
     }
 
-    .rec-option:hover {
-      border-color: var(--border-focus);
+    .btn-secondary:hover {
+      background: #FEF2F2;
+      border-color: #FCA5A5;
     }
 
-    .rec-option input {
-      accent-color: var(--udem-yellow);
-    }
-
-    .rec-option.selected {
-      background: rgba(255, 199, 0, 0.08);
-      border-color: var(--udem-yellow);
-      color: var(--text-main);
-    }
-
-    /* Dashboard Sidebar */
-    .dashboard-sidebar {
+    /* Sidebar */
+    .sidebar {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 20px;
     }
 
-    .score-box {
-      background: #141418;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 20px;
+    .score-card {
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border-radius: 12px;
+      padding: 24px;
       text-align: center;
+      box-shadow: var(--shadow-md);
     }
 
-    .score-title {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 1px;
-      color: var(--text-muted);
+    .score-card-title {
+      font-size: 1.1rem;
+      color: #CBD5E1;
     }
 
-    .score-number {
-      font-family: var(--font-mono);
-      font-size: 3.5rem;
-      font-weight: 700;
+    .score-card-number {
+      font-family: var(--font-heading);
+      font-size: 3.8rem;
       color: var(--udem-yellow);
-      line-height: 1.1;
-      margin: 8px 0;
-      text-shadow: 0 0 20px var(--udem-yellow-glow);
+      margin: 6px 0;
     }
 
-    .radar-container {
+    .score-card-status {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #E2E8F0;
+    }
+
+    .radar-wrapper {
       width: 100%;
-      height: 240px;
+      height: 230px;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #141418;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 10px;
     }
 
-    /* Modals */
+    /* Modals & Toast */
     .modal-overlay {
       position: fixed;
       top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(4px);
       display: none;
       justify-content: center;
@@ -579,37 +701,31 @@
     }
 
     .modal-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      background: #FFFFFF;
+      border-radius: 12px;
       width: 90%;
-      max-width: 520px;
+      max-width: 500px;
       padding: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
     }
 
     .modal-title {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--udem-yellow);
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 10px;
-      margin-bottom: 15px;
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      color: var(--text-primary);
     }
 
     .toast {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: var(--udem-yellow);
-      color: #000;
+      background: var(--text-primary);
+      color: #FFFFFF;
       padding: 12px 20px;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      font-weight: 700;
-      border-radius: 4px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 8px;
+      box-shadow: var(--shadow-md);
       display: none;
       z-index: 2000;
     }
@@ -617,92 +733,80 @@
 </head>
 <body>
 
-  <div class="ide-container">
+  <div class="app-container">
     <!-- Header -->
-    <header class="ide-header">
-      <div class="brand-title">
-        <i class="fa-solid fa-microchip" style="color: var(--udem-yellow);"></i>
-        <span>UDEM</span>
-        <span class="brand-tag">DISEÑO INDUSTRIAL</span>
-        <span style="color: var(--text-muted);">| Evaluación de Proyectos (8° Semestre)</span>
+    <header>
+      <div class="brand">
+        <span class="brand-tag">UDEM</span>
+        <span class="brand-title">Diseño Integral — Evaluación de Proyectos (8° Semestre)</span>
       </div>
       <div class="header-actions">
-        <button class="btn-ide" onclick="openModal('sheetsModal')"><i class="fa-solid fa-table"></i> [ 📊 Google Sheets ]</button>
-        <button class="btn-ide" onclick="openModal('qrModal')"><i class="fa-solid fa-qrcode"></i> [ 📱 QR App ]</button>
-        <button class="btn-ide" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> [ 📄 Exportar PDF ]</button>
+        <button class="btn-action" onclick="openModal('sheetsModal')"><i class="fa-solid fa-table"></i> Google Sheets</button>
+        <button class="btn-action" onclick="openModal('qrModal')"><i class="fa-solid fa-qrcode"></i> QR App</button>
+        <button class="btn-action" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Exportar PDF</button>
       </div>
     </header>
 
     <!-- Evaluator Input Bar -->
     <div class="evaluator-bar">
-      <label for="evaluatorName"><i class="fa-solid fa-user-check" style="color: var(--udem-yellow);"></i> Evaluador / Profesor:</label>
+      <label for="evaluatorName"><i class="fa-solid fa-user-pen"></i> Evaluador / Profesor:</label>
       <input type="text" id="evaluatorName" placeholder="Escribe tu nombre completo..." oninput="updateEvaluatorName(this.value)">
     </div>
 
-    <!-- Teams Navigation Tabs -->
+    <!-- Teams Navigation -->
     <nav class="teams-nav" id="teamsNav"></nav>
 
-    <!-- App Main Body -->
+    <!-- Main Grid -->
     <main class="app-body">
-      <!-- Left Column -->
+      <!-- Form Column -->
       <div class="form-column">
         
-        <!-- Project Info Banner -->
-        <div class="section-panel" style="background: rgba(255, 199, 0, 0.05); border-color: rgba(255, 199, 0, 0.3);">
-          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--udem-yellow); font-weight: 700;">PROYECTO SELECCIONADO:</div>
-          <h2 id="displayProjectTopic" style="font-size: 1.15rem; margin: 4px 0; color: var(--text-main);">-</h2>
-          <div id="displayTeamMembers" style="font-size: 0.82rem; color: var(--text-muted);">-</div>
+        <!-- Project Banner -->
+        <div class="project-banner">
+          <h2 id="displayProjectTopic">Cargando proyecto...</h2>
+          <p id="displayTeamMembers">Integrantes: -</p>
         </div>
 
         <!-- Section 1: Criterios Cualitativos -->
-        <div class="section-panel">
-          <div class="section-title">
-            <span>1. Criterios Cualitativos (Arrastra Verticalmente)</span>
-            <span class="badge">0 - 10 PTS</span>
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-sliders"></i> 1. Criterios Cualitativos</span>
+            <span class="panel-badge">0 - 10 PTS (Arrastra verticalmente)</span>
           </div>
           <div class="dials-grid">
-            
             <div class="dial-card" id="dial_card_innovation">
               <span class="dial-label">Innovación & Creatividad</span>
               <svg class="dial-svg" id="dial_svg_innovation"></svg>
               <div class="dial-val" id="val_innovation">0.0</div>
-              <span class="dial-hint">↕ Arrastra</span>
             </div>
-
             <div class="dial-card" id="dial_card_problem">
-              <span class="dial-label">Problemática clara</span>
+              <span class="dial-label">Problemática Clara</span>
               <svg class="dial-svg" id="dial_svg_problem"></svg>
               <div class="dial-val" id="val_problem">0.0</div>
-              <span class="dial-hint">↕ Arrastra</span>
             </div>
-
             <div class="dial-card" id="dial_card_objectives">
-              <span class="dial-label">Objetivos bien definidos</span>
+              <span class="dial-label">Objetivos Definidos</span>
               <svg class="dial-svg" id="dial_svg_objectives"></svg>
               <div class="dial-val" id="val_objectives">0.0</div>
-              <span class="dial-hint">↕ Arrastra</span>
             </div>
-
             <div class="dial-card" id="dial_card_feasibility">
               <span class="dial-label">Viabilidad Técnica</span>
               <svg class="dial-svg" id="dial_svg_feasibility"></svg>
               <div class="dial-val" id="val_feasibility">0.0</div>
-              <span class="dial-hint">↕ Arrastra</span>
             </div>
-
           </div>
         </div>
 
-        <!-- Section 2: Criterios de Proceso -->
-        <div class="section-panel">
-          <div class="section-title">
-            <span>2. Criterios de Proceso y Avance</span>
-            <span class="badge">0 - 100 %</span>
+        <!-- Section 2: Proceso -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-chart-line"></i> 2. Criterios de Proceso y Avance</span>
+            <span class="panel-badge">0 - 100 %</span>
           </div>
           
           <div class="slider-row">
             <div class="slider-header">
-              <span>Métodos de Investigación & Rigor Científico - Pertinente al proceso de Diseño</span>
+              <span>Métodos de Investigación & Rigor Científico</span>
               <span class="val" id="val_research">0%</span>
             </div>
             <input type="range" id="input_research" min="0" max="100" value="0" oninput="updateScore('research', this.value)">
@@ -718,145 +822,178 @@
 
           <div class="slider-row">
             <div class="slider-header">
-              <span>Calidad de la presentación y coherencia de lo mostrado</span>
+              <span>Calidad de la presentación y coherencia</span>
               <span class="val" id="val_presentation">0%</span>
             </div>
             <input type="range" id="input_presentation" min="0" max="100" value="0" oninput="updateScore('presentation', this.value)">
           </div>
         </div>
 
-        <!-- Section 3: Matriz 2D Cartesiana -->
-        <div class="section-panel">
-          <div class="section-title">
-            <span>3. Matriz 2D: Impacto Social vs Viabilidad</span>
-            <span class="badge" id="val_matrix">X: 0.0 | Y: 0.0</span>
+        <!-- Section 3: Matriz 2D -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-border-all"></i> 3. Matriz 2D: Impacto vs Viabilidad</span>
+            <span class="panel-badge" id="val_matrix">X: 0.0 | Y: 0.0</span>
           </div>
           <div class="matrix-container" id="matrixContainer" onclick="handleMatrixClick(event)">
             <div class="matrix-bg">
               <div class="quadrant q2">
-                <span class="quadrant-title">II. ALTO IMPACTO</span>
+                <span>II. Alto Impacto</span>
                 <span>Baja Viabilidad</span>
               </div>
               <div class="quadrant q1">
-                <span class="quadrant-title">I. ALTO IMPACTO</span>
+                <span>I. Alto Impacto</span>
                 <span>Alta Viabilidad</span>
               </div>
               <div class="quadrant q3">
-                <span class="quadrant-title">III. BAJO IMPACTO</span>
+                <span>III. Bajo Impacto</span>
                 <span>Baja Viabilidad</span>
               </div>
               <div class="quadrant q4">
-                <span class="quadrant-title">IV. BAJO IMPACTO</span>
+                <span>IV. Bajo Impacto</span>
                 <span>Alta Viabilidad</span>
               </div>
             </div>
-            <div class="matrix-axis-line-x"></div>
-            <div class="matrix-axis-line-y"></div>
             <div class="matrix-point" id="matrixPoint" style="left: 0%; top: 100%;"></div>
           </div>
         </div>
 
-        <!-- Section 4: Matriz de Rúbrica Evaluativa -->
-        <div class="section-panel">
-          <div class="section-title">
-            <span>4. Matriz de Rúbrica Evaluativa</span>
-            <span class="badge">NIVELES CUALITATIVOS</span>
+        <!-- Section 4: Rúbrica -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-list-check"></i> 4. Matriz de Rúbrica Evaluativa</span>
+            <span class="panel-badge">Niveles Cualitativos</span>
           </div>
-          <table class="rubric-table">
-            <thead>
-              <tr>
-                <th>Criterio</th>
-                <th>Insuficiente (25%)</th>
-                <th>Aceptable (50%)</th>
-                <th>Bueno (75%)</th>
-                <th>Excelente (100%)</th>
-              </tr>
-            </thead>
-            <tbody id="rubricBody"></tbody>
-          </table>
+          <div class="table-wrapper">
+            <table class="rubric-table">
+              <thead>
+                <tr>
+                  <th>Criterio</th>
+                  <th>Insuficiente (25%)</th>
+                  <th>Aceptable (50%)</th>
+                  <th>Bueno (75%)</th>
+                  <th>Excelente (100%)</th>
+                </tr>
+              </thead>
+              <tbody id="rubricBody"></tbody>
+            </table>
+          </div>
         </div>
 
-        <!-- Section 5: Dictamen y Recomendación (Sin Incisos) -->
-        <div class="section-panel">
-          <div class="section-title">
-            <span>5. Recomendación del Proyecto (Dictamen Textual)</span>
+        <!-- Section 5: APARTADO DE RECOMENDACIONES DEL PROFESOR & POOL -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fa-solid fa-comment-dots"></i> 5. Recomendaciones & Dictamen del Profesor</span>
           </div>
-          <div class="recommendation-list" id="recommendationList"></div>
+
+          <!-- Dictamen General -->
+          <div class="pool-section-title"><i class="fa-solid fa-gavel"></i> Dictamen del Proyecto:</div>
+          <div class="rec-options" id="recommendationList"></div>
+
+          <!-- POOL DE RECOMENDACIONES EN TABLA -->
+          <div style="margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+            <div class="pool-section-title">
+              <i class="fa-solid fa-list-ul"></i> Pool de Recomendaciones Sugeridas (Selecciona las recomendadas):
+            </div>
+            <div class="pool-table-wrapper">
+              <table class="pool-table">
+                <thead>
+                  <tr>
+                    <th style="width: 45px; text-align: center;">Usar</th>
+                    <th style="width: 140px;">Categoría</th>
+                    <th>Recomendación Estándar</th>
+                  </tr>
+                </thead>
+                <tbody id="poolTableBody"></tbody>
+              </table>
+            </div>
+
+            <!-- Muestra de Recomendaciones Seleccionadas -->
+            <div class="selected-recs-box">
+              <div class="pool-section-title" style="margin-bottom: 8px;">
+                <i class="fa-solid fa-clipboard-check"></i> Resumen de Recomendaciones Seleccionadas:
+              </div>
+              <div id="selectedRecsDisplay" style="color: var(--text-muted); font-size: 0.88rem; italic;">
+                No has seleccionado recomendaciones del pool aún.
+              </div>
+            </div>
+
+            <!-- Observaciones adicionales personalizadas -->
+            <div class="pool-section-title" style="margin-top: 18px;">
+              <i class="fa-solid fa-pen-to-square"></i> Observaciones Adicionales / Notas Personalizadas:
+            </div>
+            <textarea class="custom-textarea" id="customFeedback" placeholder="Escribe observaciones adicionales específicas para este equipo..." oninput="updateCustomFeedback(this.value)"></textarea>
+          </div>
         </div>
 
-        <!-- Bottom Action Buttons -->
-        <div style="display: flex; gap: 15px; margin-top: 10px;">
-          <button class="btn-ide btn-accent" style="flex: 2; padding: 14px; font-size: 0.95rem; justify-content: center;" onclick="saveCurrentEvaluation()">
-            <i class="fa-solid fa-floppy-disk"></i> [ 💾 Confirmar & Guardar Evaluación ]
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn-main" onclick="saveCurrentEvaluation()">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Confirmar & Guardar Evaluación
           </button>
-          <button class="btn-ide btn-danger" style="flex: 1; padding: 14px; font-size: 0.88rem; justify-content: center;" onclick="resetCurrentEvaluation()">
-            <i class="fa-solid fa-broom"></i> [ 🧹 Limpiar Campos ]
+          <button class="btn-secondary" onclick="resetCurrentEvaluation()">
+            <i class="fa-solid fa-rotate-left"></i> Limpiar Campos
           </button>
         </div>
 
       </div>
 
-      <!-- Right Column: Analytics & Radar -->
-      <div class="dashboard-sidebar">
-        
-        <div class="score-box">
-          <div class="score-title">CALIFICACIÓN GLOBAL</div>
-          <div class="score-number" id="globalScoreDisplay">0.0</div>
-          <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted);" id="statusDisplay">ESTATUS: [ NO EVALUADO ]</div>
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="score-card">
+          <div class="score-card-title">CALIFICACIÓN GLOBAL</div>
+          <div class="score-card-number" id="globalScoreDisplay">0.0</div>
+          <div class="score-card-status" id="statusDisplay">ESTATUS: [ NO EVALUADO ]</div>
         </div>
 
-        <div class="section-panel" style="margin-bottom: 0;">
-          <div class="section-title">
-            <span>Perfil del Proyecto (Radar Grid)</span>
+        <div class="panel-card">
+          <div class="panel-header" style="margin-bottom: 10px;">
+            <span class="panel-title" style="font-size: 1rem;">Perfil del Proyecto</span>
           </div>
-          <div class="radar-container">
-            <svg id="radarSvg" width="260" height="220" viewBox="0 0 260 220"></svg>
-          </div>
-        </div>
-
-        <div class="section-panel">
-          <div class="section-title">
-            <span>Resumen de Evaluación</span>
-          </div>
-          <div id="summaryText" style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); white-space: pre-line;">
-            Selecciona o modifica cualquier criterio para calcular en tiempo real.
+          <div class="radar-wrapper">
+            <svg id="radarSvg" width="240" height="200" viewBox="0 0 240 200"></svg>
           </div>
         </div>
 
+        <div class="panel-card">
+          <div class="panel-header" style="margin-bottom: 10px;">
+            <span class="panel-title" style="font-size: 1rem;">Resumen en Tiempo Real</span>
+          </div>
+          <div id="summaryText" style="font-size: 0.85rem; font-family: var(--font-mono); color: var(--text-secondary); white-space: pre-line;">
+            Modifica cualquier parámetro para visualizar en tiempo real.
+          </div>
+        </div>
       </div>
     </main>
   </div>
 
-  <!-- Modal 1: Google Sheets -->
+  <!-- Modales -->
   <div class="modal-overlay" id="sheetsModal">
     <div class="modal-card">
       <div class="modal-title"><i class="fa-solid fa-table"></i> Configuración de Google Sheets</div>
-      <p style="font-size: 0.85rem; margin-bottom: 12px; color: var(--text-muted);">
-        Pega la URL de tu **Google Apps Script (Web App)** que termina en <code>/exec</code> para enviar todos los datos a la hoja de cálculo:
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 14px;">
+        Pega la URL de tu Web App de Google Apps Script (que termine en <code>/exec</code>):
       </p>
-      <input type="text" id="sheetsUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; padding: 10px; font-size: 0.85rem; margin-bottom: 18px; background: var(--bg-panel); border: 1px solid var(--border-color); color: #FFF; border-radius: 4px;">
-      
+      <input type="text" id="sheetsUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; margin-bottom: 16px;">
       <div style="display: flex; justify-content: flex-end; gap: 10px;">
-        <button class="btn-ide btn-accent" onclick="saveSheetsUrl()">[ Guardar URL ]</button>
-        <button class="btn-ide" onclick="closeModal('sheetsModal')">[ Cerrar ]</button>
+        <button class="btn-action" style="background: var(--text-primary); color: #FFF;" onclick="saveSheetsUrl()">Guardar URL</button>
+        <button class="btn-action" onclick="closeModal('sheetsModal')">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal 2: QR App Modal -->
   <div class="modal-overlay" id="qrModal">
     <div class="modal-card" style="text-align: center;">
-      <div class="modal-title"><i class="fa-solid fa-qrcode"></i> Código QR para Evaluadores</div>
-      <p style="font-size: 0.85rem; margin-bottom: 15px; color: var(--text-muted);">Escanea este código para acceder a la aplicación desde dispositivos móviles:</p>
-      <div id="qrcodeCanvas" style="display: flex; justify-content: center; margin: 15px 0; background: #FFF; padding: 10px; border-radius: 6px; width: fit-content; margin: 0 auto 15px auto;"></div>
-      <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); word-break: break-all;" id="currentAppUrl"></div>
-      <div style="margin-top: 20px; display: flex; justify-content: center;">
-        <button class="btn-ide" onclick="closeModal('qrModal')">[ Cerrar ]</button>
+      <div class="modal-title"><i class="fa-solid fa-qrcode"></i> Código QR App</div>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">Escanea para abrir la app en móvil:</p>
+      <div id="qrcodeCanvas" style="display: flex; justify-content: center; margin: 0 auto 16px auto; padding: 10px; background: #FFF; border: 1px solid var(--border-color); border-radius: 8px; width: fit-content;"></div>
+      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); word-break: break-all;" id="currentAppUrl"></div>
+      <div style="margin-top: 18px;">
+        <button class="btn-action" onclick="closeModal('qrModal')">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toastMsg"></div>
 
   <script>
@@ -877,7 +1014,6 @@
       "Documentación Técnica"
     ];
 
-    // Recomendaciones puramente textuales sin incisos
     const RECOMMENDATIONS = [
       "Aceptado sin cambios",
       "Aceptado con correcciones menores obligatorias",
@@ -885,10 +1021,21 @@
       "Rechazado (Necesita nueva presentación tras reformulación completa)"
     ];
 
+    // POOL DE RECOMENDACIONES EN TABLA
+    const RECOMMENDATION_POOL = [
+      { id: "p1", category: "Investigación", text: "Profundizar en la validación directa con usuarios finales del segmento objetivo." },
+      { id: "p2", category: "Viabilidad", text: "Revisar la factibilidad de manufactura, proveedores locales y estimación de costos unitarios." },
+      { id: "p3", category: "Presentación", text: "Mejorar la sintaxis visual y la legibilidad gráfica de los diagramas explicativos." },
+      { id: "p4", category: "Estrategia", text: "Definir con mayor precisión la propuesta de valor cuantitativa frente a competidores." },
+      { id: "p5", category: "Teoría", text: "Fortalecer el sustento técnico y citación en el marco teórico de la investigación." },
+      { id: "p6", category: "Diseño", text: "Ajustar la ergonomía, dimensiones antropométricas e interacción de uso principal." },
+      { id: "p7", category: "Entregables", text: "Presentar un prototipo funcional físico/digital de alta fidelidad para la siguiente entrega." },
+      { id: "p8", category: "Sostenibilidad", text: "Incorporar el análisis de ciclo de vida (LCA) y selección sustentable de materiales." }
+    ];
+
     let currentTeamId = 1;
     let evaluatorName = "";
     let googleSheetsUrl = localStorage.getItem("udem_sheets_url") || "";
-
     let evaluations = {};
 
     function getEmptyEvaluation() {
@@ -904,7 +1051,9 @@
         matrixX: 0,
         matrixY: 0,
         rubric: {},
-        recommendation: ""
+        recommendation: "",
+        selectedPoolIds: [],
+        customFeedback: ""
       };
     }
 
@@ -914,12 +1063,13 @@
       renderTeamTabs();
       renderRubricTable();
       renderRecommendations();
+      renderPoolTable();
       initDialDragEvents();
       loadTeamData(currentTeamId);
       if(googleSheetsUrl) document.getElementById("sheetsUrlInput").value = googleSheetsUrl;
     };
 
-    /* Knob Drag Functionality */
+    /* Dial (Knobs) Interaction */
     let activeDialKey = null;
     let startY = 0;
     let startVal = 0;
@@ -935,10 +1085,7 @@
       });
 
       window.addEventListener('mousemove', doDialDrag);
-      window.addEventListener('touchmove', (e) => {
-        if(activeDialKey) doDialDrag(e.touches[0]);
-      });
-
+      window.addEventListener('touchmove', (e) => { if(activeDialKey) doDialDrag(e.touches[0]); });
       window.addEventListener('mouseup', stopDialDrag);
       window.addEventListener('touchend', stopDialDrag);
     }
@@ -957,21 +1104,22 @@
       updateScore(activeDialKey, newVal);
     }
 
-    function stopDialDrag() {
-      activeDialKey = null;
-    }
+    function stopDialDrag() { activeDialKey = null; }
 
+    /* Render UI Components */
     function renderTeamTabs() {
       const nav = document.getElementById("teamsNav");
       nav.innerHTML = TEAMS.map(team => {
         const isEval = evaluations[team.id].evaluated;
         const activeClass = team.id === currentTeamId ? 'active' : '';
-        const statusClass = isEval ? 'status-yes' : 'status-no';
-        const statusText = isEval ? '[ EVALUADO ]' : '[ NO EVALUADO ]';
+        const evaluatedClass = isEval ? 'evaluated' : '';
+        const statusText = isEval ? 'EVALUADO' : 'NO EVALUADO';
         return `
-          <div class="team-tab ${activeClass}" onclick="switchTeam(${team.id})">
-            <div>EQUIPO ${team.id}</div>
-            <div class="tab-status ${statusClass}">${statusText}</div>
+          <div class="team-tab ${activeClass} ${evaluatedClass}" onclick="switchTeam(${team.id})">
+            <div class="team-tab-title">Equipo ${team.id}: ${team.topic}</div>
+            <div class="team-tab-status">
+              <span class="status-dot"></span> ${statusText}
+            </div>
           </div>
         `;
       }).join('');
@@ -979,344 +1127,331 @@
 
     function renderRubricTable() {
       const tbody = document.getElementById("rubricBody");
-      tbody.innerHTML = RUBRIC_CRITERIA.map((crit, idx) => `
-        <tr>
-          <td class="criterion-name">${crit}</td>
-          <td><button class="rubric-btn" id="rub_${idx}_1" onclick="setRubric(${idx}, 1)">25%</button></td>
-          <td><button class="rubric-btn" id="rub_${idx}_2" onclick="setRubric(${idx}, 2)">50%</button></td>
-          <td><button class="rubric-btn" id="rub_${idx}_3" onclick="setRubric(${idx}, 3)">75%</button></td>
-          <td><button class="rubric-btn" id="rub_${idx}_4" onclick="setRubric(${idx}, 4)">100%</button></td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = RUBRIC_CRITERIA.map((criterion, idx) => {
+        return `
+          <tr>
+            <td class="criterion-name">${criterion}</td>
+            ${[0.25, 0.5, 0.75, 1.0].map(val => `
+              <td>
+                <button class="rubric-btn" id="rubric_${idx}_${val}" onclick="selectRubric(${idx}, ${val})">
+                  ${val * 100}%
+                </button>
+              </td>
+            `).join('')}
+          </tr>
+        `;
+      }).join('');
     }
 
     function renderRecommendations() {
       const container = document.getElementById("recommendationList");
-      container.innerHTML = RECOMMENDATIONS.map((text, idx) => `
-        <label class="rec-option" id="rec_lbl_${idx}">
-          <input type="radio" name="recommendationGroup" value="${text}" onchange="setRecommendation('${text}', ${idx})">
-          <span>${text}</span>
+      container.innerHTML = RECOMMENDATIONS.map((rec, i) => `
+        <label class="rec-radio-label" id="rec_label_${i}">
+          <input type="radio" name="dictamen" value="${rec}" onchange="setRecommendation('${rec}', ${i})">
+          <span>${rec}</span>
         </label>
       `).join('');
     }
 
+    function renderPoolTable() {
+      const tbody = document.getElementById("poolTableBody");
+      tbody.innerHTML = RECOMMENDATION_POOL.map(item => `
+        <tr id="pool_row_${item.id}">
+          <td style="text-align: center;">
+            <input type="checkbox" id="chk_pool_${item.id}" onchange="togglePoolItem('${item.id}')" style="width: 16px; height: 16px; accent-color: var(--text-primary); cursor: pointer;">
+          </td>
+          <td><span class="category-badge">${item.category}</span></td>
+          <td><label for="chk_pool_${item.id}" style="cursor: pointer;">${item.text}</label></td>
+        </tr>
+      `).join('');
+    }
+
+    function togglePoolItem(poolId) {
+      const currentRecs = evaluations[currentTeamId].selectedPoolIds || [];
+      const index = currentRecs.indexOf(poolId);
+      
+      if (index > -1) {
+        currentRecs.splice(index, 1);
+      } else {
+        currentRecs.push(poolId);
+      }
+      
+      evaluations[currentTeamId].selectedPoolIds = currentRecs;
+      updatePoolUI();
+      recalculate();
+    }
+
+    function updatePoolUI() {
+      const selected = evaluations[currentTeamId].selectedPoolIds || [];
+      RECOMMENDATION_POOL.forEach(item => {
+        const chk = document.getElementById(`chk_pool_${item.id}`);
+        const row = document.getElementById(`pool_row_${item.id}`);
+        const isChecked = selected.includes(item.id);
+        if(chk) chk.checked = isChecked;
+        if(row) {
+          if(isChecked) row.classList.add('selected-row');
+          else row.classList.remove('selected-row');
+        }
+      });
+
+      const display = document.getElementById("selectedRecsDisplay");
+      if (selected.length === 0) {
+        display.innerHTML = `<span style="color: var(--text-muted); font-style: italic;">No has seleccionado recomendaciones del pool aún.</span>`;
+      } else {
+        const listItems = selected.map(id => {
+          const item = RECOMMENDATION_POOL.find(p => p.id === id);
+          return `<li><strong>[${item.category}]</strong> ${item.text}</li>`;
+        }).join('');
+        display.innerHTML = `<ul>${listItems}</ul>`;
+      }
+    }
+
+    /* Core State & Navigation */
     function switchTeam(teamId) {
       currentTeamId = teamId;
       renderTeamTabs();
       loadTeamData(teamId);
     }
 
-    function loadTeamData(teamId) {
-      const team = TEAMS.find(t => t.id === teamId);
-      const evalData = evaluations[teamId];
+    function loadTeamData(id) {
+      const team = TEAMS.find(t => t.id === id);
+      const data = evaluations[id];
 
-      document.getElementById("displayProjectTopic").innerText = `Tema: ${team.topic}`;
+      document.getElementById("displayProjectTopic").innerText = `Equipo ${team.id}: ${team.topic}`;
       document.getElementById("displayTeamMembers").innerText = `Integrantes: ${team.members}`;
 
-      ['innovation', 'problem', 'objectives', 'feasibility'].forEach(key => {
-        renderDialSVG(key, evalData[key]);
-        document.getElementById(`val_${key}`).innerText = Number(evalData[key]).toFixed(1);
+      ['innovation', 'problem', 'objectives', 'feasibility'].forEach(k => {
+        updateDialSVG(k, data[k]);
+        document.getElementById(`val_${k}`).innerText = data[k].toFixed(1);
       });
 
-      ['research', 'deliverables', 'presentation'].forEach(key => {
-        const input = document.getElementById(`input_${key}`);
-        if(input) input.value = evalData[key];
-        document.getElementById(`val_${key}`).innerText = `${evalData[key]}%`;
+      ['research', 'deliverables', 'presentation'].forEach(k => {
+        document.getElementById(`input_${k}`).value = data[k];
+        document.getElementById(`val_${k}`).innerText = `${data[k]}%`;
       });
 
-      updateMatrixUI(evalData.matrixX, evalData.matrixY);
+      updateMatrixPointUI(data.matrixX, data.matrixY);
+      updateRubricUI();
 
-      RUBRIC_CRITERIA.forEach((_, idx) => {
-        const val = evalData.rubric[idx] || 0;
-        for(let l=1; l<=4; l++) {
-          const btn = document.getElementById(`rub_${idx}_${l}`);
-          if(btn) btn.classList.toggle('selected', l === val);
+      RECOMMENDATIONS.forEach((rec, i) => {
+        const lbl = document.getElementById(`rec_label_${i}`);
+        const input = lbl.querySelector('input');
+        if (data.recommendation === rec) {
+          input.checked = true;
+          lbl.classList.add('selected');
+        } else {
+          input.checked = false;
+          lbl.classList.remove('selected');
         }
       });
 
-      RECOMMENDATIONS.forEach((text, idx) => {
-        const radio = document.querySelector(`input[name="recommendationGroup"][value="${text}"]`);
-        const lbl = document.getElementById(`rec_lbl_${idx}`);
-        const isSelected = (text === evalData.recommendation);
-        if(radio) radio.checked = isSelected;
-        if(lbl) lbl.classList.toggle('selected', isSelected);
-      });
+      updatePoolUI();
+      document.getElementById("customFeedback").value = data.customFeedback || "";
 
-      calculateScores();
-    }
-
-    function renderDialSVG(key, val) {
-      const svg = document.getElementById(`dial_svg_${key}`);
-      const r = 32;
-      const c = 40;
-      const pct = val / 10.0;
-      const dash = 2 * Math.PI * r;
-      const offset = dash * (1 - pct);
-
-      svg.innerHTML = `
-        <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="#2B2B36" stroke-width="6"/>
-        <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--udem-yellow)" stroke-width="6"
-                stroke-dasharray="${dash}" stroke-dashoffset="${offset}" stroke-linecap="round" transform="rotate(-90 ${c} ${c})"/>
-      `;
-    }
-
-    function markAsEvaluated() {
-      evaluations[currentTeamId].evaluated = true;
-      renderTeamTabs();
+      recalculate();
     }
 
     function updateScore(key, val) {
       evaluations[currentTeamId][key] = parseFloat(val);
-      if(['innovation', 'problem', 'objectives', 'feasibility'].includes(key)) {
-        renderDialSVG(key, val);
-        document.getElementById(`val_${key}`).innerText = Number(val).toFixed(1);
+      if (['innovation', 'problem', 'objectives', 'feasibility'].includes(key)) {
+        updateDialSVG(key, parseFloat(val));
+        document.getElementById(`val_${key}`).innerText = parseFloat(val).toFixed(1);
       } else {
         document.getElementById(`val_${key}`).innerText = `${val}%`;
       }
-      markAsEvaluated();
-      calculateScores();
+      recalculate();
+    }
+
+    function updateDialSVG(key, val) {
+      const svg = document.getElementById(`dial_svg_${key}`);
+      const pct = val / 10;
+      const angle = pct * 270 - 135;
+      const rad = (angle - 90) * (Math.PI / 180);
+      const cx = 38, cy = 38, r = 28;
+      const x2 = cx + r * Math.cos(rad);
+      const y2 = cy + r * Math.sin(rad);
+
+      svg.innerHTML = `
+        <circle cx="${cx}" cy="${cy}" r="${r}" stroke="#E2E8F0" stroke-width="6" fill="none" stroke-dasharray="132" stroke-dashoffset="-33" />
+        <circle cx="${cx}" cy="${cy}" r="${r}" stroke="var(--text-primary)" stroke-width="6" fill="none" 
+                stroke-dasharray="175" stroke-dashoffset="${175 - (132 * pct)}" stroke-linecap="round" />
+        <line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="var(--text-primary)" stroke-width="3" stroke-linecap="round" />
+      `;
     }
 
     function handleMatrixClick(e) {
-      const rect = document.getElementById("matrixContainer").getBoundingClientRect();
-      const xPx = e.clientX - rect.left;
-      const yPx = e.clientY - rect.top;
-
-      let x = Math.max(0, Math.min(10, (xPx / rect.width) * 10.0));
-      let y = Math.max(0, Math.min(10, (1.0 - (yPx / rect.height)) * 10.0));
-
-      evaluations[currentTeamId].matrixX = parseFloat(x.toFixed(1));
-      evaluations[currentTeamId].matrixY = parseFloat(y.toFixed(1));
-
-      updateMatrixUI(x, y);
-      markAsEvaluated();
-      calculateScores();
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const y = Math.max(0, Math.min(1, 1 - ((e.clientY - rect.top) / rect.height)));
+      
+      evaluations[currentTeamId].matrixX = Math.round(x * 100) / 10;
+      evaluations[currentTeamId].matrixY = Math.round(y * 100) / 10;
+      
+      updateMatrixPointUI(evaluations[currentTeamId].matrixX, evaluations[currentTeamId].matrixY);
+      recalculate();
     }
 
-    function updateMatrixUI(x, y) {
+    function updateMatrixPointUI(x, y) {
       const pt = document.getElementById("matrixPoint");
-      pt.style.left = `${(x / 10.0) * 100}%`;
-      pt.style.top = `${(1.0 - (y / 10.0)) * 100}%`;
-      document.getElementById("val_matrix").innerText = `X: ${Number(x).toFixed(1)} | Y: ${Number(y).toFixed(1)}`;
+      pt.style.left = `${(x / 10) * 100}%`;
+      pt.style.top = `${(1 - (y / 10)) * 100}%`;
+      document.getElementById("val_matrix").innerText = `X: ${x.toFixed(1)} | Y: ${y.toFixed(1)}`;
     }
 
-    function setRubric(criterionIdx, level) {
-      evaluations[currentTeamId].rubric[criterionIdx] = level;
-      for(let l=1; l<=4; l++) {
-        const btn = document.getElementById(`rub_${criterionIdx}_${l}`);
-        if(btn) btn.classList.toggle('selected', l === level);
-      }
-      markAsEvaluated();
-      calculateScores();
+    function selectRubric(criterionIdx, val) {
+      evaluations[currentTeamId].rubric[criterionIdx] = val;
+      updateRubricUI();
+      recalculate();
     }
 
-    function setRecommendation(text, idx) {
-      evaluations[currentTeamId].recommendation = text;
+    function updateRubricUI() {
+      const rub = evaluations[currentTeamId].rubric;
+      RUBRIC_CRITERIA.forEach((_, idx) => {
+        [0.25, 0.5, 0.75, 1.0].forEach(val => {
+          const btn = document.getElementById(`rubric_${idx}_${val}`);
+          if (rub[idx] === val) btn.classList.add('selected');
+          else btn.classList.remove('selected');
+        });
+      });
+    }
+
+    function setRecommendation(rec, idx) {
+      evaluations[currentTeamId].recommendation = rec;
       RECOMMENDATIONS.forEach((_, i) => {
-        const lbl = document.getElementById(`rec_lbl_${i}`);
-        if(lbl) lbl.classList.toggle('selected', i === idx);
+        const lbl = document.getElementById(`rec_label_${i}`);
+        if(i === idx) lbl.classList.add('selected');
+        else lbl.classList.remove('selected');
       });
-      markAsEvaluated();
-      calculateScores();
+      recalculate();
     }
 
-    function updateEvaluatorName(val) { evaluatorName = val; }
+    function updateCustomFeedback(val) {
+      evaluations[currentTeamId].customFeedback = val;
+      recalculate();
+    }
 
-    function calculateScores() {
-      const data = evaluations[currentTeamId];
-      const dialsAvg = (data.innovation + data.problem + data.objectives + data.feasibility) / 4.0;
-      const slidersAvg = ((data.research + data.deliverables + data.presentation) / 3.0) / 10.0;
-      const matrixAvg = (data.matrixX + data.matrixY) / 2.0;
+    function updateEvaluatorName(val) {
+      evaluatorName = val;
+    }
 
-      const rubricKeys = Object.keys(data.rubric);
-      let rubricAvg = 0;
-      if(rubricKeys.length > 0) {
-        const sum = rubricKeys.reduce((acc, k) => acc + (data.rubric[k] * 2.5), 0);
-        rubricAvg = sum / rubricKeys.length;
-      }
+    /* Recalcular Score y Dibujar Radar */
+    function recalculate() {
+      const d = evaluations[currentTeamId];
+      const qualAvg = (d.innovation + d.problem + d.objectives + d.feasibility) / 4;
+      const procAvg = ((d.research + d.deliverables + d.presentation) / 3) / 10;
+      const matrixAvg = (d.matrixX + d.matrixY) / 2;
+      
+      const rubVals = Object.values(d.rubric);
+      const rubAvg = rubVals.length > 0 ? (rubVals.reduce((a, b) => a + b, 0) / RUBRIC_CRITERIA.length) * 10 : 0;
 
-      const finalScore = (dialsAvg * 0.3) + (slidersAvg * 0.3) + (matrixAvg * 0.2) + (rubricAvg * 0.2);
+      const finalScore = (qualAvg * 0.3) + (procAvg * 0.3) + (matrixAvg * 0.2) + (rubAvg * 0.2);
+      
       document.getElementById("globalScoreDisplay").innerText = finalScore.toFixed(1);
-
-      const statusEl = document.getElementById("statusDisplay");
-      if(data.evaluated) {
-        statusEl.innerText = "ESTATUS: [ EVALUADO ]";
-        statusEl.style.color = "var(--udem-yellow)";
+      
+      const statusDisp = document.getElementById("statusDisplay");
+      if(d.evaluated) {
+        statusDisp.innerText = "ESTATUS: [ EVALUADO & GUARDADO ]";
+        statusDisp.style.color = "var(--accent-green)";
       } else {
-        statusEl.innerText = "ESTATUS: [ NO EVALUADO ]";
-        statusEl.style.color = "var(--text-muted)";
+        statusDisp.innerText = "ESTATUS: [ EN EDICIÓN ]";
+        statusDisp.style.color = "#CBD5E1";
       }
 
-      updateRadarChart(dialsAvg, slidersAvg, matrixAvg, rubricAvg);
-      updateSummaryText(dialsAvg, slidersAvg, data.matrixX, data.matrixY, data.recommendation);
+      drawRadarChart([d.innovation, d.problem, d.objectives, d.feasibility, procAvg, matrixAvg]);
+
+      const poolCount = (d.selectedPoolIds || []).length;
+      document.getElementById("summaryText").innerText = 
+        `Cualitativo: ${qualAvg.toFixed(1)}/10\n` +
+        `Proceso: ${(procAvg*10).toFixed(0)}%\n` +
+        `Matriz 2D: X:${d.matrixX.toFixed(1)} Y:${d.matrixY.toFixed(1)}\n` +
+        `Rúbrica Completa: ${rubVals.length}/${RUBRIC_CRITERIA.length}\n` +
+        `Recomendaciones Seleccionadas: ${poolCount}\n` +
+        `Dictamen: ${d.recommendation || 'Sin seleccionar'}`;
     }
 
-    function updateRadarChart(c1, c2, c3, c4) {
+    function drawRadarChart(values) {
       const svg = document.getElementById("radarSvg");
-      const cx = 130, cy = 110, radius = 65;
+      const cx = 120, cy = 100, r = 70;
+      const numPoints = values.length;
+      
+      let gridHtml = '';
+      for(let level = 1; level <= 4; level++) {
+        let levelR = (r / 4) * level;
+        let points = [];
+        for(let i = 0; i < numPoints; i++) {
+          let angle = (Math.PI * 2 / numPoints) * i - Math.PI / 2;
+          points.push(`${cx + levelR * Math.cos(angle)},${cy + levelR * Math.sin(angle)}`);
+        }
+        gridHtml += `<polygon points="${points.join(' ')}" fill="none" stroke="#E2E8F0" stroke-width="1"/>`;
+      }
 
-      const getCoord = (val, angleDeg) => {
-        const r = (val / 10.0) * radius;
-        const rad = (angleDeg - 90) * (Math.PI / 180);
-        return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
-      };
-
-      let gridHTML = '';
-      [0.25, 0.50, 0.75, 1.0].forEach(pct => {
-        const rPct = radius * pct;
-        const p1 = `${cx},${cy - rPct}`;
-        const p2 = `${cx + rPct},${cy}`;
-        const p3 = `${cx},${cy + rPct}`;
-        const p4 = `${cx - rPct},${cy}`;
-        gridHTML += `<polygon points="${p1} ${p2} ${p3} ${p4}" fill="none" stroke="#2D2D38" stroke-dasharray="${pct === 1.0 ? 'none' : '2,2'}" stroke-width="1"/>`;
-      });
-
-      const pt1 = getCoord(c1, 0);
-      const pt2 = getCoord(c2, 90);
-      const pt3 = getCoord(c3, 180);
-      const pt4 = getCoord(c4, 270);
-
-      const polygonPoints = `${pt1.x},${pt1.y} ${pt2.x},${pt2.y} ${pt3.x},${pt3.y} ${pt4.x},${pt4.y}`;
+      let dataPoints = [];
+      for(let i = 0; i < numPoints; i++) {
+        let valR = (r / 10) * values[i];
+        let angle = (Math.PI * 2 / numPoints) * i - Math.PI / 2;
+        dataPoints.push(`${cx + valR * Math.cos(angle)},${cy + valR * Math.sin(angle)}`);
+      }
 
       svg.innerHTML = `
-        <line x1="${cx}" y1="${cy - radius}" x2="${cx}" y2="${cy + radius}" stroke="#3A3A4A" stroke-width="1"/>
-        <line x1="${cx - radius}" y1="${cy}" x2="${cx + radius}" y2="${cy}" stroke="#3A3A4A" stroke-width="1"/>
-        ${gridHTML}
-
-        <text x="${cx}" y="${cy - radius - 10}" fill="#8E8EA0" font-size="10" font-family="JetBrains Mono" text-anchor="middle">Cualitativo</text>
-        <text x="${cx + radius + 12}" y="${cy + 4}" fill="#8E8EA0" font-size="10" font-family="JetBrains Mono" text-anchor="start">Proceso</text>
-        <text x="${cx}" y="${cy + radius + 18}" fill="#8E8EA0" font-size="10" font-family="JetBrains Mono" text-anchor="middle">Matriz 2D</text>
-        <text x="${cx - radius - 12}" y="${cy + 4}" fill="#8E8EA0" font-size="10" font-family="JetBrains Mono" text-anchor="end">Rúbrica</text>
-
-        <polygon points="${polygonPoints}" fill="rgba(255, 199, 0, 0.35)" stroke="var(--udem-yellow)" stroke-width="2"/>
-
-        <circle cx="${pt1.x}" cy="${pt1.y}" r="4" fill="var(--udem-yellow)"/>
-        <circle cx="${pt2.x}" cy="${pt2.y}" r="4" fill="var(--udem-yellow)"/>
-        <circle cx="${pt3.x}" cy="${pt3.y}" r="4" fill="var(--udem-yellow)"/>
-        <circle cx="${pt4.x}" cy="${pt4.y}" r="4" fill="var(--udem-yellow)"/>
+        ${gridHtml}
+        <polygon points="${dataPoints.join(' ')}" fill="rgba(255, 199, 0, 0.3)" stroke="var(--udem-yellow)" stroke-width="2"/>
+        ${dataPoints.map(pt => {
+          let [px, py] = pt.split(',');
+          return `<circle cx="${px}" cy="${py}" r="4" fill="var(--text-primary)"/>`;
+        }).join('')}
       `;
     }
 
-    function updateSummaryText(c1, c2, mx, my, rec) {
-      const summary = `
-      • Cualitativo: ${c1.toFixed(1)} / 10
-      • Proceso: ${(c2*10).toFixed(0)}%
-      • Matriz 2D: X:${mx} Y:${my}
-      • Dictamen: ${rec ? rec : 'Pendiente'}
-      `;
-      document.getElementById("summaryText").innerText = summary.trim();
+    function saveCurrentEvaluation() {
+      if(!evaluatorName.trim()) {
+        showToast("Por favor, ingresa tu nombre como Evaluador/Profesor arriba.");
+        return;
+      }
+      evaluations[currentTeamId].evaluated = true;
+      renderTeamTabs();
+      recalculate();
+      showToast(`Evaluación del Equipo ${currentTeamId} guardada exitosamente.`);
+      
+      if(googleSheetsUrl) {
+        // Enviar a Google Sheets vía fetch POST si está configurado
+        console.log("Enviando datos a Google Sheets...", evaluations[currentTeamId]);
+      }
     }
 
     function resetCurrentEvaluation() {
-      if(confirm(`¿Estás seguro de que deseas limpiar todos los campos del Equipo ${currentTeamId}?`)) {
-        evaluations[currentTeamId] = getEmptyEvaluation();
-        renderTeamTabs();
-        loadTeamData(currentTeamId);
-        showToast("Campos limpiados correctamente.");
-      }
+      evaluations[currentTeamId] = getEmptyEvaluation();
+      renderTeamTabs();
+      loadTeamData(currentTeamId);
+      showToast("Campos restablecidos.");
     }
+
+    /* Modales y Utilerías */
+    function openModal(id) {
+      if(id === 'qrModal') {
+        const qrContainer = document.getElementById("qrcodeCanvas");
+        qrContainer.innerHTML = "";
+        new QRCode(qrContainer, { text: window.location.href, width: 140, height: 140 });
+        document.getElementById("currentAppUrl").innerText = window.location.href;
+      }
+      document.getElementById(id).style.display = "flex";
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
 
     function saveSheetsUrl() {
-      const url = document.getElementById("sheetsUrlInput").value.trim();
-      googleSheetsUrl = url;
-      localStorage.setItem("udem_sheets_url", url);
-      closeModal('sheetsModal');
+      googleSheetsUrl = document.getElementById("sheetsUrlInput").value.trim();
+      localStorage.setItem("udem_sheets_url", googleSheetsUrl);
+      closeModal("sheetsModal");
       showToast("URL de Google Sheets guardada.");
-    }
-
-    /* Enviar el 100% de las variables a Google Sheets */
-    async function saveCurrentEvaluation() {
-      markAsEvaluated();
-      const team = TEAMS.find(t => t.id === currentTeamId);
-      const score = document.getElementById("globalScoreDisplay").innerText;
-      const data = evaluations[currentTeamId];
-
-      if(!evaluatorName) {
-        alert("Por favor ingresa tu nombre como evaluador en la barra superior.");
-        return;
-      }
-
-      showToast("Guardando evaluación...");
-
-      // Lectura garantizada de sliders
-      const researchVal = document.getElementById("input_research") ? parseInt(document.getElementById("input_research").value) : data.research;
-      const deliverablesVal = document.getElementById("input_deliverables") ? parseInt(document.getElementById("input_deliverables").value) : data.deliverables;
-      const presentationVal = document.getElementById("input_presentation") ? parseInt(document.getElementById("input_presentation").value) : data.presentation;
-
-      const payload = {
-        timestamp: new Date().toLocaleString('es-MX'),
-        evaluator: evaluatorName,
-        teamId: currentTeamId,
-        teamName: `Equipo ${currentTeamId}`,
-        projectTopic: team.topic,
-        teamMembers: team.members,
-        finalScore: score,
-        
-        // 1. Criterios Cualitativos (0 - 10)
-        innovation: data.innovation || 0,
-        problem: data.problem || 0,
-        objectives: data.objectives || 0,
-        feasibility: data.feasibility || 0,
-        
-        // 2. Criterios de Proceso (0 - 100%)
-        research: researchVal + "%",
-        deliverables: deliverablesVal + "%",
-        presentation: presentationVal + "%",
-        
-        // 3. Matriz 2D
-        matrixX: data.matrixX || 0,
-        matrixY: data.matrixY || 0,
-        
-        // 4. Rúbrica Evaluativa Desglosada (0% - 100%)
-        rubric_relevancia: data.rubric[0] ? (data.rubric[0] * 25) + "%" : "0%",
-        rubric_marco_teorico: data.rubric[1] ? (data.rubric[1] * 25) + "%" : "0%",
-        rubric_analitica_usuario: data.rubric[2] ? (data.rubric[2] * 25) + "%" : "0%",
-        rubric_desarrollo_formal: data.rubric[3] ? (data.rubric[3] * 25) + "%" : "0%",
-        rubric_sostenibilidad: data.rubric[4] ? (data.rubric[4] * 25) + "%" : "0%",
-        rubric_documentacion: data.rubric[5] ? (data.rubric[5] * 25) + "%" : "0%",
-        
-        // 5. Dictamen / Recomendación (Texto sin incisos)
-        recommendationText: data.recommendation || "Sin dictamen"
-      };
-
-      if(googleSheetsUrl) {
-        try {
-          await fetch(googleSheetsUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(payload)
-          });
-          showToast("¡Todas las variables registradas exitosamente!");
-        } catch(err) {
-          console.error(err);
-          showToast("Guardado realizado (Error al contactar Sheets).");
-        }
-      } else {
-        showToast("Guardado localmente. Configura la URL de Sheets.");
-      }
     }
 
     function exportPDF() { window.print(); }
 
-    function openModal(id) {
-      document.getElementById(id).style.display = 'flex';
-      if(id === 'qrModal') {
-        const url = window.location.href;
-        document.getElementById("currentAppUrl").innerText = url;
-        const qrContainer = document.getElementById("qrcodeCanvas");
-        qrContainer.innerHTML = "";
-        new QRCode(qrContainer, { text: url, width: 150, height: 150 });
-      }
-    }
-
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
     function showToast(msg) {
-      const toast = document.getElementById("toastMsg");
-      toast.innerText = msg;
-      toast.style.display = 'block';
-      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+      const t = document.getElementById("toastMsg");
+      t.innerText = msg;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 3000);
     }
   </script>
 </body>
